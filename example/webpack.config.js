@@ -2,13 +2,13 @@ var path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './example.js',
+  entry: path.resolve(__dirname, 'index.js'),
   output: {
-    filename: "[name].js",
+    filename: "index.js",
     path: path.resolve(__dirname, 'dist')
   },
   devServer: {
-    contentBase: __dirname,
+    contentBase: path.resolve(__dirname, '..'),
     compress: true,
     port: 9001
   },
@@ -21,11 +21,15 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: [/node_modules/, path.resolve(__dirname, "../lib"),],
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'react']
+            presets: ['stage-0', 'es2015', 'react'],
+            plugins: [
+              ["transform-es2015-classes"],
+              ["transform-class-properties"]
+            ]
           }
         }
       }

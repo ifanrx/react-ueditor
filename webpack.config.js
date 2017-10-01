@@ -2,9 +2,9 @@ var path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './ReactUeditor/index.js',
+  entry: './src/index.js',
   output: {
-    filename: "react-ueditor.js",
+    filename: "index.js",
     path: path.resolve(__dirname, 'lib')
   },
   module: {
@@ -15,7 +15,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'react']
+            presets: ['stage-0', 'es2015', 'react'],
+            plugins: [
+              ["transform-es2015-classes"],
+              ["transform-class-properties"]
+            ]
           }
         }
       }
