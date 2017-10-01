@@ -2,10 +2,11 @@
   "name": "react-ueditor",
   "version": "1.0.0",
   "description": "an ueditor component for react",
-  "main": "index.js",
+  "main": "lib/react-ueditor.js",
   "scripts": {
-    "dev": "webpack --progress --watch",
-    "start": "webpack-dev-server --open"
+    "dev": "webpack --config example.webpack.config --progress --watch",
+    "start": "webpack-dev-server --config example.webpack.config --open",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",

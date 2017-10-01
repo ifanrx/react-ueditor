@@ -2,11 +2,21 @@ var path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './ReactUeditor/index.js',
+  entry: './example.js',
   output: {
-    filename: "react-ueditor.js",
-    path: path.resolve(__dirname, 'lib')
+    filename: "[name].js",
+    path: path.resolve(__dirname, 'dist')
   },
+  devServer: {
+    contentBase: __dirname,
+    compress: true,
+    port: 9001
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'index.html')
+    })
+  ],
   module: {
     rules: [
       {
