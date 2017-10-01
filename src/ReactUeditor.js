@@ -1,12 +1,15 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 let content = ''  // 存储编辑器的实时数据，用于传递给父组件
 let ueditor, isContentChangedByWillReceiveProps = false, tempfileInput = null
 
 class ReactUeditor extends React.Component {
+
   componentDidMount() {
-    this.createScript('/vendor/ueditor/ueditor.config.js').then(() => {
-      this.createScript('/vendor/ueditor/ueditor.all.min.js').then(() => {
+    let props = this.props
+    this.createScript(props.ueditorPath + '/ueditor.config.js').then(() => {
+      this.createScript(props.ueditorPath + '/ueditor.all.min.js').then(() => {
         tempfileInput = document.getElementById('tempfileInput')
         this.initEditor()
       })
@@ -127,6 +130,12 @@ class ReactUeditor extends React.Component {
       </div>
     )
   }
+}
+
+ReactUeditor.propTypes = {
+  value: PropTypes.string,
+  ueditorPath: PropTypes.string.isRequired,
+  uploadImage: PropTypes.func
 }
 
 export default ReactUeditor
