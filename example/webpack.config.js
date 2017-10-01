@@ -23,14 +23,7 @@ module.exports = {
         test: /\.js$/,
         exclude: [/node_modules/, path.resolve(__dirname, "../lib"),],
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['stage-0', 'es2015', 'react'],
-            plugins: [
-              ["transform-es2015-classes"],
-              ["transform-class-properties"]
-            ]
-          }
+          loader: 'babel-loader'
         }
       }
     ]

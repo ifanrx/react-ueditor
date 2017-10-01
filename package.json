@@ -5,7 +5,7 @@
   "main": "lib",
   "scripts": {
     "dev": "webpack --progress --watch",
-    "build": "webpack",
+    "build": "rm -rf lib/ && babel src -d lib",
     "start": "webpack-dev-server --config example/webpack.config.js --open"
   },
   "repository": {
