@@ -627,6 +627,17 @@ var utils = UE.utils = {
                     if (p == 'tag')continue;
                     html.push(p + '="' + obj[p] + '"')
                 }
+                if (obj.src) {
+                  html.push(id + '="' + obj.src + '"')
+                  if (doc.getElementById(obj.src)) {
+                    doc.getElementById(obj.src).parentElement.removeChild(doc.getElementById(obj.src))
+                  }
+                } else if (obj.href) {
+                  html.push(id + '="' + obj.href + '"')
+                  if (doc.getElementById(obj.href)) {
+                    doc.getElementById(obj.href).parentElement.removeChild(doc.getElementById(obj.href))
+                  }
+                }
                 doc.write('<' + obj.tag + ' ' + html.join(' ') + ' ></' + obj.tag + '>');
                 return;
             }
@@ -638,6 +649,17 @@ var utils = UE.utils = {
             for (var p in obj) {
                 element.setAttribute(p, obj[p]);
             }
+            if (obj.src) {
+                element.setAttribute('id', obj.src);
+                if (doc.getElementById(obj.src)) {
+                  doc.getElementById(obj.src).parentElement.removeChild(doc.getElementById(obj.src))
+                }
+              } else if (obj.href) {
+                element.setAttribute('id', obj.href);
+                if (doc.getElementById(obj.href)) {
+                  doc.getElementById(obj.href).parentElement.removeChild(doc.getElementById(obj.href))
+                }
+              }
             element.onload = element.onreadystatechange = function () {
                 if (!this.readyState || /loaded|complete/.test(this.readyState)) {
                     item = getItem(doc, obj);
