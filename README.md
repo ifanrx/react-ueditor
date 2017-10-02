@@ -1,6 +1,54 @@
 # react-ueditor
 an ueditor component for react
 
+### 下载
+```
+  npm i git://git@github.com:ifanrx/react-ueditor.git -S
+```
+
+### 使用
+#### 下载 Ueditor 编辑器
+到 ueditor [官网地址](http://ueditor.baidu.com/website/download.html) 下载最新版本的 ueditor, 我们选用的是`1.4.3.3 PHP 版本`，将下载解压后的文件夹放入项目中。
+
+这里推荐直接使用该项目 `vendor` 目录下的 ueditor，ueditor 并未对单页面应用的提供很好的支持，`vendor` 目录下的 ueditor 是经过我们修改过的版本。
+
+#### 使用组件
+```
+import ReactUeditor from 'react-ueditor'
+
+<ReactUeditor
+  value="Hello World!"
+  ueditorPath="/static/uf8-php"
+  onChange={this.updateEditorContent.bind(this)}
+  uploadImage={this.imageUpload.bind(this)}
+/>
+```
+
+Property | Description | Type | Default
+-------- | ----------- | ---- | -------
+value | 初始化值 | string | no
+ueditorPath | ueditor 构建后的文件路径 | yes
+onChange | 编辑器内容改变的回调 | func | no
+uploadImage | 图片上传回调 | func | no
+
+#### 图片上传
+ueditor 的图片上传功能与后端耦合性很大，在前后端分离大行其道的今天，并不是很适合，因此我们新增了图片上传的回调的接口。
+
+```
+<ReactUeditor
+  ...
+  uploadImage={this.imageUpload.bind(this)}
+/>
+
+imageUpload(e) {
+  // 在这里将你的图片上传到服务器
+  ...
+
+  // 在上传成功后的回到中插入图片
+  ReactUeditor.insertImage(imageUrl)
+}
+```
+
 ### 贡献
 如果你希望为这个项目贡献代码，需要了解以下情况：
 
