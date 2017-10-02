@@ -6,6 +6,11 @@ let ueditor, isContentChangedByWillReceiveProps = false, tempfileInput = null
 
 class ReactUeditor extends React.Component {
 
+  constructor() {
+    super()
+    this.uploadImage = this.uploadImage.bind(this)
+  }
+
   componentDidMount() {
     let props = this.props
     this.createScript(props.ueditorPath + '/ueditor.config.js').then(() => {
@@ -93,6 +98,13 @@ class ReactUeditor extends React.Component {
     }
   }
 
+  static insertImage(imageUrl) {
+    if (ueditor) {
+      ueditor.focus()
+      ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
+    }
+  }
+
   initEditor() {
     const props  = this.props
 
@@ -135,6 +147,7 @@ class ReactUeditor extends React.Component {
 ReactUeditor.propTypes = {
   value: PropTypes.string,
   ueditorPath: PropTypes.string.isRequired,
+  onChange: PropTypes.func,
   uploadImage: PropTypes.func
 }
 
