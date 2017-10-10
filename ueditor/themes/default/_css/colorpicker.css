@@ -11,6 +11,7 @@
     margin-left: 1px;
     width: 128px;
     float: left;
+    box-sizing: content-box;
 }
 
 .edui-default .edui-colorpicker-nocolor {
@@ -22,6 +23,7 @@
     border: 1px solid #333;
     padding: 3px 5px;
     cursor: pointer;
+    box-sizing: content-box;
 }
 
 .edui-default .edui-colorpicker-tablefirstrow {

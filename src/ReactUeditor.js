@@ -96,6 +96,7 @@ class ReactUeditor extends React.Component {
     if (props.uploadImage) {
       props.uploadImage(e)
     }
+    tempfileInput.value = ''
   }
 
   static insertImage(imageUrl) {

@@ -1558,6 +1558,7 @@ div.edui-box {
     margin-left: 1px;
     width: 128px;
     float: left;
+    box-sizing: content-box;
 }
 
 .edui-default .edui-colorpicker-nocolor {
@@ -1569,6 +1570,7 @@ div.edui-box {
     border: 1px solid #333;
     padding: 3px 5px;
     cursor: pointer;
+    box-sizing: content-box;
 }
 
 .edui-default .edui-colorpicker-tablefirstrow {

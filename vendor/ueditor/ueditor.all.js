@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Sun Oct 01 2017 23:13:56 GMT+0800 (CST)
+ * build: Tue Oct 10 2017 23:17:02 GMT+0800 (CST)
  */
 
 (function(){
@@ -15066,7 +15066,7 @@ UE.plugins['list'] = function () {
         customCss.push('.list-paddingleft-2{padding-left:'+me.options.listDefaultPaddingLeft+'px}');
         customCss.push('.list-paddingleft-3{padding-left:'+me.options.listDefaultPaddingLeft*2+'px}');
         //如果不给宽度会在自定应样式里出现滚动条
-        utils.cssRule('list', 'ol,ul{margin:0;pading:0;'+(browser.ie ? '' : 'width:95%')+'}li{clear:both;}'+customCss.join('\n'), me.document);
+        utils.cssRule('list', 'ol,ul{box-sizing:border-box;margin:0;pading:0;'+(browser.ie ? '' : 'width:95%')+'}li{clear:both;}'+customCss.join('\n'), me.document);
     });
     //单独处理剪切的问题
     me.ready(function(){
