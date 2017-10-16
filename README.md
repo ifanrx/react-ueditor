@@ -3,7 +3,7 @@ an ueditor component for react
 
 ### 下载
 ```
-  npm i git://git@github.com:ifanrx/react-ueditor.git -S
+  npm i git://git@github.com:ifanrx/react-ueditor.git#v1.1.0 -S
 ```
 
 ### 使用
