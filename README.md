@@ -28,7 +28,7 @@ import ReactUeditor from 'react-ueditor'
 Property | Description | Type | Default
 -------- | ----------- | ---- | -------
 value | 初始化值 | string | no
-ueditorPath | ueditor 构建后的文件路径 | yes
+ueditorPath | ueditor 构建后的文件路径 | string | yes
 plugins | 需要使用的插件 | array | no
 onChange | 编辑器内容改变的回调 | func | no
 uploadImage | 图片上传回调 | func | no
