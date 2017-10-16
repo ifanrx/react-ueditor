@@ -1,6 +1,6 @@
 {
   "name": "react-ueditor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "an ueditor component for react",
   "main": "lib",
   "scripts": {
