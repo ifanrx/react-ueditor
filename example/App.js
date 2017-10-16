@@ -13,6 +13,7 @@ class App extends React.Component {
         <ReactUeditor
           ueditorPath="../vendor/ueditor"
           value="hello world"
+          plugins={['uploadImage', 'insertCode']}
           uploadImage={this.uploadImage.bind(this)}
         />
       </div>

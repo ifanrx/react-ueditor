@@ -19,6 +19,7 @@ import ReactUeditor from 'react-ueditor'
 <ReactUeditor
   value="Hello World!"
   ueditorPath="/static/uf8-php"
+  plugins={['uploadImage', 'insertCode']}
   onChange={this.updateEditorContent.bind(this)}
   uploadImage={this.imageUpload.bind(this)}
 />
@@ -28,8 +29,13 @@ Property | Description | Type | Default
 -------- | ----------- | ---- | -------
 value | 初始化值 | string | no
 ueditorPath | ueditor 构建后的文件路径 | yes
+plugins | 需要使用的插件 | array | no
 onChange | 编辑器内容改变的回调 | func | no
 uploadImage | 图片上传回调 | func | no
+
+plugins 现支持：
+- 图片上传 uploadImage
+- 插入代码 insertCode
 
 #### 图片上传
 ueditor 的图片上传功能与后端耦合性很大，在前后端分离大行其道的今天，并不是很适合，因此我们新增了图片上传的回调的接口。
