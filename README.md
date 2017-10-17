@@ -47,6 +47,8 @@ ueditor 的图片上传功能与后端耦合性很大，在前后端分离大行
 />
 
 imageUpload(e) {
+  let file = e.target.files[0]
+
   // 在这里将你的图片上传到服务器
   ...
 
