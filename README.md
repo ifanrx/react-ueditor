@@ -37,6 +37,16 @@ plugins 现支持：
 - 图片上传 uploadImage
 - 插入代码 insertCode
 
+#### 获取实时更新数据
+通过 onChange 可获取实时更新的数据，其返回 string 类型
+
+```
+updateEditorContent = (content) => {
+  // 此处勿通过 setState 更新 value，若用于提交表单场景，可将 content 赋值于一常量，在提交时从常量中获取最后结果即可，如：
+  // result = content
+}
+```
+
 #### 图片上传
 ueditor 的图片上传功能与后端耦合性很大，在前后端分离大行其道的今天，并不是很适合，因此我们新增了图片上传的回调的接口。
 
