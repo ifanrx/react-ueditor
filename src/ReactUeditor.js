@@ -1,16 +1,28 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import Modal from 'rc-Dialog'
+import UploadVideoModal from './UploadVideoModal'
+import UploadAudioModal from './UploadAudioModal'
+import 'rc-dialog/assets/index.css'
 
 let content = ''  // 存储编辑器的实时数据，用于传递给父组件
 let ueditor, isContentChangedByWillReceiveProps = false, tempfileInput = null
 const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNiTAMhHhxnamTVMDnfAEAo0CI0ckBOs1mbRKGy6LArdZtswSl+VdEDSmlAtk9prPqRW0FfMb66OGjt1o3iiB8zgcAMAiEqKfFo0p5QQSDQMpxUQKFAFvxJ4roQRfA52yCgOFUCAVy8NjEyAWwOaiUVImjauWTCO6KBtAUKwNgOrCfos95DxGepzNh08rcah4cdBFXID5nY0CsBTPRM01/UewdgKu4EmxztiTAoa398jRigGPEdfbTVSOthUkfTdOeDrrdfv20/UytSCeMKhAQ3HvrzY1u4WQs1mIhEk7y7GeCiN1TKc8J8R3Vj+9qWXmZvNW6awOR2C+KqPsm5cQkmFlQ1corAeHVatOJZ8AVIu4jwmgqZO0v4irZnQtcIFzslwBuq7bLPKn0wR6whYjtZ9jxurLvtzmzwUwQrvYryjwBzF2hOojYfgC9YCabpv6bxLWf4yII39J+NuLG+8BvkPJgOpND9TJjrH7t4Yet/VS1vNVmpLO205XsWPvpWuUGoD6/AJ1jtp/zjcg0YKf636kCpxLdj3MBOHsFfgBLLaBN8r49lAAAAABJRU5ErkJggg=='
-const uploadImageIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAByUlEQVRYR+2XsS5EQRSGv30CSiqUKrQiQalCRccjUKrYTodegidAolPgDXgD3oAKFfk2M8nsjV33rp27JCbZ7N17587/n/P/58xsgwGPxoDx+SfwqzLwkdEPi8BNWL8J7EWsNAMS2Abu+0xEYAk4DoGLbgSceNtnAgYW13VtPx0z8GcJLAC7wDOgxqmMtWRA4KEg3SWwkshYC4G0gu4AMxJHLQQ2gRPgBfBap9dKoFvh/CgDw8AGMA4cAY89lGjPBAS3iUwHUMFngtOr8OiJgKDnIfIUTG1Xq6ADlQlYUkZuBr4atmtbatlRicAZsNwFPIIqRXHP0CdjwENBpkoEykZV9EMsQ983g7b0SDALAYGiH1LwGIAkDoJfoomdP/Hdblg2A3Gei6ZtN33/HVgPu59+sjseA1fpO8XzQFUCnea/AaNBDr3hULY54BpYitt+LgJppcS9P/2WlNK1nYr7eSQzMEHsonFj8iBilXlff1hJWQmouwZsRQqchsrwnn2kZc5cEuwDOwG4KIHPRnJL8ApMAk9JO9eEa2Hbno19Itf/AtM9D2yFzqgc/jYbGtTnrZGLgGurvQSmApZHNbVvO3XnJFCqpwycwCfya6AhY6x1TgAAAABJRU5ErkJggg=='
+const uploadAudio = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBUlEQVRYR+1VwXHbMBC8qyBxBXI6cCqwUkEOFUSuIHYFliuwUoGVCrAdWOlA6UCuIOpgPashNRQIOtJkHH2ID2eIA25vD7vndublZ85vI4CRgZGBkxmIiI9mdm9mMzNbAHgYknJEzM3sA4C7oZiTAEREmNmTuwvEi5lNSH4GsK4liIiFu38nuQRwU4s5CkBTtRILwAvJWzPbuvszyS8AVhFxZWbXAH50E0XE0t2/kbwBsCxBVAFExKW7TxRMUhfPVTVJXT4HsI2IaQHg1t0fFQNAAPcrpbQhqVZc/BWAaHb3XASq6pkqbf+XAPQ/pQQz+9qy0omdufsTyQRAMfvVYyClpCSXLc1N5FpVF9QeMKA9tcrd/5D8CUCPdLc6/3vsDAGwnPP0rUFVY6BhYUVyAuBT0QYVsC7vfQ8AuzbknA/ubpjtFfYeANTCq5yzpNp9iJLq9n8wIKpXOWdJtguA5dvQZpUB9dDdd1pXEMnfRz5CyfW+1HyrrJoX9ADUZEhyY2YykkEZds79KmnuyPOiLGTIiNQ/GZCWTGkhTyep78OAEck/Zo1f7CXbUUtPgtUW1KTX6Fg2KpPR5fL1AyseONfODhnZtKz+aAAdQ1GVYkFDaOPuMqzBYdRITxZeTX4ygNbVmtkgujWONXKrqxliVqu8PXDUNHzLEf91bwQwMjAycHYGXgGLbI8w70amwwAAAABJRU5ErkJggg=='
 
 class ReactUeditor extends React.Component {
 
   constructor() {
     super()
     this.uploadImage = this.uploadImage.bind(this)
+    this.selectInputVideoSource = this.selectInputVideoSource.bind(this)
+    this.insertVideo = this.insertVideo.bind(this)
+    this.state = {
+      videoModalVisible: false,
+      audioModalVisible: false,
+      videoSource: '',
+      audioSource: '',
+    }
   }
 
   componentDidMount() {
@@ -71,7 +83,7 @@ class ReactUeditor extends React.Component {
       var btn = new window.UE.ui.Button({
         name: uiName,
         title: '文件上传',
-        cssRules: 'background: url(' + uploadImageIcon + ') !important; background-size: 20px 20px !important;',
+        cssRules: 'background-position: -726px -77px;',
         onclick: () => {
           tempfileInput.click()
         }
@@ -99,6 +111,38 @@ class ReactUeditor extends React.Component {
     })
   }
 
+  registerUploadVideo() {
+    let _this = this
+    window.UE.registerUI('videoUpload', (editor, uiName) => {
+      var btn = new window.UE.ui.Button({
+        name: uiName,
+        title: '上传视频',
+        cssRules: 'background-position: -320px -20px;',
+        onclick: () => {
+          _this.setState({videoModalVisible: true})
+        }
+      })
+
+      return btn
+    })
+  }
+
+  registerUploadAudio() {
+    let _this = this
+    window.UE.registerUI('audioUpload', (editor, uiName) => {
+      var btn = new window.UE.ui.Button({
+        name: uiName,
+        title: '上传音频',
+        cssRules: 'background: url(' +  uploadAudio + ') !important; background-size: 20px 20px !important;',
+        onclick: () => {
+          _this.setState({audioModalVisible: true})
+        }
+      })
+
+      return btn
+    })
+  }
+
   uploadImage(e) {
     let props = this.props
     if (props.uploadImage) {
@@ -114,6 +158,48 @@ class ReactUeditor extends React.Component {
     }
   }
 
+  insertVideo(url, params) {
+    if (ueditor) {
+      let {width, height, controls, autoplay, muted, loop} = params
+      ueditor.focus()
+      ueditor.execCommand('inserthtml',
+      `<video
+        src="${url}"
+        width="${width}" height="${height}"
+        controls="${controls}" autoplay="${autoplay}" muted="${muted}" loop="${loop}"
+      ></video>`,
+      true)
+    }
+  }
+
+  insertAudio(url, params) {
+    if (ueditor) {
+      let {controls, autoplay, loop} = params
+      ueditor.focus()
+      ueditor.execCommand('inserthtml',
+      `<audio
+        src="${url}"
+        controls="${controls}" autoplay="${autoplay}" loop="${loop}"
+      ></audio>`,
+      true)
+    }
+  }
+
+  closeModal(type) {
+    switch(type) {
+      case 'video':
+        this.setState({videoModalVisible: false})
+        break
+      case 'audio':
+        this.setState({audioModalVisible: false})
+        break
+    }
+  }
+
+  selectInputVideoSource() {
+    this.setState({videoSource: this.videoSourceInput.value})
+  }
+
   initEditor() {
     const props  = this.props, plugins = props.plugins
     ueditor = window.UE.getEditor('container')
@@ -121,6 +207,8 @@ class ReactUeditor extends React.Component {
     if (plugins && plugins instanceof Array && plugins.length > 0) {
       if (plugins.indexOf('uploadImage') !== -1) this.registerImageUpload()
       if (plugins.indexOf('insertCode') !== -1) this.registerSimpleInsertCode()
+      if (plugins.indexOf('uploadVideo') !== -1) this.registerUploadVideo()
+      if (plugins.indexOf('uploadAudio') !== -1) this.registerUploadAudio()
     }
 
     ueditor.ready(() => {
@@ -147,10 +235,22 @@ class ReactUeditor extends React.Component {
   }
 
   render() {
+    let {videoModalVisible, audioModalVisible} = this.state
+    let {uploadVideo} = this.props
     return (
       <div>
         <script id="container" type="text/plain"></script>
         <input type="file" id="tempfileInput" onChange={this.uploadImage} style={{visibility: 'hidden'}} />
+        <UploadVideoModal
+          visible={videoModalVisible}
+          closeModal={() => { this.closeModal('video')} }
+          insertVideo={(url, params) => {this.insertVideo(url, params)}}
+          uploadVideo={uploadVideo} />
+        <UploadAudioModal
+          visible={audioModalVisible}
+          closeModal={() => { this.closeModal('audio')} }
+          insertAudio={(url, params) => {this.insertAudio(url, params)}}
+          uploadAudio={uploadAudio} />
       </div>
     )
   }
