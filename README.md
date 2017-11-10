@@ -21,7 +21,7 @@ import ReactUeditor from 'react-ueditor'
   ueditorPath="/static/uf8-php"
   plugins={['uploadImage', 'insertCode']}
   onChange={this.updateEditorContent.bind(this)}
-  uploadImage={this.imageUpload.bind(this)}
+  uploadImage={this.uploadImage.bind(this)}
 />
 ```
 
@@ -32,9 +32,13 @@ ueditorPath | ueditor 构建后的文件路径 | string | yes
 plugins | 需要使用的插件 | array | no
 onChange | 编辑器内容改变的回调 | func | no
 uploadImage | 图片上传回调 | func | no
+uploadVideo | 视频上传回调 | func | no
+uploadAudio | 音频上传回调 | func | no
 
 plugins 现支持：
 - 图片上传 uploadImage
+- 视频上传 uploadVideo
+- 音频上传 uploadAudio
 - 插入代码 insertCode
 
 #### 获取实时更新数据
@@ -53,19 +57,20 @@ ueditor 的图片上传功能与后端耦合性很大，在前后端分离大行
 ```
 <ReactUeditor
   ...
-  uploadImage={this.imageUpload.bind(this)}
+  uploadImage={this.uploadImage.bind(this)}
 />
 
-imageUpload(e) {
-  let file = e.target.files[0]
+// uploadImage 必须返回一个 promise
+uploadImage(e) {
+  return new Promise(function(resolve, reject) {
+    let file = e.target.files[0]
 
-  // 在这里将你的图片上传到服务器
-  ...
-
-  // 在上传成功后的回到中插入图片
-  ReactUeditor.insertImage(imageUrl)
+    // 在这里将你的图片上传到服务器，在上传成功的回调中执行
+    resolve(imgUrl)
+  })
 }
 ```
+视频上传和音频上传与图片上传的方法一致
 
 ### 贡献
 如果你希望为这个项目贡献代码，需要了解以下情况：

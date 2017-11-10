@@ -146,12 +146,25 @@ class ReactUeditor extends React.Component {
   uploadImage(e) {
     let props = this.props
     if (props.uploadImage) {
-      props.uploadImage(e)
+      let promise = props.uploadImage(e)
+      if (!!promise && typeof promise.then == "function") {
+        promise.then((imageUrl)=>{
+          this.insertImage2(imageUrl)
+        })
+      }
     }
     tempfileInput.value = ''
   }
 
   static insertImage(imageUrl) {
+    if (ueditor) {
+      ueditor.focus()
+      ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
+    }
+    console.warn("该接口即将废弃，请使用返回 promise 方式")
+  }
+
+  insertImage2(imageUrl) {
     if (ueditor) {
       ueditor.focus()
       ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
@@ -236,7 +249,7 @@ class ReactUeditor extends React.Component {
 
   render() {
     let {videoModalVisible, audioModalVisible} = this.state
-    let {uploadVideo} = this.props
+    let {uploadVideo, uploadAudio} = this.props
     return (
       <div>
         <script id="container" type="text/plain"></script>

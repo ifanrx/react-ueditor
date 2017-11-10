@@ -13,6 +13,18 @@ let style = {
     borderBottom: '1px solid rgb(217, 217, 217)',
     display: 'flex',
     flexWrap: 'wrap'
+  },
+  insertTitle: {
+    fontSize: '14px',
+    paddingRight: '10px',
+    color: 'rgba(0, 0, 0, 0.65)'
+  },
+  configTitle: {
+    display: 'block',
+    fontSize: '14px',
+    margin: '10px 0',
+    paddingRight: '10px',
+    color: 'rgba(0, 0, 0, 0.65)',
   }
 }
 
@@ -38,10 +50,6 @@ class UploadVideoModal extends React.Component {
     }
   }
 
-  static updateVideoUrl(url) {
-    this.setState({videoSource: url})
-  }
-
   updateVideoSource(e) {
     this.setState({videoSource: e.target.value})
   }
@@ -49,7 +57,12 @@ class UploadVideoModal extends React.Component {
   uploadVideo(e) {
     let props = this.props
     if (props.uploadVideo) {
-      props.uploadVideo(e)
+      let promise = props.uploadVideo(e)
+      if (!!promise && typeof promise.then == "function") {
+        promise.then((videoUrl)=>{
+          this.setState({videoSource: videoUrl})
+        })
+      }
     }
   }
 
@@ -94,11 +107,11 @@ class UploadVideoModal extends React.Component {
         maskAnimation="fade">
         <div>
           <div>
-            <span style={{fontSize: '14px', paddingRight: '10px', color: 'rgba(0, 0, 0, 0.65)'}}>插入链接</span>
+            <span style={style.insertTitle}>插入链接</span>
             <Input style={{width: '350px'}} type="text" value={videoSource} onChange={this.updateVideoSource} />
             <Upload onChange={this.uploadVideo} />
           </div>
-          <h3 style={{fontSize: '14px', paddingRight: '10px', color: 'rgba(0, 0, 0, 0.65)'}}>参数配置</h3>
+          <span style={style.configTitle}>参数配置</span>
           <form style={style.paramsConfig}>
             <Label>width <Input type="number" defaultValue={width} onChange={(e) => { this.changeConfig(e, 'width') }} /></Label>
             <Label>height <Input type="number" defaultValue={height} onChange={(e) => { this.changeConfig(e, 'height') }} /></Label>

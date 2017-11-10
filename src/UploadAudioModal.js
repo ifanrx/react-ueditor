@@ -35,10 +35,6 @@ class UploadAudioModal extends React.Component {
     }
   }
 
-  static updateAudioUrl(url) {
-    this.setState({audioSource: url})
-  }
-
   updateAudioSource(e) {
     this.setState({audioSource: e.target.value})
   }
@@ -46,7 +42,12 @@ class UploadAudioModal extends React.Component {
   uploadAudio(e) {
     let props = this.props
     if (props.uploadAudio) {
-      props.uploadAudio(e)
+      let promise = props.uploadAudio(e)
+      if (!!promise && typeof promise.then == "function") {
+        promise.then((audioUrl)=>{
+          this.setState({audioSource: audioUrl})
+        })
+      }
     }
   }
 
