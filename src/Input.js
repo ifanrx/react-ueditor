@@ -3,6 +3,7 @@ import React from 'react'
 let inputStyle = {
   height: '18px',
   width: '80px',
+  boxSizing: 'content-box',
   fontSize: '12px',
   lineHeight: '18px',
   color: 'rgba(0,0,0,.65)',

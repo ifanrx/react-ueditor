@@ -14,13 +14,11 @@
 }
 
 .edui-default .edui-toolbar .edui-button .edui-state-hover .edui-button-wrap {
-    background-color: #fff5d4;
     padding: 0;
     border: 1px solid #dcac6c;
 }
 
 .edui-default .edui-toolbar .edui-button .edui-state-checked .edui-button-wrap {
-    background-color: #ffe69f;
     padding: 0;
     border: 1px solid #dcac6c;
     border-radius: 2px;
