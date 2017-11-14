@@ -1,8 +1,7 @@
+import Modal from 'rc-Dialog'
 import PropTypes from 'prop-types'
 import React from 'react'
-import Modal from 'rc-Dialog'
-import UploadVideoModal from './UploadVideoModal'
-import UploadAudioModal from './UploadAudioModal'
+import UploadModal from './UploadModal'
 import 'rc-dialog/assets/index.css'
 
 let content = ''  // 存储编辑器的实时数据，用于传递给父组件
@@ -15,8 +14,6 @@ class ReactUeditor extends React.Component {
   constructor() {
     super()
     this.uploadImage = this.uploadImage.bind(this)
-    this.selectInputVideoSource = this.selectInputVideoSource.bind(this)
-    this.insertVideo = this.insertVideo.bind(this)
     this.state = {
       videoModalVisible: false,
       audioModalVisible: false,
@@ -171,30 +168,9 @@ class ReactUeditor extends React.Component {
     }
   }
 
-  insertVideo(url, params) {
+  insert(html) {
     if (ueditor) {
-      let {width, height, controls, autoplay, muted, loop} = params
-      ueditor.focus()
-      ueditor.execCommand('inserthtml',
-      `<video
-        src="${url}"
-        width="${width}" height="${height}"
-        controls="${controls}" autoplay="${autoplay}" muted="${muted}" loop="${loop}"
-      ></video>`,
-      true)
-    }
-  }
-
-  insertAudio(url, params) {
-    if (ueditor) {
-      let {controls, autoplay, loop} = params
-      ueditor.focus()
-      ueditor.execCommand('inserthtml',
-      `<audio
-        src="${url}"
-        controls="${controls}" autoplay="${autoplay}" loop="${loop}"
-      ></audio>`,
-      true)
+      ueditor.execCommand('inserthtml', html, true)
     }
   }
 
@@ -207,10 +183,6 @@ class ReactUeditor extends React.Component {
         this.setState({audioModalVisible: false})
         break
     }
-  }
-
-  selectInputVideoSource() {
-    this.setState({videoSource: this.videoSourceInput.value})
   }
 
   initEditor() {
@@ -254,16 +226,20 @@ class ReactUeditor extends React.Component {
       <div>
         <script id="container" type="text/plain"></script>
         <input type="file" id="tempfileInput" onChange={this.uploadImage} style={{visibility: 'hidden'}} />
-        <UploadVideoModal
+        <UploadModal
+          type="video"
+          title="上传视频"
           visible={videoModalVisible}
           closeModal={() => { this.closeModal('video')} }
-          insertVideo={(url, params) => {this.insertVideo(url, params)}}
-          uploadVideo={uploadVideo} />
-        <UploadAudioModal
+          insert={this.insert}
+          upload={uploadVideo} />
+        <UploadModal
+          type="audio"
+          title="上传音频"
           visible={audioModalVisible}
           closeModal={() => { this.closeModal('audio')} }
-          insertAudio={(url, params) => {this.insertAudio(url, params)}}
-          uploadAudio={uploadAudio} />
+          insert={this.insert}
+          upload={uploadAudio} />
       </div>
     )
   }

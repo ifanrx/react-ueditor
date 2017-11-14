@@ -1,21 +1,23 @@
 import React from 'react'
 
-const labelStyle = {
-  height: '28px',
+const uploadStyle = {
+  height: '26px',
   width: '80px',
   display: 'inline-block',
-  lineHeight: '28px',
+  boxSizing: 'border-box',
+  lineHeight: '25px',
   textAlign: 'center',
-  backgroundColor: '#fff',
-  borderRadius: '3px',
-  border: '1px solid #d9d9d9',
+  borderRadius: '4px',
+  border: '1px solid transparent',
   fontSize: '12px',
   fontWeight: '500',
-  color: 'rgba(0,0,0,.65)',
+  color: '#fff',
+  backgroundColor: '#108ee9',
   cursor: 'pointer',
+  marginLeft: '10px'
 }
 
-class UploadVideoModal extends React.Component {
+class Upload extends React.Component {
 
   constructor() {
     super()
@@ -23,7 +25,6 @@ class UploadVideoModal extends React.Component {
   }
 
   onInputChange (e) {
-    console.dir(e.target)
     let props = this.props
     if (props.onChange) {
       props.onChange(e)
@@ -33,11 +34,11 @@ class UploadVideoModal extends React.Component {
 
   render() {
     return (
-      <label style={labelStyle}>直接上传
+      <label style={uploadStyle}>直接上传
         <input type="file" onChange={this.onInputChange} style={{display: 'none'}} />
       </label>
     )
   }
 }
 
-export default UploadVideoModal
+export default Upload

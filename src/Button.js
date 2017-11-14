@@ -1,7 +1,7 @@
 import React from 'react'
 
 let buttonStyle = {
-  height: '28px',
+  height: '24px',
   fontWeight: '500',
   cursor: 'pointer',
   padding: '0 15px',

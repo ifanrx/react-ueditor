@@ -18,7 +18,7 @@ class App extends React.Component {
 
   uploadAudio(e) {
     return new Promise(function(resolve, reject) {
-      resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eCkPdVSgKUtyrsZ.mp3')
+      resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eEUtZNsjiOiHbWW.mp3')
     })
   }
 

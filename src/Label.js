@@ -2,16 +2,23 @@ import React from 'react'
 
 let labelStyle = {
   display: 'block',
-  marginRight: '20px',
+  width: '165px',
   color: 'rgba(0, 0, 0, 0.65)',
+  marginRight: '20px',
   marginBottom: '10px'
 }
 
+let labelName = {
+  display: 'inline-block',
+  width: '50px'
+}
+
+
 class Label extends React.Component {
   render() {
-    let {style, children} = this.props
+    let {style, children, name} = this.props
     let mergedStyle = {...labelStyle, ...style}
-    return <label style={mergedStyle}>{children}</label>
+    return <label style={mergedStyle}><span style={labelName}>{name}</span>{children}</label>
   }
 }
 
