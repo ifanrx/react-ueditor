@@ -4,6 +4,14 @@ import ReactUeditor from '../src'
 let result = ""
 
 class App extends React.Component {
+  constructor() {
+    super()
+    this.uploadVideo = this.uploadVideo.bind(this)
+    this.state = {
+      progress: -1
+    }
+  }
+
   uploadImage(e) {
     return new Promise(function(resolve, reject) {
       resolve('https://avatars2.githubusercontent.com/u/3232724?v=8&s=120')
@@ -11,14 +19,26 @@ class App extends React.Component {
   }
 
   uploadVideo(e) {
+    let _this = this
     return new Promise(function(resolve, reject) {
-      resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eBb1SeNlayvGEKT.mp4')
+      let  i = 0
+      let instance = setInterval(() => {
+        if (i !== 100) {
+          _this.setState({progress: ++i})
+        }
+      }, 100)
+      setTimeout(() => {
+        resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eBb1SeNlayvGEKT.mp4')
+        _this.setState({progress: -1})
+        clearInterval(instance)
+      }, 11000)
     })
   }
 
   uploadAudio(e) {
     return new Promise(function(resolve, reject) {
-      resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eEUtZNsjiOiHbWW.mp3')
+      // resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eEUtZNsjiOiHbWW.mp3')
+      reject('error')
     })
   }
 
@@ -27,6 +47,8 @@ class App extends React.Component {
   }
 
   render() {
+    let {progress} = this.state
+
     return (
       <div>
         <ReactUeditor
@@ -37,8 +59,8 @@ class App extends React.Component {
           uploadVideo={this.uploadVideo.bind(this)}
           uploadAudio={this.uploadAudio.bind(this)}
           onChange={this.updateEditorContent.bind(this)}
+          progress={progress}
         />
-        <input type="button" value="控制台打印内容"  onClick={() => { console.log(result) }}/>
       </div>
     )
   }
