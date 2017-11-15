@@ -68,7 +68,9 @@ class UploadModal extends React.Component {
       loop: false,
       poster: '',
       name: '',
-      author: ''
+      author: '',
+      errorMsg: '',
+      errorMsgVisible: false
     }
   }
 
@@ -100,6 +102,11 @@ class UploadModal extends React.Component {
       if (!!promise && typeof promise.then == "function") {
         promise.then((url)=>{
           this.setState({currentSource: url})
+        }).catch((msg) => {
+          this.setState({errorMsg: msg, errorMsgVisible: true})
+          setTimeout(() => {
+            this.setState({errorMsg: '', errorMsgVisible: false})
+          }, 4000)
         })
       }
     }
@@ -251,8 +258,9 @@ class UploadModal extends React.Component {
   }
 
   render() {
-    let {currentSource, sources, width, height, controls, autoplay, muted, loop} = this.state
-    let {type, title, visible} = this.props
+    let {currentSource, sources, width, height, controls, autoplay, muted, loop, errorMsg, errorMsgVisible} = this.state
+    let {type, title, visible, progress} = this.props
+
     return (
       <Modal
         title={title}
@@ -270,6 +278,10 @@ class UploadModal extends React.Component {
             <Input style={{width: '300px'}} type="text" value={currentSource} onChange={this.updateCurrentSource} />
             <Button onClick={this.addSource}>添加</Button>
             <Upload onChange={this.upload} />
+          </div>
+          <div>
+            <span style={{...style.warnInfo, display: progress && progress !== -1 ? 'block' : 'none'}}>{progress}%</span>
+            <span style={{...style.warnInfo, display: errorMsgVisible ? 'block' : 'none'}}>{errorMsg}</span>
           </div>
           <div style={style.sourceList}>
             {this.renderSourceList()}

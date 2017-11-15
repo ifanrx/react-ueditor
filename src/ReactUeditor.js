@@ -221,7 +221,7 @@ class ReactUeditor extends React.Component {
 
   render() {
     let {videoModalVisible, audioModalVisible} = this.state
-    let {uploadVideo, uploadAudio} = this.props
+    let {uploadVideo, uploadAudio, progress} = this.props
     return (
       <div>
         <script id="container" type="text/plain"></script>
@@ -232,14 +232,16 @@ class ReactUeditor extends React.Component {
           visible={videoModalVisible}
           closeModal={() => { this.closeModal('video')} }
           insert={this.insert}
-          upload={uploadVideo} />
+          upload={uploadVideo}
+          progress={progress} />
         <UploadModal
           type="audio"
           title="上传音频"
           visible={audioModalVisible}
           closeModal={() => { this.closeModal('audio')} }
           insert={this.insert}
-          upload={uploadAudio} />
+          upload={uploadAudio}
+          progress={progress} />
       </div>
     )
   }
