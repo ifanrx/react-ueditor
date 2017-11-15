@@ -168,7 +168,10 @@ class ReactUeditor extends React.Component {
 
   insert(html) {
     if (ueditor) {
+      ueditor.execCommand('insertparagraph')
       ueditor.execCommand('inserthtml', html, true)
+      ueditor.execCommand('insertparagraph')
+      ueditor.execCommand('insertparagraph')
     }
   }
 
