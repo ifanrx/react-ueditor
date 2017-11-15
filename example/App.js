@@ -26,12 +26,12 @@ class App extends React.Component {
         if (i !== 100) {
           _this.setState({progress: ++i})
         }
-      }, 100)
+      }, 50)
       setTimeout(() => {
         resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eBb1SeNlayvGEKT.mp4')
         _this.setState({progress: -1})
         clearInterval(instance)
-      }, 11000)
+      }, 5100)
     })
   }
 
