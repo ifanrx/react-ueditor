@@ -1,8 +1,6 @@
-import Modal from 'rc-Dialog'
 import PropTypes from 'prop-types'
 import React from 'react'
 import UploadModal from './UploadModal'
-import 'rc-dialog/assets/index.css'
 
 let content = ''  // 存储编辑器的实时数据，用于传递给父组件
 let ueditor, isContentChangedByWillReceiveProps = false, tempfileInput = null
