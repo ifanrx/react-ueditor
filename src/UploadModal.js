@@ -62,10 +62,10 @@ class UploadModal extends React.Component {
       currentSource: '',
       width: 400,
       height: 400,
-      controls: true,
-      autoplay: false,
-      muted: false,
-      loop: false,
+      controls: 'true',
+      autoplay: 'false',
+      muted: 'false',
+      loop: 'false',
       poster: '',
       name: '',
       author: '',
@@ -123,24 +123,28 @@ class UploadModal extends React.Component {
     let dataExtra = JSON.stringify({"poster": poster, "name": name, "author": author})
     let len = sources.length
     let html = ''
+    let attr = ''
 
     if (len > 0 ) {
+      attr += controls === 'false' ? '' : ' controls="true" '
+      attr += autoplay === 'false' ? '' : ' autoplay="true" '
+      attr += loop === 'false' ? '' : ' loop="true" '
       if (type === 'audio') {
         if (len === 1) {
-          html = `<audio src="${sources[0]}" controls="${controls}" autoplay="${autoplay}" loop="${loop}" data-extra='${dataExtra}'></audio>`
+          html = `<audio src="${sources[0]}" ${attr} data-extra='${dataExtra}'></audio>`
         } else {
-          html = `<audio controls="${controls}" autoplay="${autoplay}" loop="${loop}" data-extra='${dataExtra}'>`
+          html = `<audio ${attr} data-extra='${dataExtra}'>`
           sources.forEach(source => {
             html += `<source src=${source} type="audio/${this.getFileType(source, 'audio')}">`
           })
           html += `</audio>`
         }
       } else {
+        attr += muted === 'false' ? '' : ' muted '
         if (len === 1) {
-          html = `<video src="${sources[0]}" width="${width}" height="${height}" controls="${controls}"
-            autoplay="${autoplay}" muted="${muted}" loop="${loop}"></video>`
+          html = `<video src="${sources[0]}" width="${width}" height="${height}" ${attr}></video>`
         } else {
-          html = `<video width="${width}" height="${height}" controls="${controls}" autoplay="${autoplay}" muted="${muted}" loop="${loop}">`
+          html = `<video width="${width}" height="${height}" ${attr}>`
           sources.forEach(source => {
             html += `<source src=${source} type="video/${this.getFileType(source, 'video')}"}>`
           })
@@ -150,8 +154,6 @@ class UploadModal extends React.Component {
 
       this.props.insert(html)
       this.closeModal()
-    } else {
-      alert('please add')
     }
   }
 
@@ -185,7 +187,7 @@ class UploadModal extends React.Component {
   }
 
   renderVideoConfig() {
-    let {width, height, controls, autoplay, muted, loop} = this.props
+    let {width, height, controls, autoplay, muted, loop} = this.state
     return (
       <form style={style.paramsConfig}>
         <Label name="width">
@@ -223,7 +225,7 @@ class UploadModal extends React.Component {
   }
 
   renderAudioConfig() {
-    let {controls, autoplay, loop, poster, name, author} = this.props
+    let {controls, autoplay, loop, poster, name, author} = this.state
     return (
       <form style={style.paramsConfig}>
         <Label name="controls">
