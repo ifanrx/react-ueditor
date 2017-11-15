@@ -22,7 +22,8 @@ const style = {
   },
   sourceList: {
     margin: '10px 10px 10px 0',
-    border: '1px dashed rgb(217, 217, 217)'
+    border: '1px dashed rgb(217, 217, 217)',
+    borderRadius: '4px'
   },
   configTitle: {
     display: 'block',
@@ -43,6 +44,8 @@ const style = {
 
 const linkRegx = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i
 
+let timeoutInstance = null
+
 class UploadModal extends React.Component {
 
   constructor() {
@@ -51,6 +54,7 @@ class UploadModal extends React.Component {
     this.addSource = this.addSource.bind(this)
     this.removeSource = this.removeSource.bind(this)
     this.upload = this.upload.bind(this)
+    this.showErrorMsg = this.showErrorMsg.bind(this)
     this.insert = this.insert.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.changeConfig = this.changeConfig.bind(this)
@@ -81,7 +85,13 @@ class UploadModal extends React.Component {
   addSource() {
     let {sources, currentSource} = this.state
     let newsources = sources.concat([currentSource])
-    if(linkRegx.test(currentSource) && sources.indexOf(currentSource) === -1) {
+    if (currentSource === '') {
+      this.showErrorMsg('链接不能为空')
+    } else if (!linkRegx.test(currentSource)) {
+      this.showErrorMsg('非法的链接')
+    } else if (sources.indexOf(currentSource) !== -1) {
+      this.showErrorMsg('链接已存在')
+    } else {
       this.setState({
         sources: newsources,
         currentSource: ''
@@ -103,13 +113,18 @@ class UploadModal extends React.Component {
         promise.then((url)=>{
           this.setState({currentSource: url})
         }).catch((msg) => {
-          this.setState({errorMsg: msg, errorMsgVisible: true})
-          setTimeout(() => {
-            this.setState({errorMsg: '', errorMsgVisible: false})
-          }, 4000)
+          this.showErrorMsg(msg)
         })
       }
     }
+  }
+
+  showErrorMsg(msg) {
+    this.setState({errorMsg: msg, errorMsgVisible: true})
+    clearTimeout(timeoutInstance)
+    timeoutInstance = setTimeout(() => {
+      this.setState({errorMsg: '', errorMsgVisible: false})
+    }, 4000)
   }
 
   getFileType(fileUrl, mediaType) {
@@ -122,33 +137,34 @@ class UploadModal extends React.Component {
     let {type} = this.props
     let dataExtra = JSON.stringify({"poster": poster, "name": name, "author": author})
     let len = sources.length
-    let html = ''
-    let attr = ''
 
     if (len > 0 ) {
+      let html = ''
+      let attr = ''
+
       attr += controls === 'false' ? '' : ' controls="true" '
       attr += autoplay === 'false' ? '' : ' autoplay="true" '
       attr += loop === 'false' ? '' : ' loop="true" '
       if (type === 'audio') {
         if (len === 1) {
-          html = `<audio src="${sources[0]}" ${attr} data-extra='${dataExtra}'></audio>`
+          html = `<audio src="${sources[0]}" ${attr} data-extra='${dataExtra}'>你的浏览器不支持 audio 标签</audio>`
         } else {
           html = `<audio ${attr} data-extra='${dataExtra}'>`
           sources.forEach(source => {
             html += `<source src=${source} type="audio/${this.getFileType(source, 'audio')}">`
           })
-          html += `</audio>`
+          html += `你的浏览器不支持 audio 标签</audio>`
         }
       } else {
         attr += muted === 'false' ? '' : ' muted '
         if (len === 1) {
-          html = `<video src="${sources[0]}" width="${width}" height="${height}" ${attr}></video>`
+          html = `<video src="${sources[0]}" width="${width}" height="${height}" ${attr}>你的浏览器不支持 video 标签</video>`
         } else {
           html = `<video width="${width}" height="${height}" ${attr}>`
           sources.forEach(source => {
             html += `<source src=${source} type="video/${this.getFileType(source, 'video')}"}>`
           })
-          html += `</video>`
+          html += `你的浏览器不支持 video 标签</video>`
         }
       }
 
