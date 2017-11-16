@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactUeditor from '../src'
 
-let result = ""
+let editorResult = ''
 
 class App extends React.Component {
   state = {
@@ -39,7 +39,7 @@ class App extends React.Component {
   }
 
   updateEditorContent = content => {
-    result = content
+    editorResult = content
   }
 
   render() {

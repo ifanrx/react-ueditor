@@ -2,12 +2,21 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import UploadModal from './UploadModal'
 
-let content = ''  // 存储编辑器的实时数据，用于传递给父组件
-let ueditor, isContentChangedByWillReceiveProps = false, tempfileInput = null
 const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNiTAMhHhxnamTVMDnfAEAo0CI0ckBOs1mbRKGy6LArdZtswSl+VdEDSmlAtk9prPqRW0FfMb66OGjt1o3iiB8zgcAMAiEqKfFo0p5QQSDQMpxUQKFAFvxJ4roQRfA52yCgOFUCAVy8NjEyAWwOaiUVImjauWTCO6KBtAUKwNgOrCfos95DxGepzNh08rcah4cdBFXID5nY0CsBTPRM01/UewdgKu4EmxztiTAoa398jRigGPEdfbTVSOthUkfTdOeDrrdfv20/UytSCeMKhAQ3HvrzY1u4WQs1mIhEk7y7GeCiN1TKc8J8R3Vj+9qWXmZvNW6awOR2C+KqPsm5cQkmFlQ1corAeHVatOJZ8AVIu4jwmgqZO0v4irZnQtcIFzslwBuq7bLPKn0wR6whYjtZ9jxurLvtzmzwUwQrvYryjwBzF2hOojYfgC9YCabpv6bxLWf4yII39J+NuLG+8BvkPJgOpND9TJjrH7t4Yet/VS1vNVmpLO205XsWPvpWuUGoD6/AJ1jtp/zjcg0YKf636kCpxLdj3MBOHsFfgBLLaBN8r49lAAAAABJRU5ErkJggg=='
 const uploadAudio = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBUlEQVRYR+1VwXHbMBC8qyBxBXI6cCqwUkEOFUSuIHYFliuwUoGVCrAdWOlA6UCuIOpgPashNRQIOtJkHH2ID2eIA25vD7vndublZ85vI4CRgZGBkxmIiI9mdm9mMzNbAHgYknJEzM3sA4C7oZiTAEREmNmTuwvEi5lNSH4GsK4liIiFu38nuQRwU4s5CkBTtRILwAvJWzPbuvszyS8AVhFxZWbXAH50E0XE0t2/kbwBsCxBVAFExKW7TxRMUhfPVTVJXT4HsI2IaQHg1t0fFQNAAPcrpbQhqVZc/BWAaHb3XASq6pkqbf+XAPQ/pQQz+9qy0omdufsTyQRAMfvVYyClpCSXLc1N5FpVF9QeMKA9tcrd/5D8CUCPdLc6/3vsDAGwnPP0rUFVY6BhYUVyAuBT0QYVsC7vfQ8AuzbknA/ubpjtFfYeANTCq5yzpNp9iJLq9n8wIKpXOWdJtguA5dvQZpUB9dDdd1pXEMnfRz5CyfW+1HyrrJoX9ADUZEhyY2YykkEZds79KmnuyPOiLGTIiNQ/GZCWTGkhTyep78OAEck/Zo1f7CXbUUtPgtUW1KTX6Fg2KpPR5fL1AyseONfODhnZtKz+aAAdQ1GVYkFDaOPuMqzBYdRITxZeTX4ygNbVmtkgujWONXKrqxliVqu8PXDUNHzLEf91bwQwMjAycHYGXgGLbI8w70amwwAAAABJRU5ErkJggg=='
 
 class ReactUeditor extends React.Component {
+
+  constructor() {
+    super()
+    this.content = ''  // 存储编辑器的实时数据，用于传递给父组件
+    this.ueditor = null
+    this.isContentChangedByWillReceiveProps = false
+    this.tempfileInput = null
+    this.containerID = 'reactueditor' + (new Date).getTime()
+    this.fileInputID = 'fileinput' + (new Date).getTime()
+  }
+
   state = {
     videoModalVisible: false,
     audioModalVisible: false,
@@ -27,7 +36,7 @@ class ReactUeditor extends React.Component {
     let props = this.props
     this.createScript(props.ueditorPath + '/ueditor.config.js').then(() => {
       this.createScript(props.ueditorPath + '/ueditor.all.min.js').then(() => {
-        tempfileInput = document.getElementById('tempfileInput')
+        this.tempfileInput = document.getElementById(this.fileInputID)
         this.initEditor()
       })
     })
@@ -40,20 +49,20 @@ class ReactUeditor extends React.Component {
    */
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps && this.props.value !== nextProps.value) {
-      isContentChangedByWillReceiveProps = true
-      content = nextProps.value
+      this.isContentChangedByWillReceiveProps = true
+      this.content = nextProps.value
 
-      if (ueditor) {
-        ueditor.ready(() => {
-          ueditor.setContent(nextProps.value)
+      if (this.ueditor) {
+        this.ueditor.ready(() => {
+          this.ueditor.setContent(nextProps.value)
         })
       }
     }
   }
 
   componentWillUnmount() {
-    if (ueditor) {
-      ueditor.destroy()
+    if (this.ueditor) {
+      this.ueditor.destroy()
     }
   }
 
@@ -83,7 +92,7 @@ class ReactUeditor extends React.Component {
         title: '文件上传',
         cssRules: 'background-position: -726px -77px;',
         onclick: () => {
-          tempfileInput.click()
+          this.tempfileInput.click()
         }
       })
 
@@ -98,9 +107,9 @@ class ReactUeditor extends React.Component {
         title: '插入代码',
         cssRules: 'background: url(' + simpleInsertCodeIcon + ') !important; background-size: 20px 20px !important;',
         onclick: () => {
-          if (ueditor) {
-            ueditor.focus()
-            ueditor.execCommand('insertcode')
+          if (this.ueditor) {
+            this.ueditor.focus()
+            this.ueditor.execCommand('insertcode')
           }
         }
       })
@@ -151,30 +160,30 @@ class ReactUeditor extends React.Component {
         })
       }
     }
-    tempfileInput.value = ''
+    this.tempfileInput.value = ''
   }
 
   static insertImage(imageUrl) {
-    if (ueditor) {
-      ueditor.focus()
-      ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
+    if (this.ueditor) {
+      this.ueditor.focus()
+      this.ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
     }
     console.warn("该接口即将废弃，请使用返回 promise 方式")
   }
 
   insertImage2 = imageUrl => {
-    if (ueditor) {
-      ueditor.focus()
-      ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
+    if (this.ueditor) {
+      this.ueditor.focus()
+      this.ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
     }
   }
 
   insert = html => {
-    if (ueditor) {
-      ueditor.execCommand('insertparagraph')
-      ueditor.execCommand('inserthtml', html, true)
-      ueditor.execCommand('insertparagraph')
-      ueditor.execCommand('insertparagraph')
+    if (this.ueditor) {
+      this.ueditor.execCommand('insertparagraph')
+      this.ueditor.execCommand('inserthtml', html, true)
+      this.ueditor.execCommand('insertparagraph')
+      this.ueditor.execCommand('insertparagraph')
     }
   }
 
@@ -191,7 +200,7 @@ class ReactUeditor extends React.Component {
 
   initEditor = () => {
     const props  = this.props, plugins = props.plugins
-    ueditor = window.UE.getEditor('container')
+    this.ueditor = window.UE.getEditor(this.containerID)
 
     if (plugins && plugins instanceof Array && plugins.length > 0) {
       if (plugins.indexOf('uploadImage') !== -1) this.registerImageUpload()
@@ -200,25 +209,26 @@ class ReactUeditor extends React.Component {
       if (plugins.indexOf('uploadAudio') !== -1) this.registerUploadAudio()
     }
 
-    ueditor.ready(() => {
-      ueditor.addListener('contentChange', () => {
+    this.ueditor.ready(() => {
+      this.ueditor.addListener('contentChange', () => {
         // 由 componentWillReceiveProps 导致的 contentChange 不需要通知父组件
-        if (isContentChangedByWillReceiveProps) {
-          isContentChangedByWillReceiveProps = false
+        if (this.isContentChangedByWillReceiveProps) {
+          this.isContentChangedByWillReceiveProps = false
         } else {
-          content = ueditor.getContent()
+          this.content = this.ueditor.getContent()
 
           if (props.onChange) {
-            props.onChange(ueditor.getContent())
+            props.onChange(this.ueditor.getContent())
           }
         }
       })
 
-      if (isContentChangedByWillReceiveProps) {
-        isContentChangedByWillReceiveProps = false
-        ueditor.setContent(content)
+      if (this.isContentChangedByWillReceiveProps) {
+        this.isContentChangedByWillReceiveProps = false
+        this.ueditor.setContent(this.content)
       } else {
-        ueditor.setContent(props.value)
+        console.log(props.value)
+        this.ueditor.setContent(props.value)
       }
     })
   }
@@ -228,8 +238,8 @@ class ReactUeditor extends React.Component {
     let {uploadVideo, uploadAudio, progress} = this.props
     return (
       <div>
-        <script id="container" type="text/plain"></script>
-        <input type="file" id="tempfileInput" onChange={this.uploadImage} style={{visibility: 'hidden'}} />
+        <script id={this.containerID} name={this.containerID} type="text/plain"></script>
+        <input type="file" id={this.fileInputID} onChange={this.uploadImage} style={{visibility: 'hidden'}} />
         <UploadModal
           type="video"
           title="上传视频"
