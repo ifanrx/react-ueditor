@@ -48,41 +48,27 @@ let timeoutInstance = null
 
 class UploadModal extends React.Component {
 
-  constructor() {
-    super()
-    this.updateCurrentSource = this.updateCurrentSource.bind(this)
-    this.addSource = this.addSource.bind(this)
-    this.removeSource = this.removeSource.bind(this)
-    this.upload = this.upload.bind(this)
-    this.showErrorMsg = this.showErrorMsg.bind(this)
-    this.insert = this.insert.bind(this)
-    this.closeModal = this.closeModal.bind(this)
-    this.changeConfig = this.changeConfig.bind(this)
-    this.renderSourceList = this.renderSourceList.bind(this)
-    this.renderVideoConfig = this.renderVideoConfig.bind(this)
-    this.renderAudioConfig = this.renderAudioConfig.bind(this)
-    this.state = {
-      sources: [],
-      currentSource: '',
-      width: 400,
-      height: 400,
-      controls: 'true',
-      autoplay: 'false',
-      muted: 'false',
-      loop: 'false',
-      poster: '',
-      name: '',
-      author: '',
-      errorMsg: '',
-      errorMsgVisible: false
-    }
+  state = {
+    sources: [],
+    currentSource: '',
+    width: 400,
+    height: 400,
+    controls: 'true',
+    autoplay: 'false',
+    muted: 'false',
+    loop: 'false',
+    poster: '',
+    name: '',
+    author: '',
+    errorMsg: '',
+    errorMsgVisible: false
   }
 
-  updateCurrentSource(e) {
+  updateCurrentSource = e => {
     this.setState({currentSource: e.target.value})
   }
 
-  addSource() {
+  addSource = () => {
     let {sources, currentSource} = this.state
     let newsources = sources.concat([currentSource])
     if (currentSource === '') {
@@ -99,13 +85,13 @@ class UploadModal extends React.Component {
     }
   }
 
-  removeSource(index) {
+  removeSource = index => {
     let sourcesCopy = this.state.sources.concat([])
     sourcesCopy.splice(index, 1)
     this.setState({sources: sourcesCopy})
   }
 
-  upload(e) {
+  upload = e => {
     let props = this.props
     if (props.upload) {
       let promise = props.upload(e)
@@ -119,7 +105,7 @@ class UploadModal extends React.Component {
     }
   }
 
-  showErrorMsg(msg) {
+  showErrorMsg = msg => {
     this.setState({errorMsg: msg, errorMsgVisible: true})
     clearTimeout(timeoutInstance)
     timeoutInstance = setTimeout(() => {
@@ -127,12 +113,12 @@ class UploadModal extends React.Component {
     }, 4000)
   }
 
-  getFileType(fileUrl, mediaType) {
+  getFileType = (fileUrl, mediaType) => {
     let type = fileUrl.match(/\.(\w+)$/, 'i')
     return type ? type[1].toLowerCase() : mediaType === 'audio' ? 'mp3' : 'mp4'
   }
 
-  insert() {
+  insert = () => {
     let {sources, currentSource, width, height, controls, autoplay, muted, loop, poster, name, author} = this.state
     let {type} = this.props
     let dataExtra = JSON.stringify({"poster": poster, "name": name, "author": author})
@@ -173,11 +159,11 @@ class UploadModal extends React.Component {
     }
   }
 
-  closeModal() {
+  closeModal = () => {
     this.props.closeModal()
   }
 
-  changeConfig(e, type) {
+  changeConfig = (e, type) => {
     let value = e.target.value
     let boolType = ['controls', 'autoplay', 'muted', 'loop']
     if (type === 'width' || type === 'height') {
@@ -190,7 +176,7 @@ class UploadModal extends React.Component {
     this.setState({[type]: value})
   }
 
-  renderSourceList() {
+  renderSourceList = () => {
     let {sources} = this.state
     if (sources.length > 0) {
       let list = sources.map((source, index) => {
@@ -202,7 +188,7 @@ class UploadModal extends React.Component {
     }
   }
 
-  renderVideoConfig() {
+  renderVideoConfig = () => {
     let {width, height, controls, autoplay, muted, loop} = this.state
     return (
       <form style={style.paramsConfig}>
@@ -240,7 +226,7 @@ class UploadModal extends React.Component {
     )
   }
 
-  renderAudioConfig() {
+  renderAudioConfig = () => {
     let {controls, autoplay, loop, poster, name, author} = this.state
     return (
       <form style={style.paramsConfig}>

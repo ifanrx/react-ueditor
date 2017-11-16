@@ -8,16 +8,19 @@ const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAA
 const uploadAudio = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBUlEQVRYR+1VwXHbMBC8qyBxBXI6cCqwUkEOFUSuIHYFliuwUoGVCrAdWOlA6UCuIOpgPashNRQIOtJkHH2ID2eIA25vD7vndublZ85vI4CRgZGBkxmIiI9mdm9mMzNbAHgYknJEzM3sA4C7oZiTAEREmNmTuwvEi5lNSH4GsK4liIiFu38nuQRwU4s5CkBTtRILwAvJWzPbuvszyS8AVhFxZWbXAH50E0XE0t2/kbwBsCxBVAFExKW7TxRMUhfPVTVJXT4HsI2IaQHg1t0fFQNAAPcrpbQhqVZc/BWAaHb3XASq6pkqbf+XAPQ/pQQz+9qy0omdufsTyQRAMfvVYyClpCSXLc1N5FpVF9QeMKA9tcrd/5D8CUCPdLc6/3vsDAGwnPP0rUFVY6BhYUVyAuBT0QYVsC7vfQ8AuzbknA/ubpjtFfYeANTCq5yzpNp9iJLq9n8wIKpXOWdJtguA5dvQZpUB9dDdd1pXEMnfRz5CyfW+1HyrrJoX9ADUZEhyY2YykkEZds79KmnuyPOiLGTIiNQ/GZCWTGkhTyep78OAEck/Zo1f7CXbUUtPgtUW1KTX6Fg2KpPR5fL1AyseONfODhnZtKz+aAAdQ1GVYkFDaOPuMqzBYdRITxZeTX4ygNbVmtkgujWONXKrqxliVqu8PXDUNHzLEf91bwQwMjAycHYGXgGLbI8w70amwwAAAABJRU5ErkJggg=='
 
 class ReactUeditor extends React.Component {
+  state = {
+    videoModalVisible: false,
+    audioModalVisible: false,
+    videoSource: '',
+    audioSource: '',
+  }
 
-  constructor() {
-    super()
-    this.uploadImage = this.uploadImage.bind(this)
-    this.state = {
-      videoModalVisible: false,
-      audioModalVisible: false,
-      videoSource: '',
-      audioSource: '',
-    }
+  static propTypes = {
+    value: PropTypes.string,
+    ueditorPath: PropTypes.string.isRequired,
+    plugins: PropTypes.array,
+    onChange: PropTypes.func,
+    uploadImage: PropTypes.func
   }
 
   componentDidMount() {
@@ -27,24 +30,6 @@ class ReactUeditor extends React.Component {
         tempfileInput = document.getElementById('tempfileInput')
         this.initEditor()
       })
-    })
-  }
-
-  createScript(url) {
-    let scriptTags = window.document.querySelectorAll('script'), len = scriptTags.length, i = 0
-    let _url = location.origin + url
-    return new Promise((resolve, reject) => {
-      for (i = 0; i < len; i++) {
-        var src = scriptTags[i].src
-        if (src && src === _url) {
-          scriptTags[i].parentElement.removeChild(scriptTags[i])
-        }
-      }
-
-      let node = document.createElement('script')
-      node.src = url
-      node.onload = resolve
-      document.body.appendChild(node)
     })
   }
 
@@ -72,8 +57,26 @@ class ReactUeditor extends React.Component {
     }
   }
 
+  createScript = url => {
+    let scriptTags = window.document.querySelectorAll('script'), len = scriptTags.length, i = 0
+    let _url = location.origin + url
+    return new Promise((resolve, reject) => {
+      for (i = 0; i < len; i++) {
+        var src = scriptTags[i].src
+        if (src && src === _url) {
+          scriptTags[i].parentElement.removeChild(scriptTags[i])
+        }
+      }
+
+      let node = document.createElement('script')
+      node.src = url
+      node.onload = resolve
+      document.body.appendChild(node)
+    })
+  }
+
   // uditor 自定义按钮的方式
-  registerImageUpload() {
+  registerImageUpload = () => {
     window.UE.registerUI('imageUpload', (editor, uiName) => {
       var btn = new window.UE.ui.Button({
         name: uiName,
@@ -88,7 +91,7 @@ class ReactUeditor extends React.Component {
     })
   }
 
-  registerSimpleInsertCode() {
+  registerSimpleInsertCode = () => {
     window.UE.registerUI('simpleInsertCode', (editor, uiName) => {
       var btn = new window.UE.ui.Button({
         name: uiName,
@@ -106,7 +109,7 @@ class ReactUeditor extends React.Component {
     })
   }
 
-  registerUploadVideo() {
+  registerUploadVideo = () => {
     let _this = this
     window.UE.registerUI('videoUpload', (editor, uiName) => {
       var btn = new window.UE.ui.Button({
@@ -122,7 +125,7 @@ class ReactUeditor extends React.Component {
     })
   }
 
-  registerUploadAudio() {
+  registerUploadAudio = () => {
     let _this = this
     window.UE.registerUI('audioUpload', (editor, uiName) => {
       var btn = new window.UE.ui.Button({
@@ -138,7 +141,7 @@ class ReactUeditor extends React.Component {
     })
   }
 
-  uploadImage(e) {
+  uploadImage = e => {
     let props = this.props
     if (props.uploadImage) {
       let promise = props.uploadImage(e)
@@ -159,14 +162,14 @@ class ReactUeditor extends React.Component {
     console.warn("该接口即将废弃，请使用返回 promise 方式")
   }
 
-  insertImage2(imageUrl) {
+  insertImage2 = imageUrl => {
     if (ueditor) {
       ueditor.focus()
       ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
     }
   }
 
-  insert(html) {
+  insert = html => {
     if (ueditor) {
       ueditor.execCommand('insertparagraph')
       ueditor.execCommand('inserthtml', html, true)
@@ -175,7 +178,7 @@ class ReactUeditor extends React.Component {
     }
   }
 
-  closeModal(type) {
+  closeModal = type => {
     switch(type) {
       case 'video':
         this.setState({videoModalVisible: false})
@@ -186,7 +189,7 @@ class ReactUeditor extends React.Component {
     }
   }
 
-  initEditor() {
+  initEditor = () => {
     const props  = this.props, plugins = props.plugins
     ueditor = window.UE.getEditor('container')
 
@@ -246,14 +249,6 @@ class ReactUeditor extends React.Component {
       </div>
     )
   }
-}
-
-ReactUeditor.propTypes = {
-  value: PropTypes.string,
-  ueditorPath: PropTypes.string.isRequired,
-  plugins: PropTypes.array,
-  onChange: PropTypes.func,
-  uploadImage: PropTypes.func
 }
 
 export default ReactUeditor

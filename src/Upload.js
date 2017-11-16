@@ -19,12 +19,7 @@ const uploadStyle = {
 
 class Upload extends React.Component {
 
-  constructor() {
-    super()
-    this.onInputChange = this.onInputChange.bind(this)
-  }
-
-  onInputChange (e) {
+  onInputChange = e => {
     let props = this.props
     if (props.onChange) {
       props.onChange(e)

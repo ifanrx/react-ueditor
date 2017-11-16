@@ -1,6 +1,6 @@
 import React from 'react'
 
-let selectStyle = {
+const selectStyle = {
   height: '22px',
   width: '80px',
   fontSize: '14px',

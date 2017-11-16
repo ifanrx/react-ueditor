@@ -1,6 +1,6 @@
 import React from 'react'
 
-let labelStyle = {
+const labelStyle = {
   display: 'block',
   width: '165px',
   color: 'rgba(0, 0, 0, 0.65)',
@@ -8,7 +8,7 @@ let labelStyle = {
   marginBottom: '10px'
 }
 
-let labelName = {
+const labelName = {
   display: 'inline-block',
   width: '50px'
 }

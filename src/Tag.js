@@ -1,6 +1,6 @@
 import React from 'react'
 
-let tagStyle = {
+const tagStyle = {
   wrapper: {
     display: 'inline-block',
     lineHeight: '22px',
@@ -31,7 +31,7 @@ let tagStyle = {
 
 class Tag extends React.Component {
   render() {
-    let {value, index, onRemove, style, key} = this.props
+    let {value, index, onRemove, style} = this.props
     let mergedStyle = {...tagStyle.wrapper, ...style}
     return (
       <span style={mergedStyle} key={key}>

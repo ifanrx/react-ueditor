@@ -1,6 +1,6 @@
 import React from 'react'
 
-let buttonStyle = {
+const buttonStyle = {
   height: '24px',
   fontWeight: '500',
   cursor: 'pointer',
@@ -13,9 +13,9 @@ let buttonStyle = {
 
 class Button extends React.Component {
   render() {
-    let {style, children, key, onClick} = this.props
+    let {style, children, onClick} = this.props
     let mergedStyle = {...buttonStyle, ...style}
-    return <button style={mergedStyle} key={key} onClick={onClick}>{children}</button>
+    return <button style={mergedStyle} onClick={onClick}>{children}</button>
   }
 }
 

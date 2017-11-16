@@ -4,21 +4,17 @@ import ReactUeditor from '../src'
 let result = ""
 
 class App extends React.Component {
-  constructor() {
-    super()
-    this.uploadVideo = this.uploadVideo.bind(this)
-    this.state = {
-      progress: -1
-    }
+  state = {
+    progress: -1
   }
 
-  uploadImage(e) {
+  uploadImage = e => {
     return new Promise(function(resolve, reject) {
       resolve('https://avatars2.githubusercontent.com/u/3232724?v=8&s=120')
     })
   }
 
-  uploadVideo(e) {
+  uploadVideo = e => {
     let _this = this
     return new Promise(function(resolve, reject) {
       let  i = 0
@@ -35,14 +31,14 @@ class App extends React.Component {
     })
   }
 
-  uploadAudio(e) {
+  uploadAudio = e => {
     return new Promise(function(resolve, reject) {
       // resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eEUtZNsjiOiHbWW.mp3')
       reject('error')
     })
   }
 
-  updateEditorContent(content) {
+  updateEditorContent = content => {
     result = content
   }
 

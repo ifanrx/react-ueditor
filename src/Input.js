@@ -1,6 +1,6 @@
 import React from 'react'
 
-let inputStyle = {
+const inputStyle = {
   height: '18px',
   width: '72px',
   boxSizing: 'content-box',
