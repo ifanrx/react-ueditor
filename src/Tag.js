@@ -31,7 +31,7 @@ const tagStyle = {
 
 class Tag extends React.Component {
   render() {
-    let {value, index, onRemove, style} = this.props
+    let {value, index, onRemove, style, key} = this.props
     let mergedStyle = {...tagStyle.wrapper, ...style}
     return (
       <span style={mergedStyle} key={key}>
