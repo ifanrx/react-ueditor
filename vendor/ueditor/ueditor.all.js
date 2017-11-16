@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Mon Oct 16 2017 15:14:05 GMT+0800 (CST)
+ * build: Tue Nov 14 2017 15:57:28 GMT+0800 (CST)
  */
 
 (function(){
@@ -10256,7 +10256,6 @@ UE.commands['inserthtml'] = {
         range = me.selection.getRange();
         div = range.document.createElement( 'div' );
         div.style.display = 'inline';
-
         if (!notNeedFilter) {
             var root = UE.htmlparser(html);
             //如果给了过滤规则就先进行过滤
@@ -10268,7 +10267,6 @@ UE.commands['inserthtml'] = {
             html = root.toHtml()
         }
         div.innerHTML = utils.trim( html );
-
         if ( !range.collapsed ) {
             var tmpNode = range.startContainer;
             if(domUtils.isFillChar(tmpNode)){
