@@ -1,5 +1,5 @@
 # react-ueditor
-an ueditor component for react
+![react-ueditor](https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eGmM9tnLMPCRifj.png)
 
 ### 下载
 ```
