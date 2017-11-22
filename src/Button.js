@@ -8,7 +8,7 @@ const buttonStyle = {
   fontSize: '12px',
   color: 'rgba(0,0,0,.65)',
   border: '1px solid #d9d9d9',
-  marginLeft: '10px'
+  marginLeft: '10px',
 }
 
 class Button extends React.Component {

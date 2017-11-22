@@ -2,19 +2,32 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import UploadModal from './UploadModal'
 
-const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNiTAMhHhxnamTVMDnfAEAo0CI0ckBOs1mbRKGy6LArdZtswSl+VdEDSmlAtk9prPqRW0FfMb66OGjt1o3iiB8zgcAMAiEqKfFo0p5QQSDQMpxUQKFAFvxJ4roQRfA52yCgOFUCAVy8NjEyAWwOaiUVImjauWTCO6KBtAUKwNgOrCfos95DxGepzNh08rcah4cdBFXID5nY0CsBTPRM01/UewdgKu4EmxztiTAoa398jRigGPEdfbTVSOthUkfTdOeDrrdfv20/UytSCeMKhAQ3HvrzY1u4WQs1mIhEk7y7GeCiN1TKc8J8R3Vj+9qWXmZvNW6awOR2C+KqPsm5cQkmFlQ1corAeHVatOJZ8AVIu4jwmgqZO0v4irZnQtcIFzslwBuq7bLPKn0wR6whYjtZ9jxurLvtzmzwUwQrvYryjwBzF2hOojYfgC9YCabpv6bxLWf4yII39J+NuLG+8BvkPJgOpND9TJjrH7t4Yet/VS1vNVmpLO205XsWPvpWuUGoD6/AJ1jtp/zjcg0YKf636kCpxLdj3MBOHsFfgBLLaBN8r49lAAAAABJRU5ErkJggg=='
-const uploadAudio = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBUlEQVRYR+1VwXHbMBC8qyBxBXI6cCqwUkEOFUSuIHYFliuwUoGVCrAdWOlA6UCuIOpgPashNRQIOtJkHH2ID2eIA25vD7vndublZ85vI4CRgZGBkxmIiI9mdm9mMzNbAHgYknJEzM3sA4C7oZiTAEREmNmTuwvEi5lNSH4GsK4liIiFu38nuQRwU4s5CkBTtRILwAvJWzPbuvszyS8AVhFxZWbXAH50E0XE0t2/kbwBsCxBVAFExKW7TxRMUhfPVTVJXT4HsI2IaQHg1t0fFQNAAPcrpbQhqVZc/BWAaHb3XASq6pkqbf+XAPQ/pQQz+9qy0omdufsTyQRAMfvVYyClpCSXLc1N5FpVF9QeMKA9tcrd/5D8CUCPdLc6/3vsDAGwnPP0rUFVY6BhYUVyAuBT0QYVsC7vfQ8AuzbknA/ubpjtFfYeANTCq5yzpNp9iJLq9n8wIKpXOWdJtguA5dvQZpUB9dDdd1pXEMnfRz5CyfW+1HyrrJoX9ADUZEhyY2YykkEZds79KmnuyPOiLGTIiNQ/GZCWTGkhTyep78OAEck/Zo1f7CXbUUtPgtUW1KTX6Fg2KpPR5fL1AyseONfODhnZtKz+aAAdQ1GVYkFDaOPuMqzBYdRITxZeTX4ygNbVmtkgujWONXKrqxliVqu8PXDUNHzLEf91bwQwMjAycHYGXgGLbI8w70amwwAAAABJRU5ErkJggg=='
+const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy' +
+  '23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNi' +
+  'TAMhHhxnamTVMDnfAEAo0CI0ckBOs1mbRKGy6LArdZtswSl+VdEDSmlAtk9prPqRW0FfMb66OGjt1o3iiB8zgcAMAiEqKfFo0p5QQSDQMpxU' +
+  'QKFAFvxJ4roQRfA52yCgOFUCAVy8NjEyAWwOaiUVImjauWTCO6KBtAUKwNgOrCfos95DxGepzNh08rcah4cdBFXID5nY0CsBTPRM01/Uewdg' +
+  'Ku4EmxztiTAoa398jRigGPEdfbTVSOthUkfTdOeDrrdfv20/UytSCeMKhAQ3HvrzY1u4WQs1mIhEk7y7GeCiN1TKc8J8R3Vj+9qWXmZvNW6a' +
+  'wOR2C+KqPsm5cQkmFlQ1corAeHVatOJZ8AVIu4jwmgqZO0v4irZnQtcIFzslwBuq7bLPKn0wR6whYjtZ9jxurLvtzmzwUwQrvYryjwBzF2hO' +
+  'ojYfgC9YCabpv6bxLWf4yII39J+NuLG+8BvkPJgOpND9TJjrH7t4Yet/VS1vNVmpLO205XsWPvpWuUGoD6/AJ1jtp/zjcg0YKf636kCpxLdj' +
+  '3MBOHsFfgBLLaBN8r49lAAAAABJRU5ErkJggg=='
+const uploadAudio = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBUlEQVRYR+1VwXHbMBC8' +
+  'qyBxBXI6cCqwUkEOFUSuIHYFliuwUoGVCrAdWOlA6UCuIOpgPashNRQIOtJkHH2ID2eIA25vD7vndublZ85vI4CRgZGBkxmIiI9mdm9mMzNb' +
+  'AHgYknJEzM3sA4C7oZiTAEREmNmTuwvEi5lNSH4GsK4liIiFu38nuQRwU4s5CkBTtRILwAvJWzPbuvszyS8AVhFxZWbXAH50E0XE0t2/kbwB' +
+  'sCxBVAFExKW7TxRMUhfPVTVJXT4HsI2IaQHg1t0fFQNAAPcrpbQhqVZc/BWAaHb3XASq6pkqbf+XAPQ/pQQz+9qy0omdufsTyQRAMfvVYyCl' +
+  'pCSXLc1N5FpVF9QeMKA9tcrd/5D8CUCPdLc6/3vsDAGwnPP0rUFVY6BhYUVyAuBT0QYVsC7vfQ8AuzbknA/ubpjtFfYeANTCq5yzpNp9iJLq' +
+  '9n8wIKpXOWdJtguA5dvQZpUB9dDdd1pXEMnfRz5CyfW+1HyrrJoX9ADUZEhyY2YykkEZds79KmnuyPOiLGTIiNQ/GZCWTGkhTyep78OAEck/' +
+  'Zo1f7CXbUUtPgtUW1KTX6Fg2KpPR5fL1AyseONfODhnZtKz+aAAdQ1GVYkFDaOPuMqzBYdRITxZeTX4ygNbVmtkgujWONXKrqxliVqu8PXDU' +
+  'NHzLEf91bwQwMjAycHYGXgGLbI8w70amwwAAAABJRU5ErkJggg=='
 
 class ReactUeditor extends React.Component {
-
   constructor() {
     super()
     this.content = ''  // 存储编辑器的实时数据，用于传递给父组件
     this.ueditor = null
     this.isContentChangedByWillReceiveProps = false
     this.tempfileInput = null
-    this.containerID = 'reactueditor' + (new Date).getTime()
-    this.fileInputID = 'fileinput' + (new Date).getTime()
+    this.containerID = 'reactueditor' + (new Date()).getTime()
+    this.fileInputID = 'fileinput' + (new Date()).getTime()
   }
 
   state = {
@@ -29,13 +42,14 @@ class ReactUeditor extends React.Component {
     ueditorPath: PropTypes.string.isRequired,
     plugins: PropTypes.array,
     onChange: PropTypes.func,
-    uploadImage: PropTypes.func
+    uploadImage: PropTypes.func,
   }
 
   componentDidMount() {
-    let props = this.props
-    this.createScript(props.ueditorPath + '/ueditor.config.js').then(() => {
-      this.createScript(props.ueditorPath + '/ueditor.all.min.js').then(() => {
+    let {ueditorPath} = this.props
+
+    this.createScript(ueditorPath + '/ueditor.config.js').then(() => {
+      this.createScript(ueditorPath + '/ueditor.all.min.js').then(() => {
         this.tempfileInput = document.getElementById(this.fileInputID)
         this.initEditor()
       })
@@ -67,7 +81,9 @@ class ReactUeditor extends React.Component {
   }
 
   createScript = url => {
-    let scriptTags = window.document.querySelectorAll('script'), len = scriptTags.length, i = 0
+    let scriptTags = window.document.querySelectorAll('script')
+    let len = scriptTags.length
+    let i = 0
     let _url = location.origin + url
     return new Promise((resolve, reject) => {
       for (i = 0; i < len; i++) {
@@ -93,7 +109,7 @@ class ReactUeditor extends React.Component {
         cssRules: 'background-position: -726px -77px;',
         onclick: () => {
           this.tempfileInput.click()
-        }
+        },
       })
 
       return btn
@@ -111,7 +127,7 @@ class ReactUeditor extends React.Component {
             this.ueditor.focus()
             this.ueditor.execCommand('insertcode')
           }
-        }
+        },
       })
 
       return btn
@@ -127,7 +143,7 @@ class ReactUeditor extends React.Component {
         cssRules: 'background-position: -320px -20px;',
         onclick: () => {
           _this.setState({videoModalVisible: true})
-        }
+        },
       })
 
       return btn
@@ -140,10 +156,10 @@ class ReactUeditor extends React.Component {
       var btn = new window.UE.ui.Button({
         name: uiName,
         title: '上传音频',
-        cssRules: 'background: url(' +  uploadAudio + ') !important; background-size: 20px 20px !important;',
+        cssRules: 'background: url(' + uploadAudio + ') !important; background-size: 20px 20px !important;',
         onclick: () => {
           _this.setState({audioModalVisible: true})
-        }
+        },
       })
 
       return btn
@@ -151,11 +167,11 @@ class ReactUeditor extends React.Component {
   }
 
   uploadImage = e => {
-    let props = this.props
-    if (props.uploadImage) {
-      let promise = props.uploadImage(e)
-      if (!!promise && typeof promise.then == "function") {
-        promise.then((imageUrl)=>{
+    let {uploadImage} = this.props
+    if (uploadImage) {
+      let promise = uploadImage(e)
+      if (!!promise && typeof promise.then == 'function') {
+        promise.then(imageUrl => {
           this.insertImage2(imageUrl)
         })
       }
@@ -168,7 +184,7 @@ class ReactUeditor extends React.Component {
       this.ueditor.focus()
       this.ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
     }
-    console.warn("该接口即将废弃，请使用返回 promise 方式")
+    console.warn('该接口即将废弃，请使用返回 promise 方式')
   }
 
   insertImage2 = imageUrl => {
@@ -188,13 +204,13 @@ class ReactUeditor extends React.Component {
   }
 
   closeModal = type => {
-    switch(type) {
-      case 'video':
-        this.setState({videoModalVisible: false})
-        break
-      case 'audio':
-        this.setState({audioModalVisible: false})
-        break
+    switch (type) {
+    case 'video':
+      this.setState({videoModalVisible: false})
+      break
+    case 'audio':
+      this.setState({audioModalVisible: false})
+      break
     }
   }
 
@@ -237,21 +253,21 @@ class ReactUeditor extends React.Component {
     let {uploadVideo, uploadAudio, progress} = this.props
     return (
       <div>
-        <script id={this.containerID} name={this.containerID} type="text/plain"></script>
-        <input type="file" id={this.fileInputID} onChange={this.uploadImage} style={{visibility: 'hidden'}} />
+        <script id={this.containerID} name={this.containerID} type='text/plain' />
+        <input type='file' id={this.fileInputID} onChange={this.uploadImage} style={{visibility: 'hidden'}} />
         <UploadModal
-          type="video"
-          title="上传视频"
+          type='video'
+          title='上传视频'
           visible={videoModalVisible}
-          closeModal={() => { this.closeModal('video')} }
+          closeModal={() => { this.closeModal('video') }}
           insert={this.insert}
           upload={uploadVideo}
           progress={progress} />
         <UploadModal
-          type="audio"
-          title="上传音频"
+          type='audio'
+          title='上传音频'
           visible={audioModalVisible}
-          closeModal={() => { this.closeModal('audio')} }
+          closeModal={() => { this.closeModal('audio') }}
           insert={this.insert}
           upload={uploadAudio}
           progress={progress} />

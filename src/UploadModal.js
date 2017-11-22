@@ -13,17 +13,17 @@ const style = {
     paddingBottom: '10px',
     borderBottom: '1px solid rgb(217, 217, 217)',
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   insertTitle: {
     fontSize: '14px',
     paddingRight: '10px',
-    color: 'rgba(0, 0, 0, 0.65)'
+    color: 'rgba(0, 0, 0, 0.65)',
   },
   sourceList: {
     margin: '10px 10px 10px 0',
     border: '1px dashed rgb(217, 217, 217)',
-    borderRadius: '4px'
+    borderRadius: '4px',
   },
   configTitle: {
     display: 'block',
@@ -38,8 +38,8 @@ const style = {
     margin: '5px',
     textAlign: 'center',
     fontSize: '12px',
-    color: '#f04134'
-  }
+    color: '#f04134',
+  },
 }
 
 const linkRegx = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i
@@ -47,7 +47,6 @@ const linkRegx = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[
 let timeoutInstance = null
 
 class UploadModal extends React.Component {
-
   state = {
     sources: [],
     currentSource: '',
@@ -61,7 +60,7 @@ class UploadModal extends React.Component {
     name: '',
     author: '',
     errorMsg: '',
-    errorMsgVisible: false
+    errorMsgVisible: false,
   }
 
   updateCurrentSource = e => {
@@ -80,7 +79,7 @@ class UploadModal extends React.Component {
     } else {
       this.setState({
         sources: newsources,
-        currentSource: ''
+        currentSource: '',
       })
     }
   }
@@ -92,17 +91,15 @@ class UploadModal extends React.Component {
   }
 
   upload = e => {
-    let props = this.props
-    if (props.upload) {
-      let promise = props.upload(e)
-      if (!!promise && typeof promise.then == "function") {
-        promise.then((url)=>{
-          this.setState({currentSource: url})
-        }).catch((msg) => {
-          this.showErrorMsg(msg)
-        })
-      }
-    }
+    let {upload} = this.props
+
+    if (!upload) return
+
+    upload(e).then(url => {
+      this.setState({currentSource: url})
+    }).catch(e => {
+      e.constructor === Error ? this.showErrorMsg(e.message) : this.showErrorMsg(e)
+    })
   }
 
   showErrorMsg = msg => {
@@ -119,12 +116,12 @@ class UploadModal extends React.Component {
   }
 
   insert = () => {
-    let {sources, currentSource, width, height, controls, autoplay, muted, loop, poster, name, author} = this.state
+    let {sources, width, height, controls, autoplay, muted, loop, poster, name, author} = this.state
     let {type} = this.props
-    let dataExtra = JSON.stringify({"poster": poster, "name": name, "author": author})
+    let dataExtra = JSON.stringify({'poster': poster, 'name': name, 'author': author})
     let len = sources.length
 
-    if (len > 0 ) {
+    if (len > 0) {
       let html = ''
       let attr = ''
 
@@ -139,7 +136,7 @@ class UploadModal extends React.Component {
           sources.forEach(source => {
             html += `<source src=${source} type="audio/${this.getFileType(source, 'audio')}">`
           })
-          html += `你的浏览器不支持 audio 标签</audio>`
+          html += '你的浏览器不支持 audio 标签</audio>'
         }
       } else {
         attr += muted === 'false' ? '' : ' muted '
@@ -150,7 +147,7 @@ class UploadModal extends React.Component {
           sources.forEach(source => {
             html += `<source src=${source} type="video/${this.getFileType(source, 'video')}"}>`
           })
-          html += `你的浏览器不支持 video 标签</video>`
+          html += '你的浏览器不支持 video 标签</video>'
         }
       }
 
@@ -192,34 +189,34 @@ class UploadModal extends React.Component {
     let {width, height, controls, autoplay, muted, loop} = this.state
     return (
       <form style={style.paramsConfig}>
-        <Label name="width">
-          <Input type="number" defaultValue={width} onChange={(e) => { this.changeConfig(e, 'width') }} />
+        <Label name='width'>
+          <Input type='number' defaultValue={width} onChange={e => { this.changeConfig(e, 'width') }} />
         </Label>
-        <Label name="height">
-          <Input type="number" defaultValue={height} onChange={(e) => { this.changeConfig(e, 'height') }} />
+        <Label name='height'>
+          <Input type='number' defaultValue={height} onChange={e => { this.changeConfig(e, 'height') }} />
         </Label>
-        <Label name="controls">
-          <Select defaultValue={controls} onChange={(e) => { this.changeConfig(e, 'controls') }}>
-            <option value="true">true</option>
-            <option value="false">false</option>
+        <Label name='controls'>
+          <Select defaultValue={controls} onChange={e => { this.changeConfig(e, 'controls') }}>
+            <option value='true'>true</option>
+            <option value='false'>false</option>
           </Select>
         </Label>
-        <Label name="autoplay">
-          <Select defaultValue={autoplay} onChange={(e) => { this.changeConfig(e, 'autoplay') }}>
-            <option value="true">true</option>
-            <option value="false">false</option>
+        <Label name='autoplay'>
+          <Select defaultValue={autoplay} onChange={e => { this.changeConfig(e, 'autoplay') }}>
+            <option value='true'>true</option>
+            <option value='false'>false</option>
           </Select>
         </Label>
-        <Label name="muted">
-          <Select defaultValue={muted} onChange={(e) => { this.changeConfig(e, 'muted') }}>
-            <option value="true">true</option>
-            <option value="false">false</option>
+        <Label name='muted'>
+          <Select defaultValue={muted} onChange={e => { this.changeConfig(e, 'muted') }}>
+            <option value='true'>true</option>
+            <option value='false'>false</option>
           </Select>
         </Label>
-        <Label name="loop">
-          <Select defaultValue={loop} onChange={(e) => { this.changeConfig(e, 'loop') }}>
-            <option value="true">true</option>
-            <option value="false">false</option>
+        <Label name='loop'>
+          <Select defaultValue={loop} onChange={e => { this.changeConfig(e, 'loop') }}>
+            <option value='true'>true</option>
+            <option value='false'>false</option>
           </Select>
         </Label>
       </form>
@@ -230,39 +227,39 @@ class UploadModal extends React.Component {
     let {controls, autoplay, loop, poster, name, author} = this.state
     return (
       <form style={style.paramsConfig}>
-        <Label name="controls">
-          <Select defaultValue={controls} onChange={(e) => { this.changeConfig(e, 'controls') }}>
-            <option value="true">true</option>
-            <option value="false">false</option>
+        <Label name='controls'>
+          <Select defaultValue={controls} onChange={e => { this.changeConfig(e, 'controls') }}>
+            <option value='true'>true</option>
+            <option value='false'>false</option>
           </Select>
         </Label>
-        <Label name="autoplay">
-          <Select defaultValue={autoplay} onChange={(e) => { this.changeConfig(e, 'autoplay') }}>
-            <option value="true">true</option>
-            <option value="false">false</option>
+        <Label name='autoplay'>
+          <Select defaultValue={autoplay} onChange={e => { this.changeConfig(e, 'autoplay') }}>
+            <option value='true'>true</option>
+            <option value='false'>false</option>
           </Select>
         </Label>
-        <Label name="loop">
-          <Select defaultValue={loop} onChange={(e) => { this.changeConfig(e, 'loop') }}>
-            <option value="true">true</option>
-            <option value="false">false</option>
+        <Label name='loop'>
+          <Select defaultValue={loop} onChange={e => { this.changeConfig(e, 'loop') }}>
+            <option value='true'>true</option>
+            <option value='false'>false</option>
           </Select>
         </Label>
-        <Label name="poster">
-          <Input type="text" defaultValue={poster} onChange={(e) => { this.changeConfig(e, 'poster') }} />
+        <Label name='poster'>
+          <Input type='text' defaultValue={poster} onChange={e => { this.changeConfig(e, 'poster') }} />
         </Label>
-        <Label name="name">
-          <Input type="text" defaultValue={name} onChange={(e) => { this.changeConfig(e, 'name') }} />
+        <Label name='name'>
+          <Input type='text' defaultValue={name} onChange={e => { this.changeConfig(e, 'name') }} />
         </Label>
-        <Label name="author">
-          <Input type="text" defaultValue={author} onChange={(e) => { this.changeConfig(e, 'author') }} />
+        <Label name='author'>
+          <Input type='text' defaultValue={author} onChange={e => { this.changeConfig(e, 'author') }} />
         </Label>
       </form>
     )
   }
 
   render() {
-    let {currentSource, sources, width, height, controls, autoplay, muted, loop, errorMsg, errorMsgVisible} = this.state
+    let {currentSource, errorMsg, errorMsgVisible} = this.state
     let {type, title, visible, progress} = this.props
 
     return (
@@ -271,20 +268,22 @@ class UploadModal extends React.Component {
         onClose={this.closeModal}
         visible={visible}
         footer={[
-          <Button key="close" onClick={this.closeModal}>取消</Button>,
-          <Button key="insert" onClick={this.insert}>插入</Button>
+          <Button key='close' onClick={this.closeModal}>取消</Button>,
+          <Button key='insert' onClick={this.insert}>插入</Button>,
         ]}
-        animation="zome"
-        maskAnimation="fade">
+        animation='zome'
+        maskAnimation='fade'>
         <div>
           <div>
             <span style={style.insertTitle}>插入链接</span>
-            <Input style={{width: '300px'}} type="text" value={currentSource} onChange={this.updateCurrentSource} />
+            <Input style={{width: '300px'}} type='text' value={currentSource} onChange={this.updateCurrentSource} />
             <Button onClick={this.addSource}>添加</Button>
             <Upload onChange={this.upload} />
           </div>
           <div>
-            <span style={{...style.warnInfo, display: progress && progress !== -1 ? 'block' : 'none'}}>{progress}%</span>
+            <span style={{...style.warnInfo, display: progress && progress !== -1 ? 'block' : 'none'}}>
+              {progress}%
+            </span>
             <span style={{...style.warnInfo, display: errorMsgVisible ? 'block' : 'none'}}>{errorMsg}</span>
           </div>
           <div style={style.sourceList}>
@@ -294,11 +293,12 @@ class UploadModal extends React.Component {
           {type === 'audio' ? this.renderAudioConfig() : this.renderVideoConfig()}
           <div style={{textAlign: 'center', padding: '20px 10px 0 10px'}}>
             {
-              type === 'audio' ?
-              <audio src={currentSource} controls="controls" style={{width: '400px'}}>
+              type === 'audio'
+              ? <audio src={currentSource} controls='controls' style={{width: '400px'}}>
                 你的浏览器不支持 audio 标签
-              </audio> :
-              <video src={currentSource} controls="controls" style={{width: '400px', height: '250px', backgroundColor: '#000'}}>
+              </audio>
+              : <video src={currentSource} controls='controls'
+                style={{width: '400px', height: '250px', backgroundColor: '#000'}}>
                 你的浏览器不支持 video 标签
               </video>
             }

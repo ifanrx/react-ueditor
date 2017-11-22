@@ -5,14 +5,13 @@ const labelStyle = {
   width: '165px',
   color: 'rgba(0, 0, 0, 0.65)',
   marginRight: '20px',
-  marginBottom: '10px'
+  marginBottom: '10px',
 }
 
 const labelName = {
   display: 'inline-block',
-  width: '50px'
+  width: '50px',
 }
-
 
 class Label extends React.Component {
   render() {

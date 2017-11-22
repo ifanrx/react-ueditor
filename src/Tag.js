@@ -11,22 +11,22 @@ const tagStyle = {
     backgroundColor: '#f3f3f3',
     fontSize: '13px',
     color: 'rgba(0, 0, 0, 0.65)',
-    margin: '5px'
+    margin: '5px',
   },
   text: {
     display: 'inline-block',
     maxWidth: '500px',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
   },
   icon: {
     display: 'inline-block',
     width: '25px',
     textAlign: 'center',
     float: 'right',
-    cursor: 'pointer'
-  }
+    cursor: 'pointer',
+  },
 }
 
 class Tag extends React.Component {

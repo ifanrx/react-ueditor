@@ -1,11 +1,14 @@
 import React from 'react'
 import ReactUeditor from '../src'
 
-let editorResult = ''
-
 class App extends React.Component {
+  constructor() {
+    super()
+    this.editorResult = ''
+  }
+
   state = {
-    progress: -1
+    progress: -1,
   }
 
   uploadImage = e => {
@@ -17,7 +20,7 @@ class App extends React.Component {
   uploadVideo = e => {
     let _this = this
     return new Promise(function(resolve, reject) {
-      let  i = 0
+      let i = 0
       let instance = setInterval(() => {
         if (i !== 100) {
           _this.setState({progress: ++i})
@@ -34,12 +37,12 @@ class App extends React.Component {
   uploadAudio = e => {
     return new Promise(function(resolve, reject) {
       // resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eEUtZNsjiOiHbWW.mp3')
-      reject('error')
+      reject(new Error('error'))
     })
   }
 
   updateEditorContent = content => {
-    editorResult = content
+    this.editorResult = content
   }
 
   render() {
@@ -48,14 +51,14 @@ class App extends React.Component {
     return (
       <div>
         <ReactUeditor
-          ueditorPath="../vendor/ueditor"
+          ueditorPath='../vendor/ueditor'
           config={{zIndex: 1001}}
-          value="hello world"
+          value='hello world'
           plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
-          uploadImage={this.uploadImage.bind(this)}
-          uploadVideo={this.uploadVideo.bind(this)}
-          uploadAudio={this.uploadAudio.bind(this)}
-          onChange={this.updateEditorContent.bind(this)}
+          uploadImage={this.uploadImage}
+          uploadVideo={this.uploadVideo}
+          uploadAudio={this.uploadAudio}
+          onChange={this.updateEditorContent}
           progress={progress}
         />
       </div>

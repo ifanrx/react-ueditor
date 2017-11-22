@@ -14,11 +14,10 @@ const uploadStyle = {
   color: '#fff',
   backgroundColor: '#108ee9',
   cursor: 'pointer',
-  marginLeft: '10px'
+  marginLeft: '10px',
 }
 
 class Upload extends React.Component {
-
   onInputChange = e => {
     let props = this.props
     if (props.onChange) {
@@ -30,7 +29,7 @@ class Upload extends React.Component {
   render() {
     return (
       <label style={uploadStyle}>直接上传
-        <input type="file" onChange={this.onInputChange} style={{display: 'none'}} />
+        <input type='file' onChange={this.onInputChange} style={{display: 'none'}} />
       </label>
     )
   }

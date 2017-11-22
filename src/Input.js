@@ -11,7 +11,7 @@ const inputStyle = {
   border: '1px solid #d9d9d9',
   borderRadius: '4px',
   padding: '1px 3px',
-  margin: '0 10px'
+  margin: '0 10px',
 }
 
 class Input extends React.Component {

@@ -8,7 +8,7 @@ const selectStyle = {
   backgroundColor: '#fff',
   border: '1px solid #d9d9d9',
   borderRadius: '4px',
-  marginLeft: '10px'
+  marginLeft: '10px',
 }
 
 class Select extends React.Component {
