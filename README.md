@@ -18,9 +18,9 @@ import ReactUeditor from 'react-ueditor'
 
 <ReactUeditor
   config={{zIndex: 1001}}
-  onChange={this.updateEditorContent.bind(this)}
+  onChange={this.updateEditorContent}
   plugins={['uploadImage', 'insertCode']}
-  uploadImage={this.uploadImage.bind(this)}
+  uploadImage={this.uploadImage}
   ueditorPath="/static/uf8-php"
   value="Hello World!"
 />
@@ -31,6 +31,7 @@ Property | Description | Type | Must
 config | 在实例化时传入配置参数 | obj | no
 onChange | 编辑器内容改变的回调 | func | no
 plugins | 需要使用的插件 | array | no
+progress | 上传进度 | num | no
 ueditorPath | ueditor 构建后的文件路径 | string | yes
 uploadAudio | 音频上传回调 | func | no
 uploadImage | 图片上传回调 | func | no
@@ -51,9 +52,9 @@ ueditor 主要通过ueditor.config.js 文件来配置，在存在多个编辑器
 通过 onChange 可获取实时更新的数据，其返回 string 类型
 
 ```
-updateEditorContent = (content) => {
-  // 此处勿通过 setState 更新 value，若用于提交表单场景，可将 content 赋值于一常量，在提交时从常量中获取最后结果即可，如：
-  // result = content
+updateEditorContent = content => {
+  // 此处勿通过 setState 更新 value，若用于提交表单场景，可将 content 赋值于一变量，在提交时从变量中获取最后结果即可，如：
+  // this.result = content
 }
 ```
 
@@ -63,11 +64,11 @@ ueditor 的图片上传功能与后端耦合性很大，在前后端分离大行
 ```
 <ReactUeditor
   ...
-  uploadImage={this.uploadImage.bind(this)}
+  uploadImage={this.uploadImage}
 />
 
 // uploadImage 必须返回一个 promise
-uploadImage(e) {
+uploadImage = e => {
   return new Promise(function(resolve, reject) {
     let file = e.target.files[0]
 
