@@ -199,8 +199,8 @@ class ReactUeditor extends React.Component {
   }
 
   initEditor = () => {
-    const props  = this.props, plugins = props.plugins
-    this.ueditor = window.UE.getEditor(this.containerID)
+    const {config, plugins, onChange, value} = this.props
+    this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
 
     if (plugins && plugins instanceof Array && plugins.length > 0) {
       if (plugins.indexOf('uploadImage') !== -1) this.registerImageUpload()
@@ -217,8 +217,8 @@ class ReactUeditor extends React.Component {
         } else {
           this.content = this.ueditor.getContent()
 
-          if (props.onChange) {
-            props.onChange(this.ueditor.getContent())
+          if (onChange) {
+            onChange(this.ueditor.getContent())
           }
         }
       })
@@ -227,8 +227,7 @@ class ReactUeditor extends React.Component {
         this.isContentChangedByWillReceiveProps = false
         this.ueditor.setContent(this.content)
       } else {
-        console.log(props.value)
-        this.ueditor.setContent(props.value)
+        this.ueditor.setContent(value)
       }
     })
   }

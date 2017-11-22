@@ -49,6 +49,7 @@ class App extends React.Component {
       <div>
         <ReactUeditor
           ueditorPath="../vendor/ueditor"
+          config={{zIndex: 1001}}
           value="hello world"
           plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
           uploadImage={this.uploadImage.bind(this)}
