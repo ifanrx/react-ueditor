@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Wed Mar 14 2018 18:18:18 GMT+0800 (CST)
+ * build: Thu Mar 15 2018 15:23:41 GMT+0800 (CST)
  */
 
 (function(){
@@ -17492,7 +17492,7 @@ UE.plugins['autoheight'] = function () {
         window.onscroll = function(){
             if(lastScrollY === null){
                 lastScrollY = this.scrollY
-            }else if(this.scrollY == 0 && lastScrollY != 0){
+            }else if(this.scrollY == 0 && lastScrollY != 0 && me.window){
                 me.window.scrollTo(0,0);
                 lastScrollY = null;
             }
