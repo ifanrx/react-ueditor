@@ -294,13 +294,13 @@ class UploadModal extends React.Component {
           <div style={{textAlign: 'center', padding: '20px 10px 0 10px'}}>
             {
               type === 'audio'
-              ? <audio src={currentSource} controls='controls' style={{width: '400px'}}>
+                ? <audio src={currentSource} controls='controls' style={{width: '400px'}}>
                 你的浏览器不支持 audio 标签
-              </audio>
-              : <video src={currentSource} controls='controls'
-                style={{width: '400px', height: '250px', backgroundColor: '#000'}}>
+                </audio>
+                : <video src={currentSource} controls='controls'
+                  style={{width: '400px', height: '250px', backgroundColor: '#000'}}>
                 你的浏览器不支持 video 标签
-              </video>
+                </video>
             }
           </div>
         </div>

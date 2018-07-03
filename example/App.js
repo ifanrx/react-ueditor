@@ -45,6 +45,10 @@ class App extends React.Component {
     this.editorResult = content
   }
 
+  handleGetRef = ref => {
+    console.log(ref)
+  }
+
   render() {
     let {progress} = this.state
 
@@ -53,7 +57,31 @@ class App extends React.Component {
         <ReactUeditor
           ueditorPath='../vendor/ueditor'
           config={{zIndex: 1001}}
-          value='hello world'
+          value={Math.random().toString(36)}
+          plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
+          uploadImage={this.uploadImage}
+          uploadVideo={this.uploadVideo}
+          uploadAudio={this.uploadAudio}
+          onChange={this.updateEditorContent}
+          progress={progress}
+        />
+        <ReactUeditor
+          getRef={this.handleGetRef}
+          ueditorPath='../vendor/ueditor'
+          config={{zIndex: 1001}}
+          value='multi instance'
+          plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
+          uploadImage={this.uploadImage}
+          uploadVideo={this.uploadVideo}
+          uploadAudio={this.uploadAudio}
+          onChange={this.updateEditorContent}
+          progress={progress}
+        />
+        <ReactUeditor
+          getRef={this.handleGetRef}
+          ueditorPath='../vendor/ueditor'
+          config={{zIndex: 1001}}
+          value='multi instance 3'
           plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
           uploadImage={this.uploadImage}
           uploadVideo={this.uploadVideo}

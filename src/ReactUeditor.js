@@ -20,14 +20,14 @@ const uploadAudio = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAA
   'NHzLEf91bwQwMjAycHYGXgGLbI8w70amwwAAAABJRU5ErkJggg=='
 
 class ReactUeditor extends React.Component {
-  constructor() {
+  constructor(props) {
     super()
-    this.content = ''  // 存储编辑器的实时数据，用于传递给父组件
+    this.content = props.value || '' // 存储编辑器的实时数据，用于传递给父组件
     this.ueditor = null
     this.isContentChangedByWillReceiveProps = false
     this.tempfileInput = null
-    this.containerID = 'reactueditor' + (new Date()).getTime()
-    this.fileInputID = 'fileinput' + (new Date()).getTime()
+    this.containerID = 'reactueditor' + Math.random().toString(36)
+    this.fileInputID = 'fileinput' + Math.random().toString(36)
   }
 
   state = {
@@ -43,16 +43,19 @@ class ReactUeditor extends React.Component {
     plugins: PropTypes.array,
     onChange: PropTypes.func,
     uploadImage: PropTypes.func,
+    getRef: PropTypes.func,
   }
 
   componentDidMount() {
     let {ueditorPath} = this.props
-
-    this.createScript(ueditorPath + '/ueditor.config.js').then(() => {
-      this.createScript(ueditorPath + '/ueditor.all.min.js').then(() => {
-        this.tempfileInput = document.getElementById(this.fileInputID)
-        this.initEditor()
+    if (!window.UE && !window.UE_LOADING_PROMISE) {
+      window.UE_LOADING_PROMISE = this.createScript(ueditorPath + '/ueditor.config.js').then(() => {
+        return this.createScript(ueditorPath + '/ueditor.all.min.js')
       })
+    }
+    window.UE_LOADING_PROMISE.then(() => {
+      this.tempfileInput = document.getElementById(this.fileInputID)
+      this.initEditor()
     })
   }
 
@@ -65,7 +68,6 @@ class ReactUeditor extends React.Component {
     if ('value' in nextProps && this.props.value !== nextProps.value) {
       this.isContentChangedByWillReceiveProps = true
       this.content = nextProps.value
-
       if (this.ueditor) {
         this.ueditor.ready(() => {
           this.ueditor.setContent(nextProps.value)
@@ -215,7 +217,7 @@ class ReactUeditor extends React.Component {
   }
 
   initEditor = () => {
-    const {config, plugins, onChange, value} = this.props
+    const {config, plugins, onChange, value, getRef} = this.props
     this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
 
     if (plugins && plugins instanceof Array && plugins.length > 0) {
@@ -224,7 +226,7 @@ class ReactUeditor extends React.Component {
       if (plugins.indexOf('uploadVideo') !== -1) this.registerUploadVideo()
       if (plugins.indexOf('uploadAudio') !== -1) this.registerUploadAudio()
     }
-
+    getRef && getRef(this.ueditor)
     this.ueditor.ready(() => {
       this.ueditor.addListener('contentChange', () => {
         // 由 componentWillReceiveProps 导致的 contentChange 不需要通知父组件
@@ -259,7 +261,9 @@ class ReactUeditor extends React.Component {
           type='video'
           title='上传视频'
           visible={videoModalVisible}
-          closeModal={() => { this.closeModal('video') }}
+          closeModal={() => {
+            this.closeModal('video')
+          }}
           insert={this.insert}
           upload={uploadVideo}
           progress={progress} />
@@ -267,7 +271,9 @@ class ReactUeditor extends React.Component {
           type='audio'
           title='上传音频'
           visible={audioModalVisible}
-          closeModal={() => { this.closeModal('audio') }}
+          closeModal={() => {
+            this.closeModal('audio')
+          }}
           insert={this.insert}
           upload={uploadAudio}
           progress={progress} />
