@@ -189,10 +189,6 @@ class ReactUeditor extends React.Component {
     console.warn('该接口即将废弃，请使用返回 promise 方式')
   }
 
-  static getContent() {
-    return this.ueditor.getContent()
-  }
-
   insertImage2 = imageUrl => {
     if (this.ueditor) {
       this.ueditor.focus()

@@ -5,6 +5,9 @@ class App extends React.Component {
   constructor() {
     super()
     this.editorResult = ''
+    this.ueditor1 = null
+    this.ueditor2 = null
+    this.ueditor3 = null
   }
 
   state = {
@@ -45,8 +48,31 @@ class App extends React.Component {
     this.editorResult = content
   }
 
-  handleGetRef = ref => {
-    console.log(ref)
+  getUeditor1 = ref => {
+    this.ueditor1 = ref
+    console.log('ueditor1', this.ueditor1)
+  }
+
+  getUeditor2 = ref => {
+    this.ueditor2 = ref
+    console.log('ueditor2', this.ueditor1)
+  }
+
+  getUeditor3 = ref => {
+    this.ueditor3 = ref
+    console.log('ueditor3', this.ueditor1)
+  }
+
+  printUeditor1Content = ref => {
+    console.log(this.ueditor1.getContent())
+  }
+
+  printUeditor2Content = ref => {
+    console.log(this.ueditor2.getContent())
+  }
+
+  printUeditor3Content = ref => {
+    console.log(this.ueditor3.getContent())
   }
 
   render() {
@@ -55,6 +81,7 @@ class App extends React.Component {
     return (
       <div>
         <ReactUeditor
+          getRef={this.getUeditor1}
           ueditorPath='../vendor/ueditor'
           config={{zIndex: 1001}}
           value={Math.random().toString(36)}
@@ -65,8 +92,9 @@ class App extends React.Component {
           onChange={this.updateEditorContent}
           progress={progress}
         />
+        <button onClick={this.printUeditor1Content}>ueditor1 getContent</button>
         <ReactUeditor
-          getRef={this.handleGetRef}
+          getRef={this.getUeditor2}
           ueditorPath='../vendor/ueditor'
           config={{zIndex: 1001}}
           value='multi instance'
@@ -77,8 +105,9 @@ class App extends React.Component {
           onChange={this.updateEditorContent}
           progress={progress}
         />
+        <button onClick={this.printUeditor2Content}>ueditor2 getContent</button>
         <ReactUeditor
-          getRef={this.handleGetRef}
+          getRef={this.getUeditor3}
           ueditorPath='../vendor/ueditor'
           config={{zIndex: 1001}}
           value='multi instance 3'
@@ -89,6 +118,7 @@ class App extends React.Component {
           onChange={this.updateEditorContent}
           progress={progress}
         />
+        <button onClick={this.printUeditor3Content}>ueditor3 getContent</button>
       </div>
     )
   }
