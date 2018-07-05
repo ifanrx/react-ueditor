@@ -108,3 +108,31 @@ getEditorContent = () => {
 - example.js, index.html, dist/ 都只是为了展示 ReactUeditor 的真实效果，主要代码在 ReactUeditor/ 中
 
 - 需要修改 ueditor 源码时，直接修改 ueditor 目录下的文件，修改完执行：`cd ueditor` 和 `grunt` 命令，此时会重新生成 ueditor 构建成功的文件到 vendor/ueditor
+
+
+### 贡献者
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" >
+        <a href="https://github.com/yaokailun">
+          <img src="https://avatars2.githubusercontent.com/u/11460856" width="75px" height="75px"><br/>
+          <sub>kailunyao</sub>
+        </a>
+      </td>
+      <td align="center" valign="top" >
+        <a href="https://github.com/larry011">
+          <img src="https://avatars1.githubusercontent.com/u/10259971" width="75px" height="75px"><br/>
+          <sub>larry011</sub>
+        </a>
+      </td>
+      <td align="center" valign="top">
+        <a href="https://github.com/luckystar12">
+          <img src="https://avatars2.githubusercontent.com/u/16440931" width="75px" height="75px"><br/>
+          <sub>luckystar12</sub>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
