@@ -26,17 +26,18 @@ import ReactUeditor from 'react-ueditor'
 />
 ```
 
-Property | Description | Type | Must
--------- | ----------- | ---- | -------
-config | 在实例化时传入配置参数 | obj | no
-onChange | 编辑器内容改变的回调 | func | no
-plugins | 需要使用的插件 | array | no
-progress | 上传进度 | num | no
+Property    | Description           | Type   | Must
+:---------- | :-------------------- | :----- | :------
+config      | 在实例化时传入配置参数    | obj   | no
+getRef      | 获取 ueditor 实例       | func  | no
+onChange    | 编辑器内容改变的回调      | func  | no
+plugins     | 需要使用的插件           | array | no
+progress    | 上传进度                | num   | no
 ueditorPath | ueditor 构建后的文件路径 | string | yes
-uploadAudio | 音频上传回调 | func | no
-uploadImage | 图片上传回调 | func | no
-uploadVideo | 视频上传回调 | func | no
-value | 初始化值 | string | no
+uploadAudio | 音频上传回调             | func  | no
+uploadImage | 图片上传回调             | func  | no
+uploadVideo | 视频上传回调             | func  | no
+value       | 初始化值                | string | no
 
 plugins 现支持：
 - 图片上传 uploadImage
@@ -49,7 +50,7 @@ ueditor 主要通过ueditor.config.js 文件来配置，在存在多个编辑器
 
 
 #### 获取实时更新数据
-通过 onChange 可获取实时更新的数据，其返回 string 类型
+通过 onChange 可获取实时更新的数据，其返回 string 类型（也可以通过 getRef 方法获取 ueditor 实例，直接获取编辑器内容，详情见后面的示例）
 
 ```
 updateEditorContent = content => {
@@ -78,6 +79,26 @@ uploadImage = e => {
 }
 ```
 视频上传和音频上传与图片上传的方法一致
+
+#### 直接操作 ueditor 实例
+react-ueditor 提供的接口并不多，并不能满足大部分开发者的需求，因此我们也提供让开发者获取 ueditor 实例的接口，供开发者直接操作 ueditor 对象，例如获取编辑器内容:
+
+```
+<ReactUeditor
+  getRef={this.getUeditor}
+  ...
+/>
+
+// 该方法在 ReactUeditor 被渲染后会自动执行
+getUeditor = ref => {
+  this.ueditor = ref
+}
+
+// getContent 为 ueditor 的内部方法
+getEditorContent = () => {
+  console.log(this.ueditor.getContent())
+}
+```
 
 ### 贡献
 如果你希望为这个项目贡献代码，需要了解以下情况：
