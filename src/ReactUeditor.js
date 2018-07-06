@@ -110,7 +110,7 @@ class ReactUeditor extends React.Component {
         title: '文件上传',
         cssRules: 'background-position: -726px -77px;',
         onclick: () => {
-          this.tempfileInput.click()
+          editor._react_ref.tempfileInput.click()
         },
       })
 
@@ -118,16 +118,16 @@ class ReactUeditor extends React.Component {
     })
   }
 
-  registerSimpleInsertCode = () => {
+  registerSimpleInsertCode() {
     window.UE.registerUI('simpleInsertCode', (editor, uiName) => {
       var btn = new window.UE.ui.Button({
         name: uiName,
         title: '插入代码',
         cssRules: 'background: url(' + simpleInsertCodeIcon + ') !important; background-size: 20px 20px !important;',
-        onclick: () => {
-          if (this.ueditor) {
-            this.ueditor.focus()
-            this.ueditor.execCommand('insertcode')
+        onclick() {
+          if (editor) {
+            editor.focus()
+            editor.execCommand('insertcode')
           }
         },
       })
@@ -137,14 +137,13 @@ class ReactUeditor extends React.Component {
   }
 
   registerUploadVideo = () => {
-    let _this = this
     window.UE.registerUI('videoUpload', (editor, uiName) => {
       var btn = new window.UE.ui.Button({
         name: uiName,
         title: '上传视频',
         cssRules: 'background-position: -320px -20px;',
         onclick: () => {
-          _this.setState({videoModalVisible: true})
+          editor._react_ref.setState({videoModalVisible: true})
         },
       })
 
@@ -153,14 +152,13 @@ class ReactUeditor extends React.Component {
   }
 
   registerUploadAudio = () => {
-    let _this = this
     window.UE.registerUI('audioUpload', (editor, uiName) => {
       var btn = new window.UE.ui.Button({
         name: uiName,
         title: '上传音频',
         cssRules: 'background: url(' + uploadAudio + ') !important; background-size: 20px 20px !important;',
         onclick: () => {
-          _this.setState({audioModalVisible: true})
+          editor._react_ref.setState({audioModalVisible: true})
         },
       })
 
@@ -219,7 +217,7 @@ class ReactUeditor extends React.Component {
   initEditor = () => {
     const {config, plugins, onChange, value, getRef} = this.props
     this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
-
+    this.ueditor._react_ref = this
     if (plugins && plugins instanceof Array && plugins.length > 0) {
       if (plugins.indexOf('uploadImage') !== -1) this.registerImageUpload()
       if (plugins.indexOf('insertCode') !== -1) this.registerSimpleInsertCode()

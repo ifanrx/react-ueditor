@@ -50,17 +50,17 @@ class App extends React.Component {
 
   getUeditor1 = ref => {
     this.ueditor1 = ref
-    console.log('ueditor1', this.ueditor1)
+    console.log('ueditor1', ref)
   }
 
   getUeditor2 = ref => {
     this.ueditor2 = ref
-    console.log('ueditor2', this.ueditor1)
+    console.log('ueditor2', ref)
   }
 
   getUeditor3 = ref => {
     this.ueditor3 = ref
-    console.log('ueditor3', this.ueditor1)
+    console.log('ueditor3', ref)
   }
 
   printUeditor1Content = ref => {
