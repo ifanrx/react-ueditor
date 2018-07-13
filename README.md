@@ -3,7 +3,9 @@
 
 ### 下载
 ```
-  npm i git://git@github.com:ifanrx/react-ueditor.git -S
+  github: npm i git://git@github.com:ifanrx/react-ueditor.git -S
+  npm:    npm i ifanrx-react-ueditor -S
+  yarn:   yarn add ifanrx-react-ueditor
 ```
 
 ### 使用
