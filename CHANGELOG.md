@@ -1,3 +1,6 @@
+### v1.5.0（2018-07-27）
+- [A] 支持多图片上传 multipleImagesUpload
+
 ### v1.4.2（2018-07-14）
 - [C] 更新 package.json 并发布到 npm
 
