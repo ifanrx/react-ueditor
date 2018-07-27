@@ -4,14 +4,13 @@ import ReactUeditor from '../src'
 class App extends React.Component {
   constructor() {
     super()
-    this.editorResult = ''
-    this.ueditor1 = null
-    this.ueditor2 = null
-    this.ueditor3 = null
+    this.editorResult = '<h1>Hello World!</h1>'
+    this.ueditor = null
   }
 
   state = {
     progress: -1,
+    content: '',
   }
 
   uploadImage = e => {
@@ -48,77 +47,37 @@ class App extends React.Component {
     this.editorResult = content
   }
 
-  getUeditor1 = ref => {
-    this.ueditor1 = ref
-    console.log('ueditor1', ref)
+  getUeditor = ref => {
+    this.ueditor = ref
+    console.log('ueditor', ref)
   }
 
-  getUeditor2 = ref => {
-    this.ueditor2 = ref
-    console.log('ueditor2', ref)
-  }
-
-  getUeditor3 = ref => {
-    this.ueditor3 = ref
-    console.log('ueditor3', ref)
-  }
-
-  printUeditor1Content = ref => {
-    console.log(this.ueditor1.getContent())
-  }
-
-  printUeditor2Content = ref => {
-    console.log(this.ueditor2.getContent())
-  }
-
-  printUeditor3Content = ref => {
-    console.log(this.ueditor3.getContent())
+  getUeditorContent = ref => {
+    this.setState({
+      content: this.ueditor.getContent(),
+    })
   }
 
   render() {
-    let {progress} = this.state
+    let {content, progress} = this.state
 
     return (
       <div>
         <ReactUeditor
-          getRef={this.getUeditor1}
+          getRef={this.getUeditor}
           ueditorPath='../vendor/ueditor'
           config={{zIndex: 1001}}
-          value={Math.random().toString(36)}
+          value={this.editorResult}
           plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
           uploadImage={this.uploadImage}
           uploadVideo={this.uploadVideo}
           uploadAudio={this.uploadAudio}
           onChange={this.updateEditorContent}
           progress={progress}
+          multipleImagesUpload={false}
         />
-        <button onClick={this.printUeditor1Content}>ueditor1 getContent</button>
-        <ReactUeditor
-          getRef={this.getUeditor2}
-          ueditorPath='../vendor/ueditor'
-          config={{zIndex: 1001}}
-          value='multi instance'
-          plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
-          uploadImage={this.uploadImage}
-          uploadVideo={this.uploadVideo}
-          uploadAudio={this.uploadAudio}
-          onChange={this.updateEditorContent}
-          progress={progress}
-        />
-        <button onClick={this.printUeditor2Content}>ueditor2 getContent</button>
-        <ReactUeditor
-          getRef={this.getUeditor3}
-          ueditorPath='../vendor/ueditor'
-          config={{zIndex: 1001}}
-          value='multi instance 3'
-          plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
-          uploadImage={this.uploadImage}
-          uploadVideo={this.uploadVideo}
-          uploadAudio={this.uploadAudio}
-          onChange={this.updateEditorContent}
-          progress={progress}
-        />
-        <button onClick={this.printUeditor3Content}>ueditor3 getContent</button>
+        <button onClick={this.getUeditorContent}>获取内容</button>
+        <p>{content}</p>
       </div>
     )
   }

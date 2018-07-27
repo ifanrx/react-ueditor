@@ -28,18 +28,19 @@ import ReactUeditor from 'react-ueditor'
 />
 ```
 
-Property    | Description           | Type   | Must
-:---------- | :-------------------- | :----- | :------
-config      | 在实例化时传入配置参数    | obj   | no
-getRef      | 获取 ueditor 实例       | func  | no
-onChange    | 编辑器内容改变的回调      | func  | no
-plugins     | 需要使用的插件           | array | no
-progress    | 上传进度                | num   | no
-ueditorPath | ueditor 构建后的文件路径 | string | yes
-uploadAudio | 音频上传回调             | func  | no
-uploadImage | 图片上传回调             | func  | no
-uploadVideo | 视频上传回调             | func  | no
-value       | 初始化值                | string | no
+Property             | Description              | Type   | Must
+:------------------- | :----------------------- | :----- | :------
+config               | 在实例化时传入配置参数       | obj   | no
+getRef               | 获取 ueditor 实例         | func  | no
+multipleImagesUpload | 支持多文件上传，默认为 false | bool  | no
+onChange             | 编辑器内容改变的回调        | func  | no
+plugins              | 需要使用的插件              | array | no
+progress             | 上传进度                   | num   | no
+ueditorPath          | ueditor 构建后的文件路径    | string | yes
+uploadAudio          | 音频上传回调                | func  | no
+uploadImage          | 图片上传回调                | func  | no
+uploadVideo          | 视频上传回调                | func  | no
+value                | 初始化值                   | string | no
 
 plugins 现支持：
 - 图片上传 uploadImage
@@ -75,7 +76,7 @@ uploadImage = e => {
   return new Promise(function(resolve, reject) {
     let file = e.target.files[0]
 
-    // 在这里将你的图片上传到服务器，在上传成功的回调中执行
+    // 在这里将你的图片上传到服务器，在上传成功的回调中执行
     resolve(imgUrl)
   })
 }

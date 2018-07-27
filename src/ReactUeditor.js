@@ -44,6 +44,11 @@ class ReactUeditor extends React.Component {
     onChange: PropTypes.func,
     uploadImage: PropTypes.func,
     getRef: PropTypes.func,
+    multipleImagesUpload: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    multipleImagesUpload: false,
   }
 
   componentDidMount() {
@@ -172,22 +177,20 @@ class ReactUeditor extends React.Component {
       let promise = uploadImage(e)
       if (!!promise && typeof promise.then == 'function') {
         promise.then(imageUrl => {
-          this.insertImage2(imageUrl)
+          if (imageUrl instanceof Array) {
+            imageUrl.forEach(url => {
+              this.insertImage(url)
+            })
+          } else {
+            this.insertImage(imageUrl)
+          }
         })
       }
     }
     this.tempfileInput.value = ''
   }
 
-  static insertImage(imageUrl) {
-    if (this.ueditor) {
-      this.ueditor.focus()
-      this.ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
-    }
-    console.warn('该接口即将废弃，请使用返回 promise 方式')
-  }
-
-  insertImage2 = imageUrl => {
+  insertImage = imageUrl => {
     if (this.ueditor) {
       this.ueditor.focus()
       this.ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
@@ -250,11 +253,15 @@ class ReactUeditor extends React.Component {
 
   render() {
     let {videoModalVisible, audioModalVisible} = this.state
-    let {uploadVideo, uploadAudio, progress} = this.props
+    let {uploadVideo, uploadAudio, multipleImagesUpload, progress} = this.props
     return (
       <div>
         <script id={this.containerID} name={this.containerID} type='text/plain' />
-        <input type='file' id={this.fileInputID} onChange={this.uploadImage} style={{visibility: 'hidden'}} />
+        <input type='file'
+          id={this.fileInputID}
+          onChange={this.uploadImage}
+          style={{visibility: 'hidden'}}
+          multiple={multipleImagesUpload} />
         <UploadModal
           type='video'
           title='上传视频'
