@@ -151,7 +151,9 @@ class UploadModal extends React.Component {
         }
       }
 
-      this.props.insert(html)
+      // 修复在 Safari 浏览器中，插入视频后，由于没有在视频后面添加一个 p 标签，
+      // 导致视频无法删除，无法将光标移动到视频后面的 bug
+      this.props.insert(html + '<p></p>')
       this.closeModal()
     }
   }
