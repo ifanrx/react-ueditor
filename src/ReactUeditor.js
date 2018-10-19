@@ -91,7 +91,7 @@ class ReactUeditor extends React.Component {
     let scriptTags = window.document.querySelectorAll('script')
     let len = scriptTags.length
     let i = 0
-    let _url = location.origin + url
+    let _url = window.location.origin + url
     return new Promise((resolve, reject) => {
       for (i = 0; i < len; i++) {
         var src = scriptTags[i].src
