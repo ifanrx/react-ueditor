@@ -1,3 +1,12 @@
+### v1.5.3（2018-10-30）
+- [A] Resolve #16 Fix error that id is not defind when click the link icon
+
+### v1.5.2（2018-10-19）
+- [A] Resolve #16 Fix unexpected use of 'location' no-restricted-globals
+
+### v1.5.1（2018-08-17）
+- [A] 修复在 Safari 导致视频无法删除，无法将光标移动到视频后面的 bug
+
 ### v1.5.0（2018-07-27）
 - [A] 支持多图片上传 multipleImagesUpload
 

@@ -20,6 +20,9 @@
     "bugs": {
         "url": "https://github.com/fex-team/ueditor/issues"
     },
+    "scripts": {
+        "grunt": "grunt"
+    },
     "dependencies": {
         "grunt": "~0.4.1",
         "grunt-contrib-concat": "~0.3.0",
