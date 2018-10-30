@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Wed Jul 04 2018 15:26:05 GMT+0800 (CST)
+ * build: Tue Oct 30 2018 16:14:45 GMT+0800 (CST)
  */
 
 (function(){
@@ -920,12 +920,12 @@ var utils = UE.utils = {
                     html.push(p + '="' + obj[p] + '"')
                 }
                 if (obj.src) {
-                  html.push(id + '="' + obj.src + '"')
+                  html.push(obj.id + '="' + obj.src + '"')
                   if (doc.getElementById(obj.src)) {
                     doc.getElementById(obj.src).parentElement.removeChild(doc.getElementById(obj.src))
                   }
                 } else if (obj.href) {
-                  html.push(id + '="' + obj.href + '"')
+                  html.push(obj.id + '="' + obj.href + '"')
                   if (doc.getElementById(obj.href)) {
                     doc.getElementById(obj.href).parentElement.removeChild(doc.getElementById(obj.href))
                   }
