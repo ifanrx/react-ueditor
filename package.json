@@ -1,6 +1,6 @@
 {
   "name": "ifanrx-react-ueditor",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "an ueditor component for react",
   "main": "lib",
   "scripts": {
@@ -23,6 +23,11 @@
     "url": "https://github.com/ifanrx/react-ueditor/issues"
   },
   "homepage": "https://github.com/ifanrx/react-ueditor#readme",
+  "files": [
+    "lib",
+    "LICENSE",
+    "README.md"
+  ],
   "dependencies": {
     "rc-dialog": "6.5.11"
   },
