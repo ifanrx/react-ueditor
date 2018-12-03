@@ -9,10 +9,9 @@
 ```
 
 ### 使用
-#### 下载 Ueditor 编辑器
-到 ueditor [官网地址](http://ueditor.baidu.com/website/download.html) 下载最新版本的 ueditor, 我们选用的是`1.4.3.3 PHP 版本`，将下载解压后的文件夹放入项目中。
+#### 引入 Ueditor 文件夹
 
-这里推荐直接使用该项目 `vendor` 目录下的 ueditor，ueditor 并未对单页面应用的提供很好的支持，`vendor` 目录下的 ueditor 是经过我们修改过的版本。
+拷贝该项目 `vendor` 目录下的 ueditor（经过修改）到你的项目下
 
 #### 使用组件
 ```
