@@ -1,3 +1,6 @@
+### v1.6.0（2018-12-03）
+- [C] 更新到 babel 7 和 webpack 4
+
 ### v1.5.3（2018-10-30）
 - [A] Resolve #16 Fix error that id is not defind when click the link icon
 
