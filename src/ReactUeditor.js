@@ -45,6 +45,7 @@ class ReactUeditor extends React.Component {
     uploadImage: PropTypes.func,
     getRef: PropTypes.func,
     multipleImagesUpload: PropTypes.bool,
+    onReady: PropTypes.func,
   }
 
   static defaultProps = {
@@ -218,7 +219,7 @@ class ReactUeditor extends React.Component {
   }
 
   initEditor = () => {
-    const {config, plugins, onChange, value, getRef} = this.props
+    const {config, plugins, onChange, value, getRef, onReady} = this.props
     this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
     this.ueditor._react_ref = this
     if (plugins && plugins instanceof Array && plugins.length > 0) {
@@ -235,10 +236,7 @@ class ReactUeditor extends React.Component {
           this.isContentChangedByWillReceiveProps = false
         } else {
           this.content = this.ueditor.getContent()
-
-          if (onChange) {
-            onChange(this.ueditor.getContent())
-          }
+          onChange && onChange(this.ueditor.getContent())
         }
       })
 
@@ -248,6 +246,8 @@ class ReactUeditor extends React.Component {
       } else {
         this.ueditor.setContent(value)
       }
+
+      onReady && onReady()
     })
   }
 

@@ -32,7 +32,8 @@ Property             | Description                                  | Type   | M
 config               | 在实例化时传入配置参数                           | obj   | no
 getRef               | 获取 ueditor 实例                             | func  | no
 multipleImagesUpload | 支持多文件上传，默认为 false                     | bool  | no
-onChange             | 编辑器内容改变的回调                             | func  | no
+onChange             | 编辑器内容改变事件                               | func  | no
+onReady              | ueditor 加载完成事件                            | func  | no
 plugins              | 需要使用的插件                                  | array | no
 progress             | 上传进度                                       | num   | no
 ueditorPath          | ueditor 文件夹路径（建议使用绝对路径，或上传到 CDN）| string | yes

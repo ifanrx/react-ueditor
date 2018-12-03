@@ -58,6 +58,11 @@ class App extends React.Component {
     })
   }
 
+  handleReady = () => {
+    console.log('be ready')
+    this.ueditor.setHeight(400)
+  }
+
   render() {
     let {content, progress} = this.state
 
@@ -75,6 +80,7 @@ class App extends React.Component {
           onChange={this.updateEditorContent}
           progress={progress}
           multipleImagesUpload={false}
+          onReady={this.handleReady}
         />
         <button onClick={this.getUeditorContent}>获取内容</button>
         <p>{content}</p>
