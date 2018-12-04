@@ -1,6 +1,6 @@
 {
   "name": "ifanrx-react-ueditor",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "an ueditor component for react",
   "main": "lib",
   "scripts": {
