@@ -29,7 +29,7 @@ const tagStyle = {
   },
 }
 
-class Tag extends React.Component {
+class Tag extends React.PureComponent {
   render() {
     let {value, index, onRemove, style, key} = this.props
     let mergedStyle = {...tagStyle.wrapper, ...style}

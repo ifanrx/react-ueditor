@@ -44,8 +44,7 @@ class App extends React.Component {
 
   uploadAudio = e => {
     return new Promise(function(resolve, reject) {
-      // resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eEUtZNsjiOiHbWW.mp3')
-      reject(new Error('error'))
+      resolve('https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eEUtZNsjiOiHbWW.mp3')
     })
   }
 
@@ -88,6 +87,20 @@ class App extends React.Component {
           multipleImagesUpload={false}
           onReady={this.handleReady}
           handlePasteImage={this.handlePasteImage}
+          extendControls={[
+            {
+              name: 'test1',
+              menuText: 'test1',
+              title: '测试1模态框',
+              component: <input />,
+            },
+            {
+              name: 'test2',
+              menuText: 'tesst2',
+              title: '测试2模态框',
+              component: <label>label</label>,
+            },
+          ]}
         />
         <button onClick={this.getUeditorContent}>获取内容</button>
         <p>{content}</p>
