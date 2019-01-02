@@ -20,7 +20,7 @@ class App extends React.Component {
   }
 
   handlePasteImage = src => {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       resolve('https://s3.ifanr.com/wp-content/uploads/2019/01/WechatIMG974.jpeg!720')
     })
   }

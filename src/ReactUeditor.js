@@ -229,14 +229,13 @@ class ReactUeditor extends React.Component {
     let html = doc.body.innerHTML
     let images = utils.extractImageSource(html)
 
-    if (Object.prototype.toString.call('images') === '[object Array]') return
+    if (Object.prototype.toString.call(images) !== '[object Array]') return
 
     images.forEach(src => {
-      let html = doc.body.innerHTML
       let promise = handlePasteImage(src)
       if (!!promise && typeof promise.then == 'function') {
         promise.then(newSrc => {
-          let newHtml = utils.replaceImageSource(html, src, newSrc)
+          let newHtml = utils.replaceImageSource(doc.body.innerHTML, src, newSrc)
           doc.body.innerHTML = newHtml
         })
       }
