@@ -4,7 +4,7 @@
   "description": "an ueditor component for react",
   "main": "lib",
   "scripts": {
-    "dev": "webpack --progress --watch",
+    "dev": "babel src --watch --out-dir dist",
     "build": "rm -rf lib/ && babel src -d lib",
     "lint": "eslint src/**/*.js example/**/*.js --fix",
     "start": "webpack-dev-server --config example/webpack.config.js --open"
@@ -34,11 +34,11 @@
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "babel-eslint": "^8.0.2",
+    "babel-eslint": "^9.0.0",
     "babel-loader": "^8.0.4",
-    "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^1.0.1",
     "eslint": "^4.19.0",
     "eslint-config-standard": "^10.2.1",
