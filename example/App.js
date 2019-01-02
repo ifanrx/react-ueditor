@@ -15,7 +15,13 @@ class App extends React.Component {
 
   uploadImage = e => {
     return new Promise(function(resolve, reject) {
-      resolve('https://avatars2.githubusercontent.com/u/3232724?v=8&s=120')
+      resolve(window.URL.createObjectURL(e.target.files[0]))
+    })
+  }
+
+  handlePasteImage = src => {
+    return new Promise(function(resolve, reject) {
+      resolve('https://s3.ifanr.com/wp-content/uploads/2019/01/WechatIMG974.jpeg!720')
     })
   }
 
@@ -81,6 +87,7 @@ class App extends React.Component {
           progress={progress}
           multipleImagesUpload={false}
           onReady={this.handleReady}
+          handlePasteImage={this.handlePasteImage}
         />
         <button onClick={this.getUeditorContent}>获取内容</button>
         <p>{content}</p>

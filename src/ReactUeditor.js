@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import UploadModal from './UploadModal'
+import * as utils from './utils'
 
 const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy' +
   '23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNi' +
@@ -46,6 +47,7 @@ class ReactUeditor extends React.Component {
     getRef: PropTypes.func,
     multipleImagesUpload: PropTypes.bool,
     onReady: PropTypes.func,
+    handlePasteImage: PropTypes.func,
   }
 
   static defaultProps = {
@@ -218,6 +220,29 @@ class ReactUeditor extends React.Component {
     }
   }
 
+  handlePasteImage = () => {
+    let {handlePasteImage} = this.props
+    if (!handlePasteImage) return
+
+    let iframe = document.getElementById(this.containerID).querySelector('iframe')
+    let doc = iframe.contentWindow.document
+    let html = doc.body.innerHTML
+    let images = utils.extractImageSource(html)
+
+    if (Object.prototype.toString.call('images') === '[object Array]') return
+
+    images.forEach(src => {
+      let html = doc.body.innerHTML
+      let promise = handlePasteImage(src)
+      if (!!promise && typeof promise.then == 'function') {
+        promise.then(newSrc => {
+          let newHtml = utils.replaceImageSource(html, src, newSrc)
+          doc.body.innerHTML = newHtml
+        })
+      }
+    })
+  }
+
   initEditor = () => {
     const {config, plugins, onChange, value, getRef, onReady} = this.props
     this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
@@ -238,6 +263,10 @@ class ReactUeditor extends React.Component {
           this.content = this.ueditor.getContent()
           onChange && onChange(this.ueditor.getContent())
         }
+      })
+
+      this.ueditor.addListener('afterpaste', () => {
+        this.handlePasteImage()
       })
 
       if (this.isContentChangedByWillReceiveProps) {
