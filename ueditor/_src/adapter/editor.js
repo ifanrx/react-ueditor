@@ -374,7 +374,7 @@
             utils.each(UE._customizeUI,function(obj,key){
                 var itemUI,index;
                 if(obj.id && obj.id != editor.key){
-                   return false;
+                   return true;
                 }
                 itemUI = obj.execFn.call(editor,editor,key);
                 if(itemUI){
