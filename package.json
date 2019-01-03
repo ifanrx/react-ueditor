@@ -53,6 +53,7 @@
     "prop-types": "^15.6.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-router-dom": "^4.3.1",
     "style-loader": "^0.23.1",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2",
