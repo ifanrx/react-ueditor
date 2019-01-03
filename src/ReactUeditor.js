@@ -29,8 +29,8 @@ class ReactUeditor extends React.Component {
     this.ueditor = null
     this.isContentChangedByWillReceiveProps = false
     this.tempfileInput = null
-    this.containerID = 'reactueditor' + Math.random().toString(36)
-    this.fileInputID = 'fileinput' + Math.random().toString(36)
+    this.containerID = 'reactueditor' + Math.random().toString(36).substr(2)
+    this.fileInputID = 'fileinput' + Math.random().toString(36).substr(2)
     this.state = {
       videoSource: '',
       audioSource: '',
@@ -51,18 +51,23 @@ class ReactUeditor extends React.Component {
     onReady: PropTypes.func,
     handlePasteImage: PropTypes.func,
     extendControls: PropTypes.array,
+    debug: PropTypes.bool,
   }
 
   static defaultProps = {
+    value: '',
     multipleImagesUpload: false,
     extendControls: [],
+    debug: false,
   }
 
   componentDidMount() {
     let {ueditorPath} = this.props
     if (!window.UE && !window.UE_LOADING_PROMISE) {
       window.UE_LOADING_PROMISE = this.createScript(ueditorPath + '/ueditor.config.js').then(() => {
-        return this.createScript(ueditorPath + '/ueditor.all.min.js')
+        return this.props.debug
+          ? this.createScript(ueditorPath + '/ueditor.all.js')
+          : this.createScript(ueditorPath + '/ueditor.all.min.js')
       })
     }
     window.UE_LOADING_PROMISE.then(() => {
@@ -127,7 +132,7 @@ class ReactUeditor extends React.Component {
       })
 
       return btn
-    })
+    }, undefined, this.containerID)
   }
 
   registerSimpleInsertCode() {
@@ -145,19 +150,19 @@ class ReactUeditor extends React.Component {
       })
 
       return btn
-    })
+    }, undefined, this.containerID)
   }
 
   registerUploadVideo = () => {
     let {uploadVideo, progress} = this.props
     this.state.extendControls.unshift({
-      name: 'videoUpload',
+      name: this.getRegisterUIName('videoUpload'),
       menuText: '上传视频',
       title: '上传视频',
       cssRules: 'background-position: -320px -20px;',
       component: <VideoUploader upload={uploadVideo} progress={progress} onChange={this.videoChange} />,
       onClose: () => {
-        this.setState({videoUploadModalVisible: false})
+        this.setState({[this.getVisibleName('videoUpload')]: false})
       },
       onConfirm: () => {
         this.insert(this.state.videoHtml)
@@ -172,13 +177,13 @@ class ReactUeditor extends React.Component {
   registerUploadAudio = () => {
     let {uploadAudio, progress} = this.props
     this.state.extendControls.unshift({
-      name: 'audioUpload',
+      name: this.getRegisterUIName('audioUpload'),
       menuText: '上传音频',
       title: '上传音频',
       cssRules: 'background: url(' + uploadAudioIcon + ') !important; background-size: 20px 20px !important;',
       component: <AudioUploader upload={uploadAudio} progress={progress} onChange={this.audioChange} />,
       onClose: () => {
-        this.setState({audioUploadModalVisible: false})
+        this.setState({[this.getVisibleName('audioUpload')]: false})
       },
       onConfirm: () => {
         this.insert(this.state.audioHtml)
@@ -255,10 +260,17 @@ class ReactUeditor extends React.Component {
     })
   }
 
+  getVisibleName = name => {
+    return name + 'VisibleModal' + this.containerID
+  }
+
+  getRegisterUIName = name => {
+    return name + this.containerID
+  }
+
   initEditor = () => {
     const {config, plugins, onChange, value, getRef, onReady} = this.props
-    this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
-    this.ueditor._react_ref = this
+
     if (plugins && plugins instanceof Array && plugins.length > 0) {
       if (plugins.indexOf('uploadImage') !== -1) this.registerImageUpload()
       if (plugins.indexOf('insertCode') !== -1) this.registerSimpleInsertCode()
@@ -267,19 +279,22 @@ class ReactUeditor extends React.Component {
     }
 
     this.state.extendControls.forEach(control => {
-      window.UE.registerUI(control.name, (editor, uiName) => {
+      window.UE.registerUI(this.getRegisterUIName(control.name), (editor, uiName) => {
         var btn = new window.UE.ui.Button({
           name: uiName,
-          title: control.title,
+          title: control.menuText,
           cssRules: control.cssRules ? control.cssRules : '',
           onclick: () => {
-            editor._react_ref.setState({[control.name + 'ModalVisible']: true})
+            editor._react_ref.setState({[this.getVisibleName(control.name)]: true})
           },
         })
 
         return btn
-      })
+      }, undefined, this.containerID)
     })
+
+    this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
+    this.ueditor._react_ref = this
 
     getRef && getRef(this.ueditor)
     this.ueditor.ready(() => {
@@ -323,13 +338,14 @@ class ReactUeditor extends React.Component {
         {
           extendControls.map(control => (
             <Modal
-              key={control.name}
+              key={control.name + this.containerID}
               name={control.name}
               menuText={control.menuText}
               title={control.title}
-              visible={this.state[control.name + 'ModalVisible'] ? this.state[control.name + 'ModalVisible'] : false}
+              visible={this.state[this.getVisibleName(control.name)]
+                ? this.state[this.getVisibleName(control.name)] : false}
               beforeClose={control.beforeClose}
-              onClose={() => { this.setState({[control.name + 'ModalVisible']: false}) }}
+              onClose={() => { this.setState({[this.getVisibleName(control.name)]: false}) }}
               onConfirm={control.onConfirm}
               component={control.component}
             />
