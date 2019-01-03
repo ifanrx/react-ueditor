@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Tue Dec 04 2018 18:26:57 GMT+0800 (CST)
+ * build: Fri Jan 04 2019 00:35:14 GMT+0800 (CST)
  */
 
 (function(){
@@ -29021,11 +29021,10 @@ UE.ui = baidu.editor.ui = {};
             }
 
             //接受外部定制的UI
-
             utils.each(UE._customizeUI,function(obj,key){
                 var itemUI,index;
                 if(obj.id && obj.id != editor.key){
-                   return false;
+                   return true;
                 }
                 itemUI = obj.execFn.call(editor,editor,key);
                 if(itemUI){
@@ -29503,7 +29502,6 @@ UE.ui = baidu.editor.ui = {};
                 index:index
             };
         })
-
     }
 
 })();
