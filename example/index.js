@@ -70,8 +70,8 @@ class App extends React.Component {
               <Route path='/async-example/' component={AsyncExample} />
               <Route path='/media-example/' component={MediaExample} />
               <Route path='/editor-ref-example/' component={EditorRefExample} />
-              <Route path='/extend-controls-example' component={ExtendControlsExample} />
-              <Route path='/paste-image-example' component={PasteImageExample} />
+              <Route path='/extend-controls-example/' component={ExtendControlsExample} />
+              <Route path='/paste-image-example/' component={PasteImageExample} />
             </Switch>
           </section>
         </div>

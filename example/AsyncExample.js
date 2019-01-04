@@ -2,20 +2,25 @@ import React from 'react'
 import ReactUeditor from '../src'
 
 class AsyncExample extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.editorResult = ''
     this.state = {
       content: '',
     }
+    this.timer = null
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.setState({
         content: '我是异步加载回来的数据',
       })
     }, 2000)
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer)
   }
 
   updateEditorContent = content => {
@@ -28,10 +33,12 @@ class AsyncExample extends React.Component {
     return (
       <div>
         <ReactUeditor
+          debug
           getRef={this.getUeditor}
           ueditorPath='../vendor/ueditor'
           value={content}
           onChange={this.updateEditorContent}
+          extendControls={[]}
         />
       </div>
     )

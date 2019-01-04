@@ -2,8 +2,8 @@ import React from 'react'
 import ReactUeditor from '../src'
 
 class MediaExample extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
       progress: -1,
     }
@@ -56,6 +56,7 @@ class MediaExample extends React.Component {
         onChange={this.updateEditorContent}
         progress={progress}
         multipleImagesUpload={false}
+        extendControls={[]}
       />
     )
   }

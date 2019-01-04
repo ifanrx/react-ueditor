@@ -9,8 +9,10 @@ class SimpleExample extends React.Component {
   render() {
     return (
       <ReactUeditor
+        debug
         ueditorPath='../vendor/ueditor'
         onChange={this.updateEditorContent}
+        extendControls={[]}
       />
     )
   }

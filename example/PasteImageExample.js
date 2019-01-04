@@ -15,6 +15,7 @@ class PasteImageExample extends React.Component {
       <ReactUeditor
         ueditorPath='../vendor/ueditor'
         handlePasteImage={this.handlePasteImage}
+        extendControls={[]}
       />
     )
   }

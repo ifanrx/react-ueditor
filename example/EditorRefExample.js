@@ -2,8 +2,8 @@ import React from 'react'
 import ReactUeditor from '../src'
 
 class EditorRefExample extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.ueditorRef = null
     this.state = {
       content: '',
@@ -35,6 +35,7 @@ class EditorRefExample extends React.Component {
           getRef={this.getUeditor}
           onChange={this.updateEditorContent}
           onReady={this.handleReady}
+          extendControls={[]}
         />
         <button onClick={this.getUeditorContent}>获取内容</button>
         <p>{content}</p>

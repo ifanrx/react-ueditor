@@ -29,6 +29,7 @@ class App extends React.Component {
   render() {
     return (
       <ReactUeditor
+        debug
         ueditorPath='../vendor/ueditor'
         getRef={this.getUeditor}
         extendControls={[
