@@ -333,7 +333,7 @@ class ReactUeditor extends React.Component {
         <input type='file'
           id={this.fileInputID}
           onChange={this.uploadImage}
-          style={{visibility: 'hidden'}}
+          style={{visibility: 'hidden', width: 0, height: 0, margin: 0, padding: 0, fontSize: 0}}
           multiple={multipleImagesUpload} />
         {
           extendControls.map(control => (
