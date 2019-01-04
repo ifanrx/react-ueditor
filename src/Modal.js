@@ -14,10 +14,6 @@ class Modal extends React.PureComponent {
     onConfirm: PropTypes.func,
   }
 
-  static defaultProps = {
-
-  }
-
   closeModal = () => {
     this.props.beforeClose && this.props.beforeClose()
     this.props.onClose()

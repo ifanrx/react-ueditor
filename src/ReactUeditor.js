@@ -1,3 +1,4 @@
+import Link from './Link'
 import Modal from './Modal'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -165,7 +166,12 @@ class ReactUeditor extends React.Component {
         this.setState({[this.getVisibleName('videoUpload')]: false})
       },
       onConfirm: () => {
-        this.insert(this.state.videoHtml)
+        if (this.ueditor) {
+          this.ueditor.execCommand('insertparagraph')
+          this.ueditor.execCommand('inserthtml', this.state.videoHtml, true)
+          this.ueditor.execCommand('insertparagraph')
+          this.ueditor.execCommand('insertparagraph')
+        }
       },
     })
 
@@ -186,12 +192,33 @@ class ReactUeditor extends React.Component {
         this.setState({[this.getVisibleName('audioUpload')]: false})
       },
       onConfirm: () => {
-        this.insert(this.state.audioHtml)
+        if (this.ueditor) {
+          this.ueditor.execCommand('insertparagraph')
+          this.ueditor.execCommand('inserthtml', this.state.audioHtml, true)
+          this.ueditor.execCommand('insertparagraph')
+          this.ueditor.execCommand('insertparagraph')
+        }
       },
     })
 
     this.setState({
       extendControls: this.state.extendControls,
+    })
+  }
+
+  registerLink = () => {
+    this.state.extendControls.unshift({
+      name: this.getRegisterUIName('insertLink'),
+      menuText: '超链接',
+      title: '超链接',
+      cssRules: 'background-position: -504px 0px;',
+      component: <Link onChange={this.linkChange} />,
+      onClose: () => {
+        this.setState({[this.getVisibleName('insertLink')]: false})
+      },
+      onConfirm: () => {
+        this.ueditor && this.ueditor.execCommand('inserthtml', this.state.linkHtml, true)
+      },
     })
   }
 
@@ -201,6 +228,10 @@ class ReactUeditor extends React.Component {
 
   audioChange = audioHtml => {
     this.setState({audioHtml})
+  }
+
+  linkChange = linkHtml => {
+    this.setState({linkHtml})
   }
 
   uploadImage = e => {
@@ -226,15 +257,6 @@ class ReactUeditor extends React.Component {
     if (this.ueditor) {
       this.ueditor.focus()
       this.ueditor.execCommand('inserthtml', '<img src="' + imageUrl + '" />')
-    }
-  }
-
-  insert = html => {
-    if (this.ueditor) {
-      this.ueditor.execCommand('insertparagraph')
-      this.ueditor.execCommand('inserthtml', html, true)
-      this.ueditor.execCommand('insertparagraph')
-      this.ueditor.execCommand('insertparagraph')
     }
   }
 
@@ -276,6 +298,7 @@ class ReactUeditor extends React.Component {
       if (plugins.indexOf('insertCode') !== -1) this.registerSimpleInsertCode()
       if (plugins.indexOf('uploadVideo') !== -1) this.registerUploadVideo()
       if (plugins.indexOf('uploadAudio') !== -1) this.registerUploadAudio()
+      if (plugins.indexOf('insertLink') !== -1) this.registerLink()
     }
 
     this.state.extendControls.forEach(control => {

@@ -49,6 +49,7 @@ plugins 现支持：
 - 视频上传 uploadVideo
 - 音频上传 uploadAudio
 - 插入代码 insertCode
+- 插入链接 insertLink
 
 #### 配置
 ueditor 主要通过ueditor.config.js 文件来配置，在存在多个编辑器示例而配置有所差异的场景下，可将部分参数传入到 config 属性中，具体配置可参考 (ueditor 配置说明)[http://fex.baidu.com/ueditor/#start-config]

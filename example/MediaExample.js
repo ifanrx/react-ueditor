@@ -49,7 +49,7 @@ class MediaExample extends React.Component {
       <ReactUeditor
         debug
         ueditorPath='../vendor/ueditor'
-        plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
+        plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio', 'insertLink']}
         uploadImage={this.uploadImage}
         uploadVideo={this.uploadVideo}
         uploadAudio={this.uploadAudio}
