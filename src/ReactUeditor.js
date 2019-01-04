@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import UploadModal from './UploadModal'
+import Link from './Link'
 
 const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy' +
   '23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNi' +
@@ -33,6 +34,7 @@ class ReactUeditor extends React.Component {
   state = {
     videoModalVisible: false,
     audioModalVisible: false,
+    linkModalVisible: false,
     videoSource: '',
     audioSource: '',
   }
@@ -172,6 +174,23 @@ class ReactUeditor extends React.Component {
     })
   }
 
+  registerLink = () => {
+    window.UE.registerUI('insertLink', (editor, uiName) => {
+      var btn = new window.UE.ui.Button({
+        name: uiName,
+        title: '超链接',
+        cssRules: 'background-position: -504px 0px;',
+        onclick: () => {
+          editor._react_ref.setState({
+            linkModalVisible: true,
+          })
+        },
+      })
+
+      return btn
+    })
+  }
+
   uploadImage = e => {
     let {uploadImage} = this.props
     if (uploadImage) {
@@ -207,6 +226,12 @@ class ReactUeditor extends React.Component {
     }
   }
 
+  insertLink = html => {
+    if (this.ueditor) {
+      this.ueditor.execCommand('inserthtml', html, true)
+    }
+  }
+
   closeModal = type => {
     switch (type) {
     case 'video':
@@ -214,6 +239,9 @@ class ReactUeditor extends React.Component {
       break
     case 'audio':
       this.setState({audioModalVisible: false})
+      break
+    case 'link':
+      this.setState({linkModalVisible: false})
       break
     }
   }
@@ -227,6 +255,7 @@ class ReactUeditor extends React.Component {
       if (plugins.indexOf('insertCode') !== -1) this.registerSimpleInsertCode()
       if (plugins.indexOf('uploadVideo') !== -1) this.registerUploadVideo()
       if (plugins.indexOf('uploadAudio') !== -1) this.registerUploadAudio()
+      if (plugins.indexOf('insertLink') !== -1) this.registerLink()
     }
     getRef && getRef(this.ueditor)
     this.ueditor.ready(() => {
@@ -252,7 +281,7 @@ class ReactUeditor extends React.Component {
   }
 
   render() {
-    let {videoModalVisible, audioModalVisible} = this.state
+    let {videoModalVisible, audioModalVisible, linkModalVisible} = this.state
     let {uploadVideo, uploadAudio, multipleImagesUpload, progress} = this.props
     return (
       <div>
@@ -282,6 +311,12 @@ class ReactUeditor extends React.Component {
           insert={this.insert}
           upload={uploadAudio}
           progress={progress} />
+        <Link
+          visible={linkModalVisible}
+          closeModal={() => {
+            this.closeModal('link')
+          }}
+          insert={this.insertLink} />
       </div>
     )
   }

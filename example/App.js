@@ -73,7 +73,7 @@ class App extends React.Component {
           ueditorPath='../vendor/ueditor'
           config={{zIndex: 1001}}
           value={this.editorResult}
-          plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio']}
+          plugins={['uploadImage', 'insertCode', 'uploadVideo', 'uploadAudio', 'insertLink']}
           uploadImage={this.uploadImage}
           uploadVideo={this.uploadVideo}
           uploadAudio={this.uploadAudio}
