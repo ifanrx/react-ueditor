@@ -1,7 +1,5 @@
 import Button from './Button'
 import Input from './Input'
-import Label from './Label'
-import Select from './Select'
 import Modal from 'rc-dialog'
 import React from 'react'
 
