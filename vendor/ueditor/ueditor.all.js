@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Fri Jan 04 2019 00:35:14 GMT+0800 (CST)
+ * build: Fri Jan 04 2019 13:31:07 GMT+0800 (CST)
  */
 
 (function(){
@@ -3957,6 +3957,7 @@ var domUtils = dom.domUtils = {
      * @return { Boolean } 是否是空元素
      */
     isEmptyBlock:function (node,reg) {
+        if(!node) return 0
         if(node.nodeType != 1)
             return 0;
         reg = reg || new RegExp('[ \xa0\t\r\n' + domUtils.fillChar + ']', 'g');
@@ -6876,8 +6877,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                 textarea.style.display = ''
             }
 
-            textarea.style.width = me.iframe.offsetWidth + 'px';
-            textarea.style.height = me.iframe.offsetHeight + 'px';
+            textarea.style.width = me.iframe ? me.iframe.offsetWidth + 'px' : '0';
+            textarea.style.height = me.iframe ? me.iframe.offsetHeight + 'px' : '0';
             textarea.value = me.getContent();
             textarea.id = me.key;
             container.innerHTML = '';
@@ -17421,25 +17422,24 @@ UE.plugins['autoheight'] = function () {
         if(isFullscreen)return;
         if (!me.queryCommandState || me.queryCommandState && me.queryCommandState('source') != 1) {
             timer = setTimeout(function(){
-
-                var node = me.body.lastChild;
-                while(node && node.nodeType != 1){
-                    node = node.previousSibling;
-                }
-                if(node && node.nodeType == 1){
-                    node.style.clear = 'both';
-                    currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight + 25 ,Math.max(options.minFrameHeight, options.initialFrameHeight)) ;
-                    if (currentHeight != lastHeight) {
-                        if (currentHeight !== parseInt(me.iframe.parentNode.style.height)) {
-                            me.iframe.parentNode.style.height = currentHeight + 'px';
-                        }
-                        me.body.style.height = currentHeight + 'px';
-                        lastHeight = currentHeight;
+                try {
+                    var node = me.body.lastChild;
+                    while(node && node.nodeType != 1){
+                        node = node.previousSibling;
                     }
-                    domUtils.removeStyle(node,'clear');
-                }
-
-
+                    if(node && node.nodeType == 1){
+                        node.style.clear = 'both';
+                        currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight + 25 ,Math.max(options.minFrameHeight, options.initialFrameHeight)) ;
+                        if (currentHeight != lastHeight) {
+                            if (currentHeight !== parseInt(me.iframe.parentNode.style.height)) {
+                                me.iframe.parentNode.style.height = currentHeight + 'px';
+                            }
+                            me.body.style.height = currentHeight + 'px';
+                            lastHeight = currentHeight;
+                        }
+                        domUtils.removeStyle(node,'clear');
+                    }
+                } catch (e) {}
             },50)
         }
     }
@@ -29021,6 +29021,7 @@ UE.ui = baidu.editor.ui = {};
             }
 
             //接受外部定制的UI
+
             utils.each(UE._customizeUI,function(obj,key){
                 var itemUI,index;
                 if(obj.id && obj.id != editor.key){
@@ -29502,6 +29503,7 @@ UE.ui = baidu.editor.ui = {};
                 index:index
             };
         })
+
     }
 
 })();
@@ -29557,11 +29559,15 @@ UE.registerUI('message', function(editor) {
     });
 
     function updateHolderPos(){
-        var toolbarbox = me.ui.getDom('toolbarbox');
-        if (toolbarbox) {
-            holder.style.top = toolbarbox.offsetHeight + 3 + 'px';
+        if (me.ui) {
+            var toolbarbox = me.ui.getDom('toolbarbox');
+            if (toolbarbox) {
+                holder.style.top = toolbarbox.offsetHeight + 3 + 'px';
+            }
         }
-        holder.style.zIndex = Math.max(me.options.zIndex, me.iframe.style.zIndex) + 1;
+        if (me.options) {
+            holder.style.zIndex = Math.max(me.options.zIndex, me.iframe.style.zIndex) + 1;
+        }
     }
 
 });
