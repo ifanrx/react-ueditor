@@ -344,8 +344,8 @@
                 textarea.style.display = ''
             }
 
-            textarea.style.width = me.iframe.offsetWidth + 'px';
-            textarea.style.height = me.iframe.offsetHeight + 'px';
+            textarea.style.width = me.iframe ? me.iframe.offsetWidth + 'px' : '0';
+            textarea.style.height = me.iframe ? me.iframe.offsetHeight + 'px' : '0';
             textarea.value = me.getContent();
             textarea.id = me.key;
             container.innerHTML = '';
