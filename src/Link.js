@@ -15,7 +15,7 @@ let spanStyle = {
   width: '80px',
 }
 let formItmeStyle = {
-  marginBottom: '5px',
+  marginBottom: '10px',
 }
 
 class Link extends React.Component {
