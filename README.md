@@ -30,7 +30,9 @@ import ReactUeditor from 'react-ueditor'
 Property             | Description                                  | Type   | Must
 :------------------- | :------------------------------------------- | :----- | :------
 config               | 在实例化时传入配置参数                           | obj   | no
+extendControls       | 扩展工具栏（目前仅支持弹出模态框方式）             | array | no
 getRef               | 获取 ueditor 实例                             | func  | no
+handlePasteImage     | 用于处理复制进来的图片                           | func  | no
 multipleImagesUpload | 支持多文件上传，默认为 false                     | bool  | no
 onChange             | 编辑器内容改变事件                               | func  | no
 onReady              | ueditor 加载完成事件                            | func  | no
