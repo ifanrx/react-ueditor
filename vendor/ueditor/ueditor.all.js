@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Fri Jan 04 2019 13:31:07 GMT+0800 (CST)
+ * build: Sun Jan 06 2019 00:42:20 GMT+0800 (CST)
  */
 
 (function(){
@@ -6865,8 +6865,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * ```
          */
         destroy: function () {
-
             var me = this;
+            if (!me.container) return
             me.fireEvent('destroy');
             var container = me.container.parentNode;
             var textarea = me.textarea;
@@ -7260,7 +7260,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                 return '';
             }
             me.fireEvent('beforegetcontent');
-            var root = UE.htmlparser(me.body.innerHTML,ignoreBlank);
+            var html = me.body ? me.body.innerHTML : ''
+            var root = UE.htmlparser(html,ignoreBlank);
             me.filterOutputRule(root);
             me.fireEvent('aftergetcontent', cmd,root);
             return  root.toHtml(formatter);
@@ -7605,6 +7606,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @return { * } 返回命令函数运行的返回值
          */
         _callCmdFn: function (fnName, args) {
+            if(!this.cmdFn) return 0
             var cmdName = args[0].toLowerCase(),
                 cmd, cmdFn;
             cmd = this.commands[cmdName] || UE.commands[cmdName];
@@ -7919,6 +7921,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * ```
          */
         getLang: function (path) {
+            if(!this.options) return
             var lang = UE.I18N[this.options.lang];
             if (!lang) {
                 throw Error("not import language file");
@@ -8137,7 +8140,7 @@ UE.Editor.defaultOptions = function(editor){
         });
 
         function showErrorMsg(msg) {
-            console && console.error(msg);
+            console && msg && console.error(msg);
             //me.fireEvent('showMessage', {
             //    'title': msg,
             //    'type': 'error'
@@ -29426,10 +29429,12 @@ UE.ui = baidu.editor.ui = {};
                     if (opt.initialFrameWidth) {
                         opt.minFrameWidth = opt.initialFrameWidth;
                     } else {
-                        opt.minFrameWidth = opt.initialFrameWidth = holder.offsetWidth;
-                        var styleWidth = holder.style.width;
-                        if(/%$/.test(styleWidth)) {
-                            opt.initialFrameWidth = styleWidth;
+                        if (holder) {
+                            opt.minFrameWidth = opt.initialFrameWidth = holder.offsetWidth;
+                            var styleWidth = holder.style.width;
+                            if(/%$/.test(styleWidth)) {
+                                opt.initialFrameWidth = styleWidth;
+                            }
                         }
                     }
                     if (opt.initialFrameHeight) {
@@ -29442,7 +29447,7 @@ UE.ui = baidu.editor.ui = {};
                     }
                     //编辑器最外容器设置了高度，会导致，编辑器不占位
                     //todo 先去掉，没有找到原因
-                    if(holder.style.height){
+                    if(holder && holder.style.height){
                         holder.style.height = ''
                     }
                     editor.container.style.width = opt.initialFrameWidth + (/%$/.test(opt.initialFrameWidth) ? '' : 'px');
