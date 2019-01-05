@@ -5,11 +5,9 @@ import React from 'react'
 import 'rc-dialog/assets/index.css'
 
 class Modal extends React.PureComponent {
-  static PropTypes = {
-    name: PropTypes.string.isRequired,
-    menuText: PropTypes.string.isRequired,
+  static propTypes = {
     title: PropTypes.string,
-    beforeCloseModal: PropTypes.func,
+    beforeClose: PropTypes.func,
     onClose: PropTypes.func,
     onConfirm: PropTypes.func,
   }
