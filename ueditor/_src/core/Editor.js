@@ -1073,6 +1073,7 @@
          * @return { * } 返回命令函数运行的返回值
          */
         _callCmdFn: function (fnName, args) {
+            if (!this.commands) return 0
             var cmdName = args[0].toLowerCase(),
                 cmd, cmdFn;
             cmd = this.commands[cmdName] || UE.commands[cmdName];
