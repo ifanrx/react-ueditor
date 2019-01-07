@@ -268,9 +268,7 @@ class ReactUeditor extends React.Component {
     let {handlePasteImage} = this.props
     if (!handlePasteImage) return
 
-    let iframe = document.getElementById(this.containerID).querySelector('iframe')
-    let doc = iframe.contentWindow.document
-    let html = doc.body.innerHTML
+    let html = this.ueditor.getContent()
     let images = utils.extractImageSource(html)
 
     if (Object.prototype.toString.call(images) !== '[object Array]') return
@@ -279,8 +277,8 @@ class ReactUeditor extends React.Component {
       let promise = handlePasteImage(src)
       if (!!promise && typeof promise.then == 'function') {
         promise.then(newSrc => {
-          let newHtml = utils.replaceImageSource(doc.body.innerHTML, src, newSrc)
-          doc.body.innerHTML = newHtml
+          let newHtml = utils.replaceImageSource(this.ueditor.getContent(), src, newSrc)
+          this.ueditor.setContent(newHtml)
         })
       }
     })

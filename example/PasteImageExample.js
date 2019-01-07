@@ -10,11 +10,16 @@ class PasteImageExample extends React.Component {
     })
   }
 
+  updateEditorContent = newContent => {
+    console.log('newContent', newContent)
+  }
+
   render() {
     return (
       <ReactUeditor
         ueditorPath='../vendor/ueditor'
         handlePasteImage={this.handlePasteImage}
+        onChange={this.updateEditorContent}
       />
     )
   }
