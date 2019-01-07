@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Sun Jan 06 2019 00:42:21 GMT+0800 (CST)
+ * build: Mon Jan 07 2019 11:26:45 GMT+0800 (CST)
  */
 
 (function(){

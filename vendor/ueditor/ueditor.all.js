@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Sun Jan 06 2019 00:42:20 GMT+0800 (CST)
+ * build: Mon Jan 07 2019 11:26:45 GMT+0800 (CST)
  */
 
 (function(){
@@ -7606,7 +7606,6 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @return { * } 返回命令函数运行的返回值
          */
         _callCmdFn: function (fnName, args) {
-            if(!this.cmdFn) return 0
             var cmdName = args[0].toLowerCase(),
                 cmd, cmdFn;
             cmd = this.commands[cmdName] || UE.commands[cmdName];
