@@ -14,7 +14,7 @@ const inputStyle = {
   margin: '0 10px',
 }
 
-class Input extends React.Component {
+class Input extends React.PureComponent {
   render() {
     let {type, value, onChange, style} = this.props
     let mergedStyle = {...inputStyle, ...style}

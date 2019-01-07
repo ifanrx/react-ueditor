@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Tue Dec 04 2018 18:26:57 GMT+0800 (CST)
+ * build: Mon Jan 07 2019 11:39:49 GMT+0800 (CST)
  */
 
 (function(){
@@ -3957,6 +3957,7 @@ var domUtils = dom.domUtils = {
      * @return { Boolean } 是否是空元素
      */
     isEmptyBlock:function (node,reg) {
+        if(!node) return 0
         if(node.nodeType != 1)
             return 0;
         reg = reg || new RegExp('[ \xa0\t\r\n' + domUtils.fillChar + ']', 'g');
@@ -6864,8 +6865,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * ```
          */
         destroy: function () {
-
             var me = this;
+            if (!me.container) return
             me.fireEvent('destroy');
             var container = me.container.parentNode;
             var textarea = me.textarea;
@@ -6876,8 +6877,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                 textarea.style.display = ''
             }
 
-            textarea.style.width = me.iframe.offsetWidth + 'px';
-            textarea.style.height = me.iframe.offsetHeight + 'px';
+            textarea.style.width = me.iframe ? me.iframe.offsetWidth + 'px' : '0';
+            textarea.style.height = me.iframe ? me.iframe.offsetHeight + 'px' : '0';
             textarea.value = me.getContent();
             textarea.id = me.key;
             container.innerHTML = '';
@@ -7259,7 +7260,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                 return '';
             }
             me.fireEvent('beforegetcontent');
-            var root = UE.htmlparser(me.body.innerHTML,ignoreBlank);
+            var html = me.body ? me.body.innerHTML : ''
+            var root = UE.htmlparser(html,ignoreBlank);
             me.filterOutputRule(root);
             me.fireEvent('aftergetcontent', cmd,root);
             return  root.toHtml(formatter);
@@ -7604,6 +7606,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @return { * } 返回命令函数运行的返回值
          */
         _callCmdFn: function (fnName, args) {
+            if (!this.commands) return 0
             var cmdName = args[0].toLowerCase(),
                 cmd, cmdFn;
             cmd = this.commands[cmdName] || UE.commands[cmdName];
@@ -7918,6 +7921,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * ```
          */
         getLang: function (path) {
+            if(!this.options) return
             var lang = UE.I18N[this.options.lang];
             if (!lang) {
                 throw Error("not import language file");
@@ -8136,7 +8140,7 @@ UE.Editor.defaultOptions = function(editor){
         });
 
         function showErrorMsg(msg) {
-            console && console.error(msg);
+            console && msg && console.error(msg);
             //me.fireEvent('showMessage', {
             //    'title': msg,
             //    'type': 'error'
@@ -17421,25 +17425,24 @@ UE.plugins['autoheight'] = function () {
         if(isFullscreen)return;
         if (!me.queryCommandState || me.queryCommandState && me.queryCommandState('source') != 1) {
             timer = setTimeout(function(){
-
-                var node = me.body.lastChild;
-                while(node && node.nodeType != 1){
-                    node = node.previousSibling;
-                }
-                if(node && node.nodeType == 1){
-                    node.style.clear = 'both';
-                    currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight + 25 ,Math.max(options.minFrameHeight, options.initialFrameHeight)) ;
-                    if (currentHeight != lastHeight) {
-                        if (currentHeight !== parseInt(me.iframe.parentNode.style.height)) {
-                            me.iframe.parentNode.style.height = currentHeight + 'px';
-                        }
-                        me.body.style.height = currentHeight + 'px';
-                        lastHeight = currentHeight;
+                try {
+                    var node = me.body.lastChild;
+                    while(node && node.nodeType != 1){
+                        node = node.previousSibling;
                     }
-                    domUtils.removeStyle(node,'clear');
-                }
-
-
+                    if(node && node.nodeType == 1){
+                        node.style.clear = 'both';
+                        currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight + 25 ,Math.max(options.minFrameHeight, options.initialFrameHeight)) ;
+                        if (currentHeight != lastHeight) {
+                            if (currentHeight !== parseInt(me.iframe.parentNode.style.height)) {
+                                me.iframe.parentNode.style.height = currentHeight + 'px';
+                            }
+                            me.body.style.height = currentHeight + 'px';
+                            lastHeight = currentHeight;
+                        }
+                        domUtils.removeStyle(node,'clear');
+                    }
+                } catch (e) {}
             },50)
         }
     }
@@ -29025,7 +29028,7 @@ UE.ui = baidu.editor.ui = {};
             utils.each(UE._customizeUI,function(obj,key){
                 var itemUI,index;
                 if(obj.id && obj.id != editor.key){
-                   return false;
+                   return true;
                 }
                 itemUI = obj.execFn.call(editor,editor,key);
                 if(itemUI){
@@ -29426,10 +29429,12 @@ UE.ui = baidu.editor.ui = {};
                     if (opt.initialFrameWidth) {
                         opt.minFrameWidth = opt.initialFrameWidth;
                     } else {
-                        opt.minFrameWidth = opt.initialFrameWidth = holder.offsetWidth;
-                        var styleWidth = holder.style.width;
-                        if(/%$/.test(styleWidth)) {
-                            opt.initialFrameWidth = styleWidth;
+                        if (holder) {
+                            opt.minFrameWidth = opt.initialFrameWidth = holder.offsetWidth;
+                            var styleWidth = holder.style.width;
+                            if(/%$/.test(styleWidth)) {
+                                opt.initialFrameWidth = styleWidth;
+                            }
                         }
                     }
                     if (opt.initialFrameHeight) {
@@ -29442,7 +29447,7 @@ UE.ui = baidu.editor.ui = {};
                     }
                     //编辑器最外容器设置了高度，会导致，编辑器不占位
                     //todo 先去掉，没有找到原因
-                    if(holder.style.height){
+                    if(holder && holder.style.height){
                         holder.style.height = ''
                     }
                     editor.container.style.width = opt.initialFrameWidth + (/%$/.test(opt.initialFrameWidth) ? '' : 'px');
@@ -29559,11 +29564,15 @@ UE.registerUI('message', function(editor) {
     });
 
     function updateHolderPos(){
-        var toolbarbox = me.ui.getDom('toolbarbox');
-        if (toolbarbox) {
-            holder.style.top = toolbarbox.offsetHeight + 3 + 'px';
+        if (me.ui) {
+            var toolbarbox = me.ui.getDom('toolbarbox');
+            if (toolbarbox) {
+                holder.style.top = toolbarbox.offsetHeight + 3 + 'px';
+            }
         }
-        holder.style.zIndex = Math.max(me.options.zIndex, me.iframe.style.zIndex) + 1;
+        if (me.options) {
+            holder.style.zIndex = Math.max(me.options.zIndex, me.iframe.style.zIndex) + 1;
+        }
     }
 
 });

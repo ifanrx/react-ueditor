@@ -1,7 +1,10 @@
+import Link from './Link'
+import Modal from './Modal'
 import PropTypes from 'prop-types'
 import React from 'react'
-import UploadModal from './UploadModal'
-import Link from './Link'
+import VideoUploader from './VideoUploader'
+import AudioUploader from './AudioUploader'
+import * as utils from './utils'
 
 const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy' +
   '23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNi' +
@@ -11,7 +14,7 @@ const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAA
   'wOR2C+KqPsm5cQkmFlQ1corAeHVatOJZ8AVIu4jwmgqZO0v4irZnQtcIFzslwBuq7bLPKn0wR6whYjtZ9jxurLvtzmzwUwQrvYryjwBzF2hO' +
   'ojYfgC9YCabpv6bxLWf4yII39J+NuLG+8BvkPJgOpND9TJjrH7t4Yet/VS1vNVmpLO205XsWPvpWuUGoD6/AJ1jtp/zjcg0YKf636kCpxLdj' +
   '3MBOHsFfgBLLaBN8r49lAAAAABJRU5ErkJggg=='
-const uploadAudio = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBUlEQVRYR+1VwXHbMBC8' +
+const uploadAudioIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBUlEQVRYR+1VwXHbMBC8' +
   'qyBxBXI6cCqwUkEOFUSuIHYFliuwUoGVCrAdWOlA6UCuIOpgPashNRQIOtJkHH2ID2eIA25vD7vndublZ85vI4CRgZGBkxmIiI9mdm9mMzNb' +
   'AHgYknJEzM3sA4C7oZiTAEREmNmTuwvEi5lNSH4GsK4liIiFu38nuQRwU4s5CkBTtRILwAvJWzPbuvszyS8AVhFxZWbXAH50E0XE0t2/kbwB' +
   'sCxBVAFExKW7TxRMUhfPVTVJXT4HsI2IaQHg1t0fFQNAAPcrpbQhqVZc/BWAaHb3XASq6pkqbf+XAPQ/pQQz+9qy0omdufsTyQRAMfvVYyCl' +
@@ -22,21 +25,20 @@ const uploadAudio = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAA
 
 class ReactUeditor extends React.Component {
   constructor(props) {
-    super()
+    super(props)
     this.content = props.value || '' // 存储编辑器的实时数据，用于传递给父组件
     this.ueditor = null
     this.isContentChangedByWillReceiveProps = false
     this.tempfileInput = null
-    this.containerID = 'reactueditor' + Math.random().toString(36)
-    this.fileInputID = 'fileinput' + Math.random().toString(36)
-  }
-
-  state = {
-    videoModalVisible: false,
-    audioModalVisible: false,
-    linkModalVisible: false,
-    videoSource: '',
-    audioSource: '',
+    this.containerID = 'reactueditor' + Math.random().toString(36).substr(2)
+    this.fileInputID = 'fileinput' + Math.random().toString(36).substr(2)
+    this.state = {
+      videoSource: '',
+      audioSource: '',
+      extendControls: this.props.extendControls ? this.props.extendControls : [],
+      videoHtml: '',
+      audioHtml: '',
+    }
   }
 
   static propTypes = {
@@ -48,17 +50,25 @@ class ReactUeditor extends React.Component {
     getRef: PropTypes.func,
     multipleImagesUpload: PropTypes.bool,
     onReady: PropTypes.func,
+    handlePasteImage: PropTypes.func,
+    extendControls: PropTypes.array,
+    debug: PropTypes.bool,
   }
 
   static defaultProps = {
+    value: '',
     multipleImagesUpload: false,
+    extendControls: [],
+    debug: false,
   }
 
   componentDidMount() {
     let {ueditorPath} = this.props
     if (!window.UE && !window.UE_LOADING_PROMISE) {
       window.UE_LOADING_PROMISE = this.createScript(ueditorPath + '/ueditor.config.js').then(() => {
-        return this.createScript(ueditorPath + '/ueditor.all.min.js')
+        return this.props.debug
+          ? this.createScript(ueditorPath + '/ueditor.all.js')
+          : this.createScript(ueditorPath + '/ueditor.all.min.js')
       })
     }
     window.UE_LOADING_PROMISE.then(() => {
@@ -123,7 +133,7 @@ class ReactUeditor extends React.Component {
       })
 
       return btn
-    })
+    }, undefined, this.containerID)
   }
 
   registerSimpleInsertCode() {
@@ -141,54 +151,91 @@ class ReactUeditor extends React.Component {
       })
 
       return btn
-    })
+    }, undefined, this.containerID)
   }
 
   registerUploadVideo = () => {
-    window.UE.registerUI('videoUpload', (editor, uiName) => {
-      var btn = new window.UE.ui.Button({
-        name: uiName,
-        title: '上传视频',
-        cssRules: 'background-position: -320px -20px;',
-        onclick: () => {
-          editor._react_ref.setState({videoModalVisible: true})
-        },
-      })
+    let {uploadVideo, progress} = this.props
+    let newExtendControls = [{
+      name: this.getRegisterUIName('videoUpload'),
+      menuText: '上传视频',
+      title: '上传视频',
+      cssRules: 'background-position: -320px -20px;',
+      component: <VideoUploader upload={uploadVideo} progress={progress} onChange={this.videoChange} />,
+      onClose: () => {
+        this.setState({[this.getVisibleName('videoUpload')]: false})
+      },
+      onConfirm: () => {
+        if (this.ueditor) {
+          this.ueditor.execCommand('insertparagraph')
+          this.ueditor.execCommand('inserthtml', this.state.videoHtml, true)
+          this.ueditor.execCommand('insertparagraph')
+          this.ueditor.execCommand('insertparagraph')
+        }
+      },
+    }, ...this.state.extendControls]
 
-      return btn
+    this.setState({
+      extendControls: newExtendControls,
     })
   }
 
   registerUploadAudio = () => {
-    window.UE.registerUI('audioUpload', (editor, uiName) => {
-      var btn = new window.UE.ui.Button({
-        name: uiName,
-        title: '上传音频',
-        cssRules: 'background: url(' + uploadAudio + ') !important; background-size: 20px 20px !important;',
-        onclick: () => {
-          editor._react_ref.setState({audioModalVisible: true})
-        },
-      })
+    let {uploadAudio, progress} = this.props
+    let newExtendControls = [{
+      name: this.getRegisterUIName('audioUpload'),
+      menuText: '上传音频',
+      title: '上传音频',
+      cssRules: 'background: url(' + uploadAudioIcon + ') !important; background-size: 20px 20px !important;',
+      component: <AudioUploader upload={uploadAudio} progress={progress} onChange={this.audioChange} />,
+      onClose: () => {
+        this.setState({[this.getVisibleName('audioUpload')]: false})
+      },
+      onConfirm: () => {
+        if (this.ueditor) {
+          this.ueditor.execCommand('insertparagraph')
+          this.ueditor.execCommand('inserthtml', this.state.audioHtml, true)
+          this.ueditor.execCommand('insertparagraph')
+          this.ueditor.execCommand('insertparagraph')
+        }
+      },
+    }, ...this.state.extendControls]
 
-      return btn
+    this.setState({
+      extendControls: newExtendControls,
     })
   }
 
   registerLink = () => {
-    window.UE.registerUI('insertLink', (editor, uiName) => {
-      var btn = new window.UE.ui.Button({
-        name: uiName,
-        title: '超链接',
-        cssRules: 'background-position: -504px 0px;',
-        onclick: () => {
-          editor._react_ref.setState({
-            linkModalVisible: true,
-          })
-        },
-      })
+    let newExtendControls = [{
+      name: this.getRegisterUIName('insertLink'),
+      menuText: '超链接',
+      title: '超链接',
+      cssRules: 'background-position: -504px 0px;',
+      component: <Link onChange={this.linkChange} />,
+      onClose: () => {
+        this.setState({[this.getVisibleName('insertLink')]: false})
+      },
+      onConfirm: () => {
+        this.ueditor && this.ueditor.execCommand('inserthtml', this.state.linkHtml, true)
+      },
+    }, ...this.state.extendControls]
 
-      return btn
+    this.setState({
+      extendControls: newExtendControls,
     })
+  }
+
+  videoChange = videoHtml => {
+    this.setState({videoHtml})
+  }
+
+  audioChange = audioHtml => {
+    this.setState({audioHtml})
+  }
+
+  linkChange = linkHtml => {
+    this.setState({linkHtml})
   }
 
   uploadImage = e => {
@@ -217,39 +264,37 @@ class ReactUeditor extends React.Component {
     }
   }
 
-  insert = html => {
-    if (this.ueditor) {
-      this.ueditor.execCommand('insertparagraph')
-      this.ueditor.execCommand('inserthtml', html, true)
-      this.ueditor.execCommand('insertparagraph')
-      this.ueditor.execCommand('insertparagraph')
-    }
+  handlePasteImage = () => {
+    let {handlePasteImage} = this.props
+    if (!handlePasteImage) return
+
+    let html = this.ueditor.getContent()
+    let images = utils.extractImageSource(html)
+
+    if (Object.prototype.toString.call(images) !== '[object Array]') return
+
+    images.forEach(src => {
+      let promise = handlePasteImage(src)
+      if (!!promise && typeof promise.then == 'function') {
+        promise.then(newSrc => {
+          let newHtml = utils.replaceImageSource(this.ueditor.getContent(), src, newSrc)
+          this.ueditor.setContent(newHtml)
+        })
+      }
+    })
   }
 
-  insertLink = html => {
-    if (this.ueditor) {
-      this.ueditor.execCommand('inserthtml', html, true)
-    }
+  getVisibleName = name => {
+    return name + 'VisibleModal' + this.containerID
   }
 
-  closeModal = type => {
-    switch (type) {
-    case 'video':
-      this.setState({videoModalVisible: false})
-      break
-    case 'audio':
-      this.setState({audioModalVisible: false})
-      break
-    case 'link':
-      this.setState({linkModalVisible: false})
-      break
-    }
+  getRegisterUIName = name => {
+    return name + this.containerID
   }
 
   initEditor = () => {
     const {config, plugins, onChange, value, getRef, onReady} = this.props
-    this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
-    this.ueditor._react_ref = this
+
     if (plugins && plugins instanceof Array && plugins.length > 0) {
       if (plugins.indexOf('uploadImage') !== -1) this.registerImageUpload()
       if (plugins.indexOf('insertCode') !== -1) this.registerSimpleInsertCode()
@@ -257,6 +302,25 @@ class ReactUeditor extends React.Component {
       if (plugins.indexOf('uploadAudio') !== -1) this.registerUploadAudio()
       if (plugins.indexOf('insertLink') !== -1) this.registerLink()
     }
+
+    this.state.extendControls.forEach(control => {
+      window.UE.registerUI(this.getRegisterUIName(control.name), (editor, uiName) => {
+        var btn = new window.UE.ui.Button({
+          name: uiName,
+          title: control.menuText,
+          cssRules: control.cssRules ? control.cssRules : '',
+          onclick: () => {
+            editor._react_ref.setState({[this.getVisibleName(control.name)]: true})
+          },
+        })
+
+        return btn
+      }, undefined, this.containerID)
+    })
+
+    this.ueditor = config ? window.UE.getEditor(this.containerID, config) : window.UE.getEditor(this.containerID)
+    this.ueditor._react_ref = this
+
     getRef && getRef(this.ueditor)
     this.ueditor.ready(() => {
       this.ueditor.addListener('contentChange', () => {
@@ -267,6 +331,10 @@ class ReactUeditor extends React.Component {
           this.content = this.ueditor.getContent()
           onChange && onChange(this.ueditor.getContent())
         }
+      })
+
+      this.ueditor.addListener('afterpaste', () => {
+        this.handlePasteImage()
       })
 
       if (this.isContentChangedByWillReceiveProps) {
@@ -281,42 +349,35 @@ class ReactUeditor extends React.Component {
   }
 
   render() {
-    let {videoModalVisible, audioModalVisible, linkModalVisible} = this.state
-    let {uploadVideo, uploadAudio, multipleImagesUpload, progress} = this.props
+    let {extendControls} = this.state
+    let {multipleImagesUpload} = this.props
+
     return (
       <div>
         <script id={this.containerID} name={this.containerID} type='text/plain' />
         <input type='file'
           id={this.fileInputID}
           onChange={this.uploadImage}
-          style={{visibility: 'hidden'}}
+          style={{visibility: 'hidden', width: 0, height: 0, margin: 0, padding: 0, fontSize: 0}}
           multiple={multipleImagesUpload} />
-        <UploadModal
-          type='video'
-          title='上传视频'
-          visible={videoModalVisible}
-          closeModal={() => {
-            this.closeModal('video')
-          }}
-          insert={this.insert}
-          upload={uploadVideo}
-          progress={progress} />
-        <UploadModal
-          type='audio'
-          title='上传音频'
-          visible={audioModalVisible}
-          closeModal={() => {
-            this.closeModal('audio')
-          }}
-          insert={this.insert}
-          upload={uploadAudio}
-          progress={progress} />
-        <Link
-          visible={linkModalVisible}
-          closeModal={() => {
-            this.closeModal('link')
-          }}
-          insert={this.insertLink} />
+        {
+          extendControls.map(control => (
+            <Modal
+              key={control.name + this.containerID}
+              name={control.name}
+              menuText={control.menuText}
+              title={control.title}
+              zIndex={control.zIndex}
+              alignStyle={control.alignStyle}
+              visible={this.state[this.getVisibleName(control.name)]
+                ? this.state[this.getVisibleName(control.name)] : false}
+              beforeClose={control.beforeClose}
+              onClose={() => { this.setState({[this.getVisibleName(control.name)]: false}) }}
+              onConfirm={control.onConfirm}
+              component={control.component}
+            />
+          ))
+        }
       </div>
     )
   }

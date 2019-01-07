@@ -1,6 +1,4 @@
-import Button from './Button'
 import Input from './Input'
-import Modal from 'rc-dialog'
 import React from 'react'
 
 let inputStyle = {
@@ -25,17 +23,6 @@ class Link extends React.Component {
     showTips: false,
   }
 
-  closeModal = () => {
-    this.setState({
-      text: '',
-      link: '',
-      title: '',
-      newTab: false,
-      showTips: false,
-    })
-    this.props.closeModal()
-  }
-
   hasProtocol = link => {
     if (link.match(/^http:|https:/) || link.match(/^\/\//)) {
       return true
@@ -43,7 +30,7 @@ class Link extends React.Component {
     return false
   }
 
-  insert = () => {
+  generateHtml = () => {
     let {text, link, title, newTab} = this.state
 
     if (link) {
@@ -55,9 +42,8 @@ class Link extends React.Component {
 
       html += `<a href="${link}" target=${newTab ? '_blank' : '_self'} title="${title}">${text || link}</a>`
 
-      this.props.insert(html)
+      return html
     }
-    this.closeModal()
   }
 
   changeConfig = (e, type) => {
@@ -81,44 +67,33 @@ class Link extends React.Component {
     if (type == 'newTab') {
       return this.setState({newTab: !this.state.newTab})
     }
-    this.setState({[type]: value})
+    this.setState({[type]: value}, () => {
+      this.props.onChange && this.props.onChange(this.generateHtml())
+    })
   }
 
   render() {
     let {text, link, title, newTab, showTips} = this.state
-    let {visible} = this.props
-
     return (
-      <Modal
-        title='超链接'
-        onClose={this.closeModal}
-        visible={visible}
-        footer={[
-          <Button key='close' onClick={this.closeModal}>取消</Button>,
-          <Button key='insert' onClick={this.insert}>插入</Button>,
-        ]}
-        animation='zome'
-        maskAnimation='fade' >
-        <form>
-          <div style={formItmeStyle}>
-            <span style={spanStyle}>文本内容：</span>
-            <Input type='text' style={inputStyle} value={text} onChange={e => this.changeConfig(e, 'text')} />
-          </div>
-          <div style={formItmeStyle}>
-            <span style={spanStyle}>链接地址：</span>
-            <Input type='text' style={inputStyle} value={link} onChange={e => this.changeConfig(e, 'link')} />
-          </div>
-          <div style={formItmeStyle}>
-            <span style={spanStyle}>标题：</span>
-            <Input type='text' style={inputStyle} value={title} onChange={e => this.changeConfig(e, 'title')} />
-          </div>
-          <div style={formItmeStyle}>
-            <span style={{color: 'rgba(0, 0, 0, 0.65)', fontSize: '14px'}}>是否在新窗口打开：</span>
-            <input type='checkbox' checked={newTab} onChange={e => this.changeConfig(e, 'newTab')} />
-          </div>
-          {showTips && <p style={{fontSize: '14px', color: 'red'}}>您输入的超链接中不包含http等协议名称，默认将为您添加http://前缀</p>}
-        </form>
-      </Modal>
+      <form>
+        <div style={formItmeStyle}>
+          <span style={spanStyle}>文本内容：</span>
+          <Input type='text' style={inputStyle} value={text} onChange={e => this.changeConfig(e, 'text')} />
+        </div>
+        <div style={formItmeStyle}>
+          <span style={spanStyle}>链接地址：</span>
+          <Input type='text' style={inputStyle} value={link} onChange={e => this.changeConfig(e, 'link')} />
+        </div>
+        <div style={formItmeStyle}>
+          <span style={spanStyle}>标题：</span>
+          <Input type='text' style={inputStyle} value={title} onChange={e => this.changeConfig(e, 'title')} />
+        </div>
+        <div style={formItmeStyle}>
+          <span style={{color: 'rgba(0, 0, 0, 0.65)', fontSize: '14px'}}>是否在新窗口打开：</span>
+          <input type='checkbox' checked={newTab} onChange={e => this.changeConfig(e, 'newTab')} />
+        </div>
+        {showTips && <p style={{fontSize: '14px', color: 'red'}}>您输入的超链接中不包含http等协议名称，默认将为您添加http://前缀</p>}
+      </form>
     )
   }
 }

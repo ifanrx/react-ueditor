@@ -17,7 +17,7 @@ const uploadStyle = {
   marginLeft: '10px',
 }
 
-class Upload extends React.Component {
+class Upload extends React.PureComponent {
   onInputChange = e => {
     let props = this.props
     if (props.onChange) {

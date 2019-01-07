@@ -26,25 +26,24 @@ UE.plugins['autoheight'] = function () {
         if(isFullscreen)return;
         if (!me.queryCommandState || me.queryCommandState && me.queryCommandState('source') != 1) {
             timer = setTimeout(function(){
-
-                var node = me.body.lastChild;
-                while(node && node.nodeType != 1){
-                    node = node.previousSibling;
-                }
-                if(node && node.nodeType == 1){
-                    node.style.clear = 'both';
-                    currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight + 25 ,Math.max(options.minFrameHeight, options.initialFrameHeight)) ;
-                    if (currentHeight != lastHeight) {
-                        if (currentHeight !== parseInt(me.iframe.parentNode.style.height)) {
-                            me.iframe.parentNode.style.height = currentHeight + 'px';
-                        }
-                        me.body.style.height = currentHeight + 'px';
-                        lastHeight = currentHeight;
+                try {
+                    var node = me.body.lastChild;
+                    while(node && node.nodeType != 1){
+                        node = node.previousSibling;
                     }
-                    domUtils.removeStyle(node,'clear');
-                }
-
-
+                    if(node && node.nodeType == 1){
+                        node.style.clear = 'both';
+                        currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight + 25 ,Math.max(options.minFrameHeight, options.initialFrameHeight)) ;
+                        if (currentHeight != lastHeight) {
+                            if (currentHeight !== parseInt(me.iframe.parentNode.style.height)) {
+                                me.iframe.parentNode.style.height = currentHeight + 'px';
+                            }
+                            me.body.style.height = currentHeight + 'px';
+                            lastHeight = currentHeight;
+                        }
+                        domUtils.removeStyle(node,'clear');
+                    }
+                } catch (e) {}
             },50)
         }
     }

@@ -374,7 +374,7 @@
             utils.each(UE._customizeUI,function(obj,key){
                 var itemUI,index;
                 if(obj.id && obj.id != editor.key){
-                   return false;
+                   return true;
                 }
                 itemUI = obj.execFn.call(editor,editor,key);
                 if(itemUI){
@@ -775,10 +775,12 @@
                     if (opt.initialFrameWidth) {
                         opt.minFrameWidth = opt.initialFrameWidth;
                     } else {
-                        opt.minFrameWidth = opt.initialFrameWidth = holder.offsetWidth;
-                        var styleWidth = holder.style.width;
-                        if(/%$/.test(styleWidth)) {
-                            opt.initialFrameWidth = styleWidth;
+                        if (holder) {
+                            opt.minFrameWidth = opt.initialFrameWidth = holder.offsetWidth;
+                            var styleWidth = holder.style.width;
+                            if(/%$/.test(styleWidth)) {
+                                opt.initialFrameWidth = styleWidth;
+                            }
                         }
                     }
                     if (opt.initialFrameHeight) {
@@ -791,7 +793,7 @@
                     }
                     //编辑器最外容器设置了高度，会导致，编辑器不占位
                     //todo 先去掉，没有找到原因
-                    if(holder.style.height){
+                    if(holder && holder.style.height){
                         holder.style.height = ''
                     }
                     editor.container.style.width = opt.initialFrameWidth + (/%$/.test(opt.initialFrameWidth) ? '' : 'px');

@@ -30,7 +30,9 @@ import ReactUeditor from 'react-ueditor'
 Property             | Description                                  | Type   | Must
 :------------------- | :------------------------------------------- | :----- | :------
 config               | 在实例化时传入配置参数                           | obj   | no
+extendControls       | 扩展工具栏（目前仅支持弹出模态框方式）             | array | no
 getRef               | 获取 ueditor 实例                             | func  | no
+handlePasteImage     | 用于处理复制进来的图片                           | func  | no
 multipleImagesUpload | 支持多文件上传，默认为 false                     | bool  | no
 onChange             | 编辑器内容改变事件                               | func  | no
 onReady              | ueditor 加载完成事件                            | func  | no
@@ -47,6 +49,7 @@ plugins 现支持：
 - 视频上传 uploadVideo
 - 音频上传 uploadAudio
 - 插入代码 insertCode
+- 插入链接 insertLink
 
 #### 配置
 ueditor 主要通过ueditor.config.js 文件来配置，在存在多个编辑器示例而配置有所差异的场景下，可将部分参数传入到 config 属性中，具体配置可参考 (ueditor 配置说明)[http://fex.baidu.com/ueditor/#start-config]
