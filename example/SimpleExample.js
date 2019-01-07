@@ -12,7 +12,6 @@ class SimpleExample extends React.Component {
         debug
         ueditorPath='../vendor/ueditor'
         onChange={this.updateEditorContent}
-        extendControls={[]}
       />
     )
   }

@@ -35,7 +35,6 @@ class EditorRefExample extends React.Component {
           getRef={this.getUeditor}
           onChange={this.updateEditorContent}
           onReady={this.handleReady}
-          extendControls={[]}
         />
         <button onClick={this.getUeditorContent}>获取内容</button>
         <p>{content}</p>

@@ -38,7 +38,6 @@ class AsyncExample extends React.Component {
           ueditorPath='../vendor/ueditor'
           value={content}
           onChange={this.updateEditorContent}
-          extendControls={[]}
         />
       </div>
     )

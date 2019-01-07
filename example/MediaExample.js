@@ -56,7 +56,6 @@ class MediaExample extends React.Component {
         onChange={this.updateEditorContent}
         progress={progress}
         multipleImagesUpload={false}
-        extendControls={[]}
       />
     )
   }

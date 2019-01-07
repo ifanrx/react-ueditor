@@ -156,7 +156,7 @@ class ReactUeditor extends React.Component {
 
   registerUploadVideo = () => {
     let {uploadVideo, progress} = this.props
-    this.state.extendControls.unshift({
+    let newExtendControls = [{
       name: this.getRegisterUIName('videoUpload'),
       menuText: '上传视频',
       title: '上传视频',
@@ -173,16 +173,16 @@ class ReactUeditor extends React.Component {
           this.ueditor.execCommand('insertparagraph')
         }
       },
-    })
+    }, ...this.state.extendControls]
 
     this.setState({
-      extendControls: this.state.extendControls,
+      extendControls: newExtendControls,
     })
   }
 
   registerUploadAudio = () => {
     let {uploadAudio, progress} = this.props
-    this.state.extendControls.unshift({
+    let newExtendControls = [{
       name: this.getRegisterUIName('audioUpload'),
       menuText: '上传音频',
       title: '上传音频',
@@ -199,15 +199,15 @@ class ReactUeditor extends React.Component {
           this.ueditor.execCommand('insertparagraph')
         }
       },
-    })
+    }, ...this.state.extendControls]
 
     this.setState({
-      extendControls: this.state.extendControls,
+      extendControls: newExtendControls,
     })
   }
 
   registerLink = () => {
-    this.state.extendControls.unshift({
+    let newExtendControls = [{
       name: this.getRegisterUIName('insertLink'),
       menuText: '超链接',
       title: '超链接',
@@ -219,6 +219,10 @@ class ReactUeditor extends React.Component {
       onConfirm: () => {
         this.ueditor && this.ueditor.execCommand('inserthtml', this.state.linkHtml, true)
       },
+    }, ...this.state.extendControls]
+
+    this.setState({
+      extendControls: newExtendControls,
     })
   }
 
