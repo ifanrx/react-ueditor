@@ -39,6 +39,8 @@ class App extends React.Component {
             title: '测试模态框',
             // 图标定义，遵循 ueditor 的格式
             cssRules: 'background: url(' + testIcon + ') !important; background-size: 20px 20px !important;',
+            zIndex: 1,
+            alignStyle: 'middle',
             component: <input onChange={this.handleInputChange} />,
             onConfirm: () => {
               this.ueditorRef.execCommand('inserthtml', this.state.inputValue, true)

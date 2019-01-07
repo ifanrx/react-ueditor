@@ -7,9 +7,19 @@ import 'rc-dialog/assets/index.css'
 class Modal extends React.PureComponent {
   static propTypes = {
     title: PropTypes.string,
+    visible: PropTypes.bool,
     beforeClose: PropTypes.func,
     onClose: PropTypes.func,
     onConfirm: PropTypes.func,
+  }
+
+  static defaultProps = {
+    title: '',
+    visible: false,
+    zIndex: 1050,
+    alignStyle: 'top',
+    extendControls: [],
+    debug: false,
   }
 
   closeModal = () => {
@@ -23,7 +33,7 @@ class Modal extends React.PureComponent {
   }
 
   render() {
-    let {title, visible} = this.props
+    let {title, visible, zIndex, alignStyle} = this.props
 
     return (
       <Dialog
@@ -35,7 +45,9 @@ class Modal extends React.PureComponent {
           <Button key='insert' onClick={this.onConfirm}>确认</Button>,
         ]}
         animation='zome'
-        maskAnimation='fade'>
+        maskAnimation='fade'
+        zIndex={zIndex}
+        style={alignStyle === 'middle' ? {top: '50%', transform: 'translateY(-50%)'} : {}}>
         {this.props.component}
       </Dialog>
     )

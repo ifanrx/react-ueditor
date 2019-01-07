@@ -369,6 +369,8 @@ class ReactUeditor extends React.Component {
               name={control.name}
               menuText={control.menuText}
               title={control.title}
+              zIndex={control.zIndex}
+              alignStyle={control.alignStyle}
               visible={this.state[this.getVisibleName(control.name)]
                 ? this.state[this.getVisibleName(control.name)] : false}
               beforeClose={control.beforeClose}
