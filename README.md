@@ -1,7 +1,7 @@
 # react-ueditor
 ![react-ueditor](https://cloud-minapp-1131.cloud.ifanrusercontent.com/1eGmM9tnLMPCRifj.png)
 
-使用 react 对 ueditor 进行封装和扩展
+使用 react 框架对 ueditor 进行封装和扩展
 
 ![](https://img.shields.io/npm/v/ifanrx-react-ueditor.svg) ![](https://img.shields.io/npm/dw/ifanrx-react-ueditor.svg)
 
@@ -10,8 +10,8 @@
 
 - 支持更灵活的图片和音视频资源上传
 - 支持同个页面存在多个编辑器实例
-- 支持对复制进来的图片进行操作（如重新上传）
-- 允许扩展工具栏，支持在扩展中使用已有 react 组件
+- 支持对复制进来的图片进行操作
+- 允许扩展工具栏，支持在扩展中使用已有的 react 组件
 
 
 
@@ -63,7 +63,7 @@ import ReactUeditor from 'ifanrx-react-ueditor'
 
 如果你希望为这个项目贡献代码，需要了解以下情况：
 
-- 在根目录下执行 `yarn start` 会启动开发服务器，此时会在浏览器中展示 ReactUeditor 的真实效果，在 ReactUeditor/ 下的修改都会进行热更新
+- 在根目录下执行 `yarn start` 会启动开发服务器，此时会在浏览器中展示 ReactUeditor 的真实效果，在 ReactUeditor/ 下的修改都会进行热更新
 
 - example.js, index.html, dist/ 都只是为了展示 ReactUeditor 的真实效果，主要代码在 ReactUeditor/ 中
 
