@@ -28,7 +28,7 @@ yarn add ifanrx-react-ueditor
 
 ### 🔨 使用
 
-```js
+```
 import ReactUeditor from 'ifanrx-react-ueditor'
 
 <ReactUeditor
