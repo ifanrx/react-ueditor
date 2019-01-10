@@ -1,3 +1,6 @@
+### v2.1.2 (2019-01-10)
+- [A] 通过 pasteImageStart 和 pasteImageDone 方法，暴露当前粘贴图片的进度
+
 ### v2.1.0 (2019-01-07)
 - [A] extendControls 模态框支持配置 zIndex 和垂直居中方式（top 和 middle）
 
