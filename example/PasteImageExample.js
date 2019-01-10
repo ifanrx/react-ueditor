@@ -2,6 +2,14 @@ import React from 'react'
 import ReactUeditor from '../src'
 
 class PasteImageExample extends React.Component {
+  pasteImageStart = imageAmount => {
+    console.log('paste start', 'image amount is ' + imageAmount)
+  }
+
+  pasteImageDone = () => {
+    console.log('paste done')
+  }
+
   handlePasteImage = src => {
     return new Promise(function(resolve) {
       setTimeout(() => {
@@ -10,16 +18,13 @@ class PasteImageExample extends React.Component {
     })
   }
 
-  updateEditorContent = newContent => {
-    console.log('newContent', newContent)
-  }
-
   render() {
     return (
       <ReactUeditor
         ueditorPath='../vendor/ueditor'
+        pasteImageStart={this.pasteImageStart}
         handlePasteImage={this.handlePasteImage}
-        onChange={this.updateEditorContent}
+        pasteImageDone={this.pasteImageDone}
       />
     )
   }

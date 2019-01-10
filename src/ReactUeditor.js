@@ -32,6 +32,7 @@ class ReactUeditor extends React.Component {
     this.tempfileInput = null
     this.containerID = 'reactueditor' + Math.random().toString(36).substr(2)
     this.fileInputID = 'fileinput' + Math.random().toString(36).substr(2)
+    this.pasteImageAmount = 0
     this.state = {
       videoSource: '',
       audioSource: '',
@@ -50,7 +51,9 @@ class ReactUeditor extends React.Component {
     getRef: PropTypes.func,
     multipleImagesUpload: PropTypes.bool,
     onReady: PropTypes.func,
+    pasteImageStart: PropTypes.func,
     handlePasteImage: PropTypes.func,
+    pasteImageDone: PropTypes.func,
     extendControls: PropTypes.array,
     debug: PropTypes.bool,
   }
@@ -265,7 +268,7 @@ class ReactUeditor extends React.Component {
   }
 
   handlePasteImage = () => {
-    let {handlePasteImage} = this.props
+    let {pasteImageStart, handlePasteImage, pasteImageDone} = this.props
     if (!handlePasteImage) return
 
     let html = this.ueditor.getContent()
@@ -273,12 +276,18 @@ class ReactUeditor extends React.Component {
 
     if (Object.prototype.toString.call(images) !== '[object Array]') return
 
+    this.pasteImageAmount += images.length
+    pasteImageStart && pasteImageStart(this.pasteImageAmount)
     images.forEach(src => {
       let promise = handlePasteImage(src)
       if (!!promise && typeof promise.then == 'function') {
         promise.then(newSrc => {
           let newHtml = utils.replaceImageSource(this.ueditor.getContent(), src, newSrc)
           this.ueditor.setContent(newHtml)
+          --this.pasteImageAmount
+          if (this.pasteImageAmount === 0) {
+            pasteImageDone && pasteImageDone()
+          }
         })
       }
     })
