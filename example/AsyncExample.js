@@ -33,8 +33,6 @@ class AsyncExample extends React.Component {
     return (
       <div>
         <ReactUeditor
-          debug
-          getRef={this.getUeditor}
           ueditorPath='../vendor/ueditor'
           value={content}
           onChange={this.updateEditorContent}
