@@ -282,12 +282,12 @@ class ReactUeditor extends React.Component {
       let promise = handlePasteImage(src)
       if (!!promise && typeof promise.then == 'function') {
         promise.then(newSrc => {
-          let newHtml = utils.replaceImageSource(this.ueditor.getContent(), src, newSrc)
-          this.ueditor.setContent(newHtml)
           --this.pasteImageAmount
           if (this.pasteImageAmount === 0) {
             pasteImageDone && pasteImageDone()
           }
+          let newHtml = utils.replaceImageSource(this.ueditor.getContent(), src, newSrc)
+          this.ueditor.setContent(newHtml)
         })
       }
     })
