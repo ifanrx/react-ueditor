@@ -4,6 +4,7 @@ import ExtendControlsExample from './ExtendControlsExample'
 import PasteImageExample from './PasteImageExample'
 import MediaExample from './MediaExample'
 import SimpleExample from './SimpleExample'
+import PluginExample from './PluginExample'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {HashRouter as Router, Switch, Route, NavLink} from 'react-router-dom'
@@ -62,6 +63,9 @@ class App extends React.Component {
               <li style={style.navbarItem}>
                 <NavLink to='/paste-image-example/' activeStyle={{color: 'red'}}>复制图片上传示例</NavLink>
               </li>
+              <li style={style.navbarItem}>
+                <NavLink to='/plugin-example/' activeStyle={{color: 'red'}}>插件示例</NavLink>
+              </li>
             </ul>
           </section>
           <section style={style.pageRight}>
@@ -72,6 +76,7 @@ class App extends React.Component {
               <Route path='/editor-ref-example/' component={EditorRefExample} />
               <Route path='/extend-controls-example/' component={ExtendControlsExample} />
               <Route path='/paste-image-example/' component={PasteImageExample} />
+              <Route path='/plugin-example/' component={PluginExample} />
             </Switch>
           </section>
         </div>
