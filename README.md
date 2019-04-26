@@ -38,6 +38,8 @@ import ReactUeditor from 'ifanrx-react-ueditor'
 
 ### 🔌 插件
 
+> extendControls 已不推荐使用，请直接使用 plugins，指定插件。
+
 插件分为两种，一种是内置的插件，一种是自定义的插件。现支持内置插件如下：
 
 1. insertCode  插入代码块
@@ -65,8 +67,6 @@ interface IPluginConfig {
 UEditor 为 UEditor 实例。详细内容，请参考[官方文档](https://ueditor.baidu.com/doc/#UE.Editor)
 
 #### 插件使用示例
-
-> extendControls 已不推荐使用，请直接使用 plugins，指定插件。
 
 1. 内置插件
 
