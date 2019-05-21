@@ -5,6 +5,7 @@ import React from 'react'
 import Select from './Select'
 import Tag from './Tag'
 import Upload from './Upload'
+import {linkRegx} from './utils'
 
 const style = {
   paramsConfig: {
@@ -39,8 +40,6 @@ const style = {
     color: '#f04134',
   },
 }
-
-const linkRegx = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9,_-](\?)?)*)*$/i
 
 let timeoutInstance = null
 
