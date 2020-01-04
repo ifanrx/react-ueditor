@@ -77,6 +77,7 @@ class ReactUeditor extends React.Component {
   }
 
   componentDidMount() {
+    console.log('ReactUeditor URL')
     let {ueditorPath} = this.props
     if (!window.UE && !window.UE_LOADING_PROMISE) {
       window.UE_LOADING_PROMISE = this.createScript(ueditorPath + '/ueditor.config.js').then(() => {
@@ -86,6 +87,7 @@ class ReactUeditor extends React.Component {
       })
     }
     window.UE_LOADING_PROMISE.then(() => {
+      this.createScript(ueditorPath + '/formdesign/leipi.formdesign.v4.js')
       this.tempfileInput = document.getElementById(this.fileInputID)
       this.initEditor()
     })
@@ -135,19 +137,18 @@ class ReactUeditor extends React.Component {
   }
 
   registerInternalPlugin(pluginName) {
-    switch(pluginName) {
-      case 'uploadImage':
-        return this.registerImageUpload()
-      case 'insertCode':
-        return this.registerSimpleInsertCode()
-      case 'uploadVideo':
-        return this.registerUploadVideo()
-      case 'uploadAudio':
-        return this.registerUploadAudio()
-      case 'insertLink':
-        return this.registerLink()
-      default:
-        return
+    switch (pluginName) {
+    case 'uploadImage':
+      return this.registerImageUpload()
+    case 'insertCode':
+      return this.registerSimpleInsertCode()
+    case 'uploadVideo':
+      return this.registerUploadVideo()
+    case 'uploadAudio':
+      return this.registerUploadAudio()
+    case 'insertLink':
+      return this.registerLink()
+    default:
     }
   }
 
@@ -185,22 +186,22 @@ class ReactUeditor extends React.Component {
     mode: MODE.NORMAL,
     onIconClick: () => {
       this.tempfileInput.click()
-    }
+    },
   }))
 
-  registerSimpleInsertCode = () => this.registerPlugin((ueditor) => ({
+  registerSimpleInsertCode = () => this.registerPlugin(ueditor => ({
     menuText: '插入代码',
     cssRules: 'background: url(' + simpleInsertCodeIcon + ') !important; background-size: 20px 20px !important;',
     mode: MODE.NORMAL,
     onIconClick: () => {
       ueditor.focus()
       ueditor.execCommand('insertcode')
-    }
+    },
   }))
 
   registerUploadVideo = () => {
     let {uploadVideo, progress} = this.props
-    return this.registerPlugin((ueditor) => ({
+    return this.registerPlugin(ueditor => ({
       menuText: '上传视频',
       cssRules: 'background-position: -320px -20px;',
       mode: MODE.INTERNAL_MODAL,
@@ -216,7 +217,7 @@ class ReactUeditor extends React.Component {
 
   registerUploadAudio = () => {
     let {uploadAudio, progress} = this.props
-    return this.registerPlugin((ueditor) => ({
+    return this.registerPlugin(ueditor => ({
       menuText: '上传音频',
       cssRules: 'background: url(' + uploadAudioIcon + ') !important; background-size: 20px 20px !important;',
       mode: MODE.INTERNAL_MODAL,
@@ -385,7 +386,7 @@ class ReactUeditor extends React.Component {
         {
           this.state.pluginsWithCustomRender.map(plugin => {
             const visible = !!this.state[this.getVisibleName(plugin.name)]
-            const onClose= () => {
+            const onClose = () => {
               if (isModalMode(plugin.mode)) {
                 this.setState({[this.getVisibleName(plugin.name)]: false})
               }
@@ -420,7 +421,7 @@ class ReactUeditor extends React.Component {
             }
           })
         }
-        {  // 即将废弃
+        { // 即将废弃
           extendControls.map(control => (
             <Modal
               key={control.name + this.containerID}
