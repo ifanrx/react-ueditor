@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import ReactUeditor from '../src'
+import ReactUeditor from '../src/js'
 
 class Formdesign extends React.Component {
   constructor() {
@@ -271,7 +271,15 @@ class Formdesign extends React.Component {
             一起参与...
           </button>
         </p>
-        <ReactUeditor debug ueditorPath='../vendor/ueditor' getRef={this.getUeditor} onChange={this.updateEditorContent} onReady={this.handleReady} />
+        <ReactUeditor
+          debug
+          ueditorPath='../vendor/ueditor'
+          plugins={['insertInput', 'insertTextarea', 'insertSelect', 'insertRadios', 'insertCheckboxs', 'insertListctrl', 'saveJson']}
+          uploadImage={this.uploadImage}
+          getRef={this.getUeditor}
+          onChange={this.updateEditorContent}
+          onReady={this.handleReady}
+        />
       </Fragment>
     )
   }

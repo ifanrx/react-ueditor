@@ -9,10 +9,16 @@
 ### formdesign 分支修改
 
 将[雷劈网 WEB表单设计器 - Formdesign](https://github.com/payonesmile/formdesign) 添加到此项目.
-
 因为Formdesign没有npm仓库,所以直接添加所需文件到项目.
 
+### 代办  ---  表单组件
 
+- [x] 两个组件合并
+- [ ] 图标集成
+- [ ] 测试保存及预览
+- [ ] 将react-ue修改成可引用组件
+- [ ] 上传组件到gitlab
+- [ ] 在项目中使用
 
 <br>
 

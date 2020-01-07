@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactUeditor from '../src'
+import ReactUeditor from '../src/js'
 
 const simpleInsertCodeIcon = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy' +
   '23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNi' +
@@ -58,19 +58,19 @@ const Modal = ({style, onSelectImage}) => {
 }
 
 // 新插件写法
-let uploadImagePlugin = function (ueditor) {
+let uploadImagePlugin = function(ueditor) {
   return {
     menuText: '图片上传',
     cssRules: 'background-position: -726px -77px;',
-    onIconClick: function () {console.log('imageUpload icon click')},
+    onIconClick: function() { console.log('imageUpload icon click') },
     render: (visible, closeModal) => {
-      const handleSelectImage = (url) => {
+      const handleSelectImage = url => {
         ueditor.focus()
         ueditor.execCommand('inserthtml', '<img src="' + url + '" />')
         closeModal()
       }
       return <Modal style={{display: visible ? 'flex' : 'none'}} onSelectImage={handleSelectImage} />
-    }
+    },
   }
 }
 
@@ -121,7 +121,7 @@ class MediaExample extends React.Component {
 
   render() {
     let {progress} = this.state
-    
+
     // 旧插件写法
     let extendControls = [{
       name: 'insertOthers',
@@ -130,7 +130,7 @@ class MediaExample extends React.Component {
       cssRules: 'background: url(' + simpleInsertCodeIcon + ') !important; background-size: 20px 20px !important;',
       component: <div>test</div>,
       onConfirm: () => {
-        this.ueditor && this.ueditor.execCommand('inserthtml', `<a>test</a>`, true)
+        this.ueditor && this.ueditor.execCommand('inserthtml', '<a>test</a>', true)
       },
     }]
 
