@@ -6,6 +6,8 @@ class Save extends React.Component {
     super(props)
     this.state = {
       ueditor: this.props.ue,
+      isShow: false,
+      formval: '',
       savejson: {},
       savehtml: null,
     }
@@ -14,7 +16,7 @@ class Save extends React.Component {
   componentWillMount() {}
 
   componentDidMount() {
-    console.log('save componentDidMount')
+    // console.log('save componentDidMount')
     this.getTrueValue()
   }
 
@@ -29,14 +31,18 @@ class Save extends React.Component {
       let fields = 0
       let formeditor = ueditor.getContent()
       let parse_form = this.parse_form(formeditor, fields)
-      console.log('parse_form++++++++', parse_form)
+      let saveValue = {
+        html: formeditor,
+        ...parse_form,
+      }
+      // console.log('parse_form++++++++', parse_form)
 
-      document.querySelector('#viewHtml').innerHTML = formeditor
+      // document.querySelector('#viewHtml').innerHTML = formeditor
       ueditor.execCommand('source')
-      self.props.onChange(parse_form)
+      self.props.onChange(saveValue)
 
       self.setState({
-        savehtml: formeditor,
+        savehtml: saveValue,
         savejson: parse_form,
       })
     } else {
@@ -45,7 +51,7 @@ class Save extends React.Component {
   }
 
   parse_form = (template, fields) => {
-    console.log('template, fields', template, fields)
+    // console.log('template, fields', template, fields)
     let preg = /(\|-<span(((?!<span).)*leipiplugins=\"(radios|checkboxs|select)\".*?)>(.*?)<\/span>-\||<(img|input|textarea|select).*?(<\/select>|<\/textarea>|\/>))/gi
     let preg_attr = /(\w+)=\"(.?|.+?)\"/gi
     let preg_group = /<input.*?\/>/gi
@@ -195,26 +201,57 @@ class Save extends React.Component {
     })
     let parse_form = {
       fields: fields, // 总字段数
-      template: template, // 完整html
-      parse: template_parse, // 控件替换为{data_1}的html
+      // template: template, // 完整html
+      // parse: template_parse, // 控件替换为{data_1}的html
       data: template_data, // 控件属性
-      add_fields: add_fields, // 新增控件
+      // add_fields: add_fields, // 新增控件
     }
     // return JSON.stringify(parse_form)
     return parse_form
   }
 
+  viewShow = () => {
+    this.setState({isShow: true})
+  }
+
+  changeName = e => {
+    const self = this
+    // console.log('changename', e.target.value)
+    let value = e.target.value
+    let jsons = self.state.savehtml
+    self.props.onChange({...jsons, formname: value})
+    self.setState({formval: value})
+  }
+
   render() {
     let self = this
-    const {ueditor, savejson, savehtml} = self.state
-    console.log('save ---- ueditor', ueditor)
+    const {ueditor, savejson, isShow, formval} = self.state
+    const Ifurl = `${ueditor.options.UEDITOR_HOME_URL}dialogs/preview/preview.html`
+    // console.log('save ---- ueditor', ueditor, Ifurl)
 
     return (
       <div className='dling-contrast'>
-        <div id='viewHtml' />
-        <div id='viewJson'>
-          <ReactJson src={savejson} iconStyle='triangle' collapseStringsAfterLength={20} />
-        </div>
+        <form className='formname'>
+          <label className='lablename' htmlFor='FORMNAME'>
+            表名:
+          </label>
+          <input type='text' id='FORMNAME' placeholder='请输入表单名称' alt='输入表单' ref='getFocus' defaultValue={formval} onChange={this.changeName} />
+          <span className='viewname' alt='查看预览' onClick={this.viewShow}>
+            查看预览
+          </span>
+        </form>
+        {isShow ? (
+          <Fragment>
+            <div id='viewHtml'>
+              <iframe id='edui117_iframe' src={Ifurl} width='100%' height='100%' />
+            </div>
+            <div id='viewJson'>
+              <ReactJson src={savejson} iconStyle='triangle' collapsed={1} collapseStringsAfterLength={20} />
+            </div>
+          </Fragment>
+        ) : (
+          false
+        )}
       </div>
     )
   }

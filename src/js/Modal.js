@@ -44,7 +44,7 @@ class Modal extends React.PureComponent {
     this.props.onClose()
   }
 
-  onConfirm = () => {
+  onConfirm = e => {
     this.props.onConfirm && this.props.onConfirm()
     this.closeModal()
   }
@@ -66,12 +66,12 @@ class Modal extends React.PureComponent {
         x: this.state.rndXin,
         y: this.state.rndYin,
       },
-
+      cancel: '.rc-dialog-body',
       onDragStop: (e, d) => {
-        // console.log(d);
+        // e.stopPropagation()
         this.setState({rndXin: d.x, rndYin: d.y})
       },
-      onResize: (e, direction, ref, delta, position) => {
+      onResizeStop: (e, direction, ref, delta, position) => {
         // console.log(ref);
         this.setState({
           rndWidth: ref.style.width,

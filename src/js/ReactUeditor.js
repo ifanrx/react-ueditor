@@ -274,18 +274,21 @@ class ReactUeditor extends React.Component {
       },
     }))
 
-  registerJson = () =>
-    this.registerPlugin(ueditor => ({
+  registerJson = () => {
+    let {outSave} = this.props
+    return this.registerPlugin(ueditor => ({
       menuText: '保存',
       cssRules: 'background-image: url(\'../../../src/img/save.svg\') !important;background-size:83%;' + 'background-repeat: no-repeat;   background-position: 1px 2px;',
       mode: MODE.INTERNAL_MODAL,
-      render: () => <Save ue={ueditor} onChange={this.saveChange} />,
+      render: () => <Save ue={ueditor} onChange={this.saveChange} outSave={outSave} />,
       onConfirm: () => {
         const self = this
         const jsons = self.state.saveJson
+        const saveCallBack = self.props.outSave
+        saveCallBack(jsons)
         console.log('registerJson save', jsons)
 
-        return false
+        // return false
         // $.ajax({
         //   type: 'POST',
         //   url: 'urls',
@@ -309,6 +312,7 @@ class ReactUeditor extends React.Component {
         // })
       },
     }))
+  }
 
   registerInput = () =>
     this.registerPlugin(ueditor => ({

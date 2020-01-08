@@ -24,6 +24,17 @@
 
         .rc-dialog-content {
           height: inherit;
+          display: flex;
+          flex-flow: column nowrap;
+          justify-content: space-between;
+
+          .rc-dialog-body {
+            flex: 1 0 auto;
+          }
+
+          .rc-dialog-footer {
+            margin: 1vh 0;
+          }
         }
       }
     }
@@ -35,15 +46,64 @@
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: flex-start;
-  height: 50vh;
+  /*height: 50vh;*/
   overflow-y: scroll;
 
+  .formname {
+    display: inline-block;
+    width: calc(100vh - 65vh);
+    flex: 1 0 100%;
+    text-align: center;
+    margin: 1vh 0 2vh 0;
+
+    .lablename {
+      margin: 0 1vw;
+    }
+
+    #FORMNAME {
+      border-radius: 3px;
+      border: 1px solid #d9d9d9;
+      transition: all 0.3s;
+      font-size: 14px;
+      padding: 4px 11px;
+      height: 25px;
+      line-height: 1.5;
+    }
+
+    .viewname {
+      cursor: pointer;
+      color: #fff;
+      background-color: #1890ff;
+      border-color: #1890ff;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      line-height: 2.499;
+      display: inline-block;
+      font-weight: 400;
+      white-space: nowrap;
+      text-align: center;
+      border: 1px solid transparent;
+      height: 32px;
+      padding: 0 10px;
+      font-size: 14px;
+      border-radius: 4px;
+      margin: 0 0.5vw;
+    }
+  }
+
+  #viewHtml,
+  #viewJson {
+    padding: 0 0.5vw;
+    height: inherit;
+  }
+
   #viewHtml {
-    flex: 1 0 23vw;
+    flex: 1 1 35vw;
+    align-self: stretch;
   }
 
   #viewJson {
-    flex: 0 1 33vw;
+    flex: 1 0 30vw;
   }
 }
 
