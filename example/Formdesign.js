@@ -22,6 +22,11 @@ class Formdesign extends React.Component {
 
   handleReady = () => {
     const leipiEditor = this.ueditorRef
+    this.leipiFormDesign = {
+      exec: function(method) {
+        leipiEditor.execCommand(method)
+      },
+    }
   }
 
   ueClick = type => {
@@ -78,7 +83,7 @@ class Formdesign extends React.Component {
           outSave={this.outSave}
           getRef={this.getUeditor}
           onChange={this.updateEditorContent}
-          // onReady={this.handleReady}
+          onReady={this.handleReady}
         />
       </Fragment>
     )
