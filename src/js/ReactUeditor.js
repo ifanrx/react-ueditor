@@ -1,6 +1,7 @@
 import React from 'react'
 import '../css/style.less'
 import * as utils from './utils'
+import Icon from './Icon'
 import Link from './Link'
 import Save from './Save'
 import Modal from './Modal'
@@ -17,25 +18,6 @@ const MODE = {
 function isModalMode(mode) {
   return mode === MODE.INTERNAL_MODAL || mode === MODE.MODAL
 }
-
-const simpleInsertCodeIcon =
-  'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9klEQVRYR+2Wy' +
-  '23CQBCGZxwUASdKgA7IIdIukhF0QCoI6YAS6CB0EDpIOgjCEbs3nApCB+EEKFI80ToYgR/7IEhIEb4hvPN/8/jHi3DmB8+sDxeA/1GBdosNi' +
-  'TAMhHhxnamTVMDnfAEAo0CI0ckBOs1mbRKGy6LArdZtswSl+VdEDSmlAtk9prPqRW0FfMb66OGjt1o3iiB8zgcAMAiEqKfFo0p5QQSDQMpxU' +
-  'QKFAFvxJ4roQRfA52yCgOFUCAVy8NjEyAWwOaiUVImjauWTCO6KBtAUKwNgOrCfos95DxGepzNh08rcah4cdBFXID5nY0CsBTPRM01/Uewdg' +
-  'Ku4EmxztiTAoa398jRigGPEdfbTVSOthUkfTdOeDrrdfv20/UytSCeMKhAQ3HvrzY1u4WQs1mIhEk7y7GeCiN1TKc8J8R3Vj+9qWXmZvNW6a' +
-  'wOR2C+KqPsm5cQkmFlQ1corAeHVatOJZ8AVIu4jwmgqZO0v4irZnQtcIFzslwBuq7bLPKn0wR6whYjtZ9jxurLvtzmzwUwQrvYryjwBzF2hO' +
-  'ojYfgC9YCabpv6bxLWf4yII39J+NuLG+8BvkPJgOpND9TJjrH7t4Yet/VS1vNVmpLO205XsWPvpWuUGoD6/AJ1jtp/zjcg0YKf636kCpxLdj' +
-  '3MBOHsFfgBLLaBN8r49lAAAAABJRU5ErkJggg=='
-const uploadAudioIcon =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBUlEQVRYR+1VwXHbMBC8' +
-  'qyBxBXI6cCqwUkEOFUSuIHYFliuwUoGVCrAdWOlA6UCuIOpgPashNRQIOtJkHH2ID2eIA25vD7vndublZ85vI4CRgZGBkxmIiI9mdm9mMzNb' +
-  'AHgYknJEzM3sA4C7oZiTAEREmNmTuwvEi5lNSH4GsK4liIiFu38nuQRwU4s5CkBTtRILwAvJWzPbuvszyS8AVhFxZWbXAH50E0XE0t2/kbwB' +
-  'sCxBVAFExKW7TxRMUhfPVTVJXT4HsI2IaQHg1t0fFQNAAPcrpbQhqVZc/BWAaHb3XASq6pkqbf+XAPQ/pQQz+9qy0omdufsTyQRAMfvVYyCl' +
-  'pCSXLc1N5FpVF9QeMKA9tcrd/5D8CUCPdLc6/3vsDAGwnPP0rUFVY6BhYUVyAuBT0QYVsC7vfQ8AuzbknA/ubpjtFfYeANTCq5yzpNp9iJLq' +
-  '9n8wIKpXOWdJtguA5dvQZpUB9dDdd1pXEMnfRz5CyfW+1HyrrJoX9ADUZEhyY2YykkEZds79KmnuyPOiLGTIiNQ/GZCWTGkhTyep78OAEck/' +
-  'Zo1f7CXbUUtPgtUW1KTX6Fg2KpPR5fL1AyseONfODhnZtKz+aAAdQ1GVYkFDaOPuMqzBYdRITxZeTX4ygNbVmtkgujWONXKrqxliVqu8PXDU' +
-  'NHzLEf91bwQwMjAycHYGXgGLbI8w70amwwAAAABJRU5ErkJggg=='
 
 class ReactUeditor extends React.Component {
   constructor(props) {
@@ -223,7 +205,7 @@ class ReactUeditor extends React.Component {
   registerSimpleInsertCode = () =>
     this.registerPlugin(ueditor => ({
       menuText: '插入代码',
-      cssRules: 'background: url(' + simpleInsertCodeIcon + ') !important; background-size: 20px 20px !important;',
+      cssRules: 'background: url(' + Icon.simpleInsertCodeIcon + ') !important; background-size: 20px 20px !important;',
       mode: MODE.NORMAL,
       onIconClick: () => {
         ueditor.focus()
@@ -251,7 +233,7 @@ class ReactUeditor extends React.Component {
     let {uploadAudio, progress} = this.props
     return this.registerPlugin(ueditor => ({
       menuText: '上传音频',
-      cssRules: 'background: url(' + uploadAudioIcon + ') !important; background-size: 20px 20px !important;',
+      cssRules: 'background: url(' + Icon.uploadAudioIcon + ') !important; background-size: 20px 20px !important;',
       mode: MODE.INTERNAL_MODAL,
       render: () => <AudioUploader upload={uploadAudio} progress={progress} onChange={this.audioChange} />,
       onConfirm: () => {
@@ -278,7 +260,7 @@ class ReactUeditor extends React.Component {
     let {outSave} = this.props
     return this.registerPlugin(ueditor => ({
       menuText: '保存',
-      cssRules: 'background-image: url(\'../../../src/img/save.svg\') !important;background-size:83%;' + 'background-repeat: no-repeat;   background-position: 1px 2px;',
+      cssRules: `background-image: url(${Icon.saveIcon}) !important;background-size:83%;background-repeat: no-repeat;   background-position: 1px 2px;`,
       mode: MODE.INTERNAL_MODAL,
       render: () => <Save ue={ueditor} onChange={this.saveChange} outSave={outSave} />,
       onConfirm: () => {
@@ -317,7 +299,7 @@ class ReactUeditor extends React.Component {
   registerInput = () =>
     this.registerPlugin(ueditor => ({
       menuText: '插入Input',
-      cssRules: 'background-image: url(\'../../../src/img/input.svg\') !important;background-size: 103%;',
+      cssRules: `background-image: url(${Icon.inputIcon}) !important;background-size: 103%`,
       mode: MODE.NORMAL,
       onIconClick: () => {
         ueditor.focus()
@@ -328,7 +310,7 @@ class ReactUeditor extends React.Component {
   registerTextarea = () =>
     this.registerPlugin(ueditor => ({
       menuText: '插入多行文本',
-      cssRules: 'background-image: url(\'../../../src/img/textarea.svg\') !important;background-size: 100%;',
+      cssRules: `background-image: url(${Icon.textareaIcon}) !important;background-size: 100%;`,
       mode: MODE.NORMAL,
       onIconClick: () => {
         ueditor.focus()
@@ -339,7 +321,7 @@ class ReactUeditor extends React.Component {
   registerSelect = () =>
     this.registerPlugin(ueditor => ({
       menuText: '插入下拉菜单',
-      cssRules: 'background-image: url(\'../../../src/img/select.svg\') !important;background-size: 86%;' + 'background-repeat: no-repeat;   background-position: 1px 2px;',
+      cssRules: `background-image: url(${Icon.selectIcon}) !important;background-size: 86%;background-repeat: no-repeat;   background-position: 1px 2px;`,
       mode: MODE.NORMAL,
       onIconClick: () => {
         ueditor.focus()
@@ -350,7 +332,7 @@ class ReactUeditor extends React.Component {
   registerRadios = () =>
     this.registerPlugin(ueditor => ({
       menuText: '插入单选框',
-      cssRules: 'background-image: url(\'../../../src/img/radio.svg\') !important;background-size: 87%;' + 'background-repeat: no-repeat;   background-position: 1px 1px;',
+      cssRules: `background-image: url(${Icon.radioIcon}) !important;background-size: 87%;background-repeat: no-repeat;   background-position: 1px 1px;`,
       mode: MODE.NORMAL,
       onIconClick: () => {
         ueditor.focus()
@@ -361,7 +343,7 @@ class ReactUeditor extends React.Component {
   registerCheckboxs = () =>
     this.registerPlugin(ueditor => ({
       menuText: '插入复选框',
-      cssRules: 'background-image: url(\'../../../src/img/checkbox.svg\') !important;background-size: 75%;' + 'background-repeat: no-repeat;   background-position: 1px 3px;',
+      cssRules: `background-image: url(${Icon.checkboxIcon}) !important;background-size: 75%;background-repeat: no-repeat;   background-position: 1px 3px;`,
       mode: MODE.NORMAL,
       onIconClick: () => {
         ueditor.focus()
@@ -372,7 +354,7 @@ class ReactUeditor extends React.Component {
   registerListctrl = () =>
     this.registerPlugin(ueditor => ({
       menuText: '插入列表控件',
-      cssRules: 'background-image: url(\'../../../src/img/list.svg\') !important;background-size: 80%;' + 'background-repeat: no-repeat;   background-position: 1px 2px;',
+      cssRules: `background-image: url(${Icon.listIcon}) !important;background-size: 80%;background-repeat: no-repeat;   background-position: 1px 2px;`,
       mode: MODE.NORMAL,
       onIconClick: () => {
         ueditor.focus()
