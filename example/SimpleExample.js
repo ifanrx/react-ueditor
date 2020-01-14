@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactUeditor from '../src'
+import ReactUeditor from '../src/js'
 
 class SimpleExample extends React.Component {
   updateEditorContent = content => {

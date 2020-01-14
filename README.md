@@ -6,108 +6,21 @@
 ![](https://img.shields.io/npm/v/ifanrx-react-ueditor.svg) ![](https://img.shields.io/npm/dw/ifanrx-react-ueditor.svg)
 
 
-### ✨ 特性
+### formdesign 分支修改
 
-- 支持更灵活的图片和音视频资源上传
-- 支持同个页面存在多个编辑器实例
-- 支持对复制进来的图片进行操作
-- 允许扩展工具栏，支持在扩展中使用已有的 react 组件
+将[雷劈网 WEB表单设计器 - Formdesign](https://github.com/payonesmile/formdesign) 添加到此项目.
+因为Formdesign没有npm仓库,所以直接添加所需文件到项目.
 
+### 代办  ---  表单组件
 
+- [x] 两个组件合并
+- [ ] 图标集成
+- [ ] 测试保存及预览
+- [ ] 将react-ue修改成可引用组件
+- [ ] 上传组件到gitlab
+- [ ] 在项目中使用
 
-### 📦 下载
-
-```
-# 使用 npm 安装
-npm install ifanrx-react-ueditor --save
-
-# 使用 yarn 安装
-yarn add ifanrx-react-ueditor
-```
-
-
-### 🔨 使用
-
-```
-import ReactUeditor from 'ifanrx-react-ueditor'
-
-<ReactUeditor
-  ueditorPath={`${window.YOUR_PATH}/ueditor`}"
-/>
-```
-
-### 🔌 插件
-
-> extendControls 已不推荐使用，请直接使用 plugins，指定插件。
-
-插件分为两种，一种是内置的插件，一种是自定义的插件。现支持内置插件如下：
-
-1. insertCode  插入代码块
-2. uploadImage  上传图片
-3. uploadVideo  上传视频
-4. uploadAudio  上传音频
-5. insertLink  添加链接
-
-内置插件，直接传入插件的名称即可。自定义插件则是传入一个 Function，类型定义（使用 typescript 只为了说明类型）为：
-
-```typescript
-interface IPlugin {
-  (ueditor: UEditor): IPluginConfig
-}
-
-interface IPluginConfig {
-  cssRules: String
-  menuText: String
-  onIconClick?: () => void
-  render: (visible: Boolean, closeModal: () => void) => React.ReactElement<any>
-  title?: String
-}
-```
-
-UEditor 为 UEditor 实例。详细内容，请参考[官方文档](https://ueditor.baidu.com/doc/#UE.Editor)
-
-#### 插件使用示例
-
-1. 内置插件
-
-    ```javascript
-    <ReactUeditor
-      ...
-      plugins={[
-        'insertCode',
-        'uploadImage',
-        'uploadVideo',
-        'uploadAudio',
-        'insertLink',
-      ]}
-      ...
-    />
-    ```
-
-2. 自定义插件
-
-    ```javascript
-    const uploadImagePlugin = ueditor => {
-      return {
-        menuText: '图片上传',
-        cssRules: 'background-position: -726px -77px;',
-        render: (visible, closeModal) => {
-          const handleSelectImage = (url) => {
-            ueditor.focus()
-            ueditor.execCommand('inserthtml', `<img src="${url}" />`)
-            closeModal()
-          }
-          return <Modal visible={visible} onSelectImage={handleSelectImage} />
-        }
-      }
-    }
-
-    <ReactUeditor
-      ...
-      plugins={[uploadImagePlugin]}
-      ...
-    />
-    ```
+<br>
 
 更多功能请移步到 react-ueditor 的 [wiki 页面](https://github.com/ifanrx/react-ueditor/wiki)
 

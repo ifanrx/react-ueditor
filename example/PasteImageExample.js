@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactUeditor from '../src'
+import ReactUeditor from '../src/js'
 
 class PasteImageExample extends React.Component {
   pasteImageStart = imageAmount => {

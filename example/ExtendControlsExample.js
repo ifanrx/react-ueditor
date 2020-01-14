@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactUeditor from '../src'
+import ReactUeditor from '../src/js'
 
 const testIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABd0lEQVQ4T82SMUsDQ' +
   'RCFZ+64IlaxsEgpEQULGxsrLUTQLv4CsZCA3XnJ7AWJnKAkuyuk0CYKFpYimFKwsktlIVYKoo2WpotwYUcuEDkTNUnnFgszb+bj7c4' +
