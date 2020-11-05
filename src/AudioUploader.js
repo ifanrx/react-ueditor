@@ -87,7 +87,9 @@ class UploadModal extends React.PureComponent {
   removeSource = index => {
     let sourcesCopy = this.state.sources.concat([])
     sourcesCopy.splice(index, 1)
-    this.setState({sources: sourcesCopy})
+    this.setState({sources: sourcesCopy}, () => {
+      this.props.onChange(this.generateHtml())
+    })
   }
 
   upload = e => {

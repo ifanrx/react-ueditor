@@ -135,19 +135,18 @@ class ReactUeditor extends React.Component {
   }
 
   registerInternalPlugin(pluginName) {
-    switch(pluginName) {
-      case 'uploadImage':
-        return this.registerImageUpload()
-      case 'insertCode':
-        return this.registerSimpleInsertCode()
-      case 'uploadVideo':
-        return this.registerUploadVideo()
-      case 'uploadAudio':
-        return this.registerUploadAudio()
-      case 'insertLink':
-        return this.registerLink()
-      default:
-        return
+    switch (pluginName) {
+    case 'uploadImage':
+      return this.registerImageUpload()
+    case 'insertCode':
+      return this.registerSimpleInsertCode()
+    case 'uploadVideo':
+      return this.registerUploadVideo()
+    case 'uploadAudio':
+      return this.registerUploadAudio()
+    case 'insertLink':
+      return this.registerLink()
+    default:
     }
   }
 
@@ -185,27 +184,31 @@ class ReactUeditor extends React.Component {
     mode: MODE.NORMAL,
     onIconClick: () => {
       this.tempfileInput.click()
-    }
+    },
   }))
 
-  registerSimpleInsertCode = () => this.registerPlugin((ueditor) => ({
+  registerSimpleInsertCode = () => this.registerPlugin(ueditor => ({
     menuText: '插入代码',
     cssRules: 'background: url(' + simpleInsertCodeIcon + ') !important; background-size: 20px 20px !important;',
     mode: MODE.NORMAL,
     onIconClick: () => {
       ueditor.focus()
       ueditor.execCommand('insertcode')
-    }
+    },
   }))
 
   registerUploadVideo = () => {
     let {uploadVideo, progress} = this.props
-    return this.registerPlugin((ueditor) => ({
+    return this.registerPlugin(ueditor => ({
       menuText: '上传视频',
       cssRules: 'background-position: -320px -20px;',
       mode: MODE.INTERNAL_MODAL,
       render: () => <VideoUploader upload={uploadVideo} progress={progress} onChange={this.videoChange} />,
       onConfirm: () => {
+        if (!this.state.videoHtml) {
+          utils.message('请先添加视频')
+          return true
+        }
         ueditor.execCommand('insertparagraph')
         ueditor.execCommand('inserthtml', this.state.videoHtml, true)
         ueditor.execCommand('insertparagraph')
@@ -216,16 +219,21 @@ class ReactUeditor extends React.Component {
 
   registerUploadAudio = () => {
     let {uploadAudio, progress} = this.props
-    return this.registerPlugin((ueditor) => ({
+    return this.registerPlugin(ueditor => ({
       menuText: '上传音频',
       cssRules: 'background: url(' + uploadAudioIcon + ') !important; background-size: 20px 20px !important;',
       mode: MODE.INTERNAL_MODAL,
       render: () => <AudioUploader upload={uploadAudio} progress={progress} onChange={this.audioChange} />,
       onConfirm: () => {
+        if (!this.state.audioHtml) {
+          utils.message('请先添加音频')
+          return true
+        }
         ueditor.execCommand('insertparagraph')
         ueditor.execCommand('inserthtml', this.state.audioHtml, true)
         ueditor.execCommand('insertparagraph')
         ueditor.execCommand('insertparagraph')
+        // 清空
       },
     }))
   }
@@ -385,7 +393,7 @@ class ReactUeditor extends React.Component {
         {
           this.state.pluginsWithCustomRender.map(plugin => {
             const visible = !!this.state[this.getVisibleName(plugin.name)]
-            const onClose= () => {
+            const onClose = () => {
               if (isModalMode(plugin.mode)) {
                 this.setState({[this.getVisibleName(plugin.name)]: false})
               }
@@ -420,7 +428,7 @@ class ReactUeditor extends React.Component {
             }
           })
         }
-        {  // 即将废弃
+        { // 即将废弃
           extendControls.map(control => (
             <Modal
               key={control.name + this.containerID}
