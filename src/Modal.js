@@ -28,8 +28,8 @@ class Modal extends React.PureComponent {
   }
 
   onConfirm = () => {
-    this.props.onConfirm && this.props.onConfirm()
-    this.closeModal()
+    // onConfirm 返回 false undefined 则关闭弹窗, 否则不关闭
+    this.props.onConfirm && !this.props.onConfirm() && this.closeModal()
   }
 
   render() {
