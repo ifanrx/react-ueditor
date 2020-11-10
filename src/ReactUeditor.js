@@ -206,7 +206,7 @@ class ReactUeditor extends React.Component {
       render: () => <VideoUploader upload={uploadVideo} progress={progress} onChange={this.videoChange} />,
       onConfirm: () => {
         if (!this.state.videoHtml) {
-          utils.message('请先添加视频')
+          utils.toast('请先添加视频')
           return true
         }
         ueditor.execCommand('insertparagraph')
@@ -226,7 +226,7 @@ class ReactUeditor extends React.Component {
       render: () => <AudioUploader upload={uploadAudio} progress={progress} onChange={this.audioChange} />,
       onConfirm: () => {
         if (!this.state.audioHtml) {
-          utils.message('请先添加音频')
+          utils.toast('请先添加音频')
           return true
         }
         ueditor.execCommand('insertparagraph')

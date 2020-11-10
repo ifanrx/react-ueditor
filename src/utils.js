@@ -19,13 +19,13 @@ export function replaceImageSource(html, origin, target) {
   })
 }
 
-export const message = (text, duration) => {
+export const toast = (text, duration) => {
   if (!text || !text.length) return
   duration = duration || 1000
   let root = document.getElementById('root')
-  let messageDom = document.createElement('div')
-  messageDom.setAttribute('id', 'message')
-  messageDom.setAttribute(
+  let toastDom = document.createElement('div')
+  toastDom.setAttribute('id', 'toast')
+  toastDom.setAttribute(
     'style',
     `display: flex;
     justify-content: center;
@@ -49,11 +49,11 @@ export const message = (text, duration) => {
   )
 
   textDom.innerHTML = text
-  messageDom.append(textDom)
-  root.append(messageDom)
+  toastDom.append(textDom)
+  root.append(toastDom)
 
   setTimeout(function() {
-    let message = document.getElementById('message')
-    message.remove()
+    let toast = document.getElementById('toast')
+    toast.remove()
   }, duration)
 }
