@@ -22,7 +22,7 @@ export function replaceImageSource(html, origin, target) {
 export const toast = (text, duration) => {
   if (!text || !text.length) return
   duration = duration || 1000
-  let root = document.getElementById('root')
+  let root = document.body
   let toastDom = document.createElement('div')
   toastDom.setAttribute('id', 'toast')
   toastDom.setAttribute(
