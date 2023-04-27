@@ -6,7 +6,7 @@ module.exports = {
   entry: path.resolve(__dirname, 'index.js'),
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: path.resolve(__dirname, '..'),
+    static: path.resolve(__dirname, '..'),
   },
   plugins: [
     new HtmlWebpackPlugin({
