@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf lib/ && babel src -d lib",
     "lint": "eslint src/**/*.js example/**/*.js --fix",
-    "start": "webpack-dev-server --config example/webpack.config.js --open"
+    "start": "webpack serve --config example/webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -55,7 +55,7 @@
     "react-router-dom": "^4",
     "style-loader": "^0.23.1",
     "webpack": "^4",
-    "webpack-cli": "^3",
+    "webpack-cli": "^4",
     "webpack-dev-server": "^3.11.0"
   }
 }
