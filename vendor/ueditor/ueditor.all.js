@@ -14417,7 +14417,7 @@ UE.plugins['undo'] = function () {
 
         var me = this;
         var keyCode = evt.keyCode || evt.which;
-        if (!keys[keyCode] && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && !evt.altKey) {
+        if (!keys[keyCode] && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && !evt.altKey || (evt.shiftKey && /\w/.test(evt.key))) {
             if (inputType)
                 return;
 
